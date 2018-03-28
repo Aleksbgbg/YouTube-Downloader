@@ -35,6 +35,8 @@
             _container.Singleton<IShellViewModel, ShellViewModel>();
             _container.Singleton<IMainViewModel, MainViewModel>();
             _container.Singleton<IQueryViewModel, QueryViewModel>();
+
+            _container.PerRequest<IYouTubeVideoViewModel, YouTubeVideoViewModel>();
         }
 
         protected override object GetInstance(Type service, string key)

@@ -6,23 +6,22 @@
     using Google.Apis.Auth.OAuth2;
     using Google.Apis.Services;
     using Google.Apis.Util.Store;
+    using Google.Apis.YouTube.v3;
 
     using YouTube.Downloader.Services.Interfaces;
 
-    using YouTubeApiService = Google.Apis.YouTube.v3.YouTubeService;
-
-    internal class YouTubeService : IYouTubeService
+    internal class YouTubeApiService : IYouTubeApiService
     {
-        private readonly YouTubeApiService _youTubeApiService;
+        private readonly YouTubeService _youTubeApiService;
 
-        public YouTubeService()
+        public YouTubeApiService()
         {
             using (FileStream clientSecrets = File.OpenRead("Client Secrets.json"))
             {
-                _youTubeApiService = new YouTubeApiService(new BaseClientService.Initializer
+                _youTubeApiService = new YouTubeService(new BaseClientService.Initializer
                 {
                         HttpClientInitializer = GoogleWebAuthorizationBroker.AuthorizeAsync(GoogleClientSecrets.Load(clientSecrets).Secrets,
-                                                                                            new string[] { YouTubeApiService.Scope.YoutubeReadonly },
+                                                                                            new string[] { YouTubeService.Scope.YoutubeReadonly },
                                                                                             "user",
                                                                                             CancellationToken.None,
                                                                                             new FileDataStore("YouTube Downloader")).Result

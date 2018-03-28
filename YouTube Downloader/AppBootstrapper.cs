@@ -29,7 +29,7 @@
         {
             // Register Services
             _container.Singleton<IWindowManager, WindowManager>();
-            _container.Singleton<IYouTubeService, YouTubeService>();
+            _container.Singleton<IYouTubeApiService, YouTubeApiService>();
 
             // Register ViewModels
             _container.Singleton<IShellViewModel, ShellViewModel>();

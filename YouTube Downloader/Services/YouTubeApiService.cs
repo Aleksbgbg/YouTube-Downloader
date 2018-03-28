@@ -16,7 +16,7 @@
 
         public YouTubeApiService()
         {
-            using (FileStream clientSecrets = File.OpenRead("Client Secrets.json"))
+            using (FileStream clientSecrets = File.OpenRead("Client Secret.json"))
             {
                 _youTubeApiService = new YouTubeService(new BaseClientService.Initializer
                 {

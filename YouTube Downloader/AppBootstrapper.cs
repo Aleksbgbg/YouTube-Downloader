@@ -6,6 +6,8 @@
 
     using Caliburn.Micro;
 
+    using YouTube.Downloader.Factories;
+    using YouTube.Downloader.Factories.Interfaces;
     using YouTube.Downloader.Services;
     using YouTube.Downloader.Services.Interfaces;
     using YouTube.Downloader.ViewModels;
@@ -30,6 +32,9 @@
             // Register Services
             _container.Singleton<IWindowManager, WindowManager>();
             _container.Singleton<IYouTubeApiService, YouTubeApiService>();
+
+            // Register Factories
+            _container.Singleton<IYouTubeFactory, YouTubeFactory>();
 
             // Register ViewModels
             _container.Singleton<IShellViewModel, ShellViewModel>();

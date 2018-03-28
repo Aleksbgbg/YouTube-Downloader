@@ -2,5 +2,6 @@
 {
     internal interface IMainViewModel : IViewModelBase
     {
+        IQueryViewModel QueryViewModel { get; }
     }
 }

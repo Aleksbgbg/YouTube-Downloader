@@ -4,5 +4,11 @@
 
     internal class MainViewModel : ViewModelBase, IMainViewModel
     {
+        public MainViewModel(IQueryViewModel queryViewModel)
+        {
+            QueryViewModel = queryViewModel;
+        }
+
+        public IQueryViewModel QueryViewModel { get; }
     }
 }

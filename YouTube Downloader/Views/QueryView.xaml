@@ -14,5 +14,8 @@
                     Margin="5"/>
             <TextBox x:Name="Query" Margin="5"/>
         </DockPanel>
+        
+        <ContentControl Caliburn:View.Model="{Binding VideoCollectionViewModel, 
+            Mode=OneTime}"/>
     </DockPanel>
 </UserControl>

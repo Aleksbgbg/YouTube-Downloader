@@ -40,6 +40,7 @@
             _container.Singleton<IShellViewModel, ShellViewModel>();
             _container.Singleton<IMainViewModel, MainViewModel>();
             _container.Singleton<IQueryViewModel, QueryViewModel>();
+            _container.Singleton<IVideoCollectionViewModel, VideoCollectionViewModel>();
 
             _container.PerRequest<IYouTubeVideoViewModel, YouTubeVideoViewModel>();
         }

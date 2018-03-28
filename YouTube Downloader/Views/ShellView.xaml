@@ -8,5 +8,5 @@
 		mc:Ignorable="d"
 		d:DataContext="{d:DesignInstance ViewModels:ShellViewModel}" 
         WindowStartupLocation="CenterScreen">
-		<ContentControl Caliburn:View.Model="{Binding MainViewModel}"/>
+		<ContentControl Caliburn:View.Model="{Binding MainViewModel, Mode=OneTime}"/>
 </Window>

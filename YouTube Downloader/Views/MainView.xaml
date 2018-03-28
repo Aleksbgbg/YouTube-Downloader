@@ -7,5 +7,6 @@
 			 xmlns:ViewModels="clr-namespace:YouTube.Downloader.ViewModels"
 			 mc:Ignorable="d"
 			 d:DataContext="{d:DesignInstance ViewModels:MainViewModel}">
-    <ContentControl Caliburn:View.Model="{Binding QueryViewModel}"/>
+    <ContentControl Caliburn:View.Model="{Binding QueryViewModel,
+        Mode=OneTime}"/>
 </UserControl>

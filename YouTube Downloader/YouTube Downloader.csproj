@@ -129,6 +129,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Compile Include="Models\YouTubeVideo.cs" />
     <Compile Include="Services\Interfaces\IYouTubeApiService.cs" />
     <Compile Include="Services\YouTubeApiService.cs" />
     <Compile Include="Views\MainView.xaml.cs">
@@ -211,7 +212,6 @@
     <Folder Include="Factories\Interfaces\" />
     <Folder Include="Helpers\" />
     <Folder Include="Images\" />
-    <Folder Include="Models\" />
     <Folder Include="Utilities\Interfaces\" />
   </ItemGroup>
   <ItemGroup>

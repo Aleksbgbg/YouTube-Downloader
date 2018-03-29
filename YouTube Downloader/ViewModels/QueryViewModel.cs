@@ -46,5 +46,10 @@
 
             IsLoading = false;
         }
+
+        public void Download()
+        {
+            VideoCollectionViewModel.DownloadSelected();
+        }
     }
 }

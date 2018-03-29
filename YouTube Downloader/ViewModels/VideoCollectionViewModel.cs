@@ -27,6 +27,8 @@
 
         public IObservableCollection<IYouTubeVideoViewModel> Videos { get; } = new BindableCollection<IYouTubeVideoViewModel>();
 
+        public IObservableCollection<IYouTubeVideoViewModel> SelectedVideos { get; } = new BindableCollection<IYouTubeVideoViewModel>();
+
         public ICommand SelectAllCommand => new RelayCommand<object>(_ =>
         {
             foreach (IYouTubeVideoViewModel video in Videos)
@@ -35,33 +37,21 @@
             }
         });
 
-        private int _selectedVideos;
-        public int SelectedVideos
-        {
-            get => _selectedVideos;
-
-            private set
-            {
-                if (_selectedVideos == value) return;
-
-                _selectedVideos = value;
-                NotifyOfPropertyChange(() => SelectedVideos);
-            }
-        }
-
         public void Load(IEnumerable<YouTubeVideo> videos)
         {
             void VideoPropertyChanged(object sender, PropertyChangedEventArgs e)
             {
                 if (e.PropertyName != nameof(IYouTubeVideoViewModel.IsSelected)) return;
 
-                if (((IYouTubeVideoViewModel)sender).IsSelected)
+                IYouTubeVideoViewModel video = (IYouTubeVideoViewModel)sender;
+
+                if (video.IsSelected)
                 {
-                    SelectedVideos += 1;
+                    SelectedVideos.Add(video);
                 }
                 else
                 {
-                    SelectedVideos -= 1;
+                    SelectedVideos.Remove(video);
                 }
             }
 
@@ -70,6 +60,11 @@
 
             Videos.AddRange(videos.Select(_youTubeFactory.MakeVideoViewModel));
             Videos.Apply(video => video.PropertyChanged += VideoPropertyChanged);
+        }
+
+        public void DownloadSelected()
+        {
+            _eventAggregator.BeginPublishOnUIThread(SelectedVideos.Select(videoViewModel => videoViewModel.Video));
         }
     }
 }

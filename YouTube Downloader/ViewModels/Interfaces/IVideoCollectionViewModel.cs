@@ -10,8 +10,10 @@
     {
         IObservableCollection<IYouTubeVideoViewModel> Videos { get; }
 
-        int SelectedVideos { get; }
+        IObservableCollection<IYouTubeVideoViewModel> SelectedVideos { get; }
 
         void Load(IEnumerable<YouTubeVideo> videos);
+
+        void DownloadSelected();
     }
 }

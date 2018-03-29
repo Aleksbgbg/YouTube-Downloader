@@ -15,7 +15,7 @@
             <Separator/>
 
             <TextBlock>
-                <Run Text="{Binding SelectedVideos, Mode=OneWay}"/> selected
+                <Run Text="{Binding SelectedVideos.Count, Mode=OneWay}"/> selected
             </TextBlock>
         </StatusBar>
 

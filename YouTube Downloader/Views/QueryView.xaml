@@ -10,6 +10,12 @@
 			 d:DataContext="{d:DesignInstance ViewModels:QueryViewModel}">
     <DockPanel>
         <DockPanel DockPanel.Dock="Top">
+            <Button DockPanel.Dock="Right" Content="Download" HorizontalAlignment="Right"
+                    Width="75" Margin="5"
+                    IsEnabled="{Binding VideoCollectionViewModel.SelectedVideos.Count,
+                Converter={x:Static Converters:CountToBooleanConverter.Default}}"
+                    Caliburn:Message.Attach="Download"/>
+
             <Button DockPanel.Dock="Right" Content="Search" 
                     Caliburn:Message.Attach="Search(query)" Width="75" 
                     Margin="5"/>
@@ -28,8 +34,9 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <ContentControl Grid.ColumnSpan="2" Grid.RowSpan="2" Caliburn:View.Model="{Binding VideoCollectionViewModel, 
-            Mode=OneTime}"/>
+            <ContentControl Grid.ColumnSpan="2" Grid.RowSpan="2"
+                            Caliburn:View.Model="{Binding VideoCollectionViewModel,
+                    Mode=OneTime}"/>
 
             <Image Grid.Column="1" Grid.Row="1"
                    Width="20" Visibility="{Binding IsLoading, Mode=OneWay,

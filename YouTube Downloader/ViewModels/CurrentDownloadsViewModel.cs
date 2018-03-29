@@ -1,12 +1,16 @@
 ﻿namespace YouTube.Downloader.ViewModels
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
     using Caliburn.Micro;
 
     using YouTube.Downloader.Factories.Interfaces;
     using YouTube.Downloader.Models;
     using YouTube.Downloader.ViewModels.Interfaces;
 
-    internal class CurrentDownloadsViewModel : ViewModelBase, ICurrentDownloadsViewModel, IHandle<YouTubeVideo>
+    internal class CurrentDownloadsViewModel : ViewModelBase, ICurrentDownloadsViewModel, IHandle<IEnumerable<YouTubeVideo>>
     {
         private readonly IDownloadFactory _downloadFactory;
 
@@ -18,13 +22,19 @@
 
         public IObservableCollection<IDownloadViewModel> Downloads { get; } = new BindableCollection<IDownloadViewModel>();
 
-        public void Handle(YouTubeVideo message)
+        public void Handle(IEnumerable<YouTubeVideo> message)
         {
-            IDownloadViewModel downloadViewModel = _downloadFactory.MakeDownloadViewModel(message);
+            foreach (IDownloadViewModel downloadViewModel in message.Select(_downloadFactory.MakeDownloadViewModel))
+            {
+                void DownloadViewModelDownloadCompleted(object sender, EventArgs e)
+                {
+                    downloadViewModel.DownloadCompleted -= DownloadViewModelDownloadCompleted;
+                    Downloads.Remove(downloadViewModel);
+                }
 
-            downloadViewModel.DownloadCompleted += (sender, e) => Downloads.Remove(downloadViewModel);
-
-            Downloads.Add(downloadViewModel);
+                downloadViewModel.DownloadCompleted += DownloadViewModelDownloadCompleted;
+                Downloads.Add(downloadViewModel);
+            }
         }
     }
 }

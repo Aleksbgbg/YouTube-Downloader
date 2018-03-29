@@ -5,19 +5,25 @@
     using System.Net.Http;
     using System.Threading.Tasks;
 
+    using Caliburn.Micro;
+
     using Google.Apis.YouTube.v3.Data;
 
     using Newtonsoft.Json;
 
-    internal class YouTubeVideo
+    internal class YouTubeVideo : PropertyChangedBase
     {
         internal YouTubeVideo(PlaylistItem playlistItem)
         {
-            Id = playlistItem.Id;
+            Id = playlistItem.Snippet.ResourceId.VideoId;
             Title = playlistItem.Snippet.Title;
             Channel = playlistItem.Snippet.ChannelTitle;
             Description = playlistItem.Snippet.Description;
-            DateUploaded = playlistItem.Snippet.PublishedAt ?? new DateTime();
+
+            if (playlistItem.Snippet.PublishedAt.HasValue)
+            {
+                DateUploaded = playlistItem.Snippet.PublishedAt.Value;
+            }
         }
 
         public string Id { get; }
@@ -30,7 +36,19 @@
 
         public string Description { get; }
 
-        public ulong Views { get; private set; }
+        private ulong _views;
+        public ulong Views
+        {
+            get => _views;
+
+            private set
+            {
+                if (_views == value) return;
+
+                _views = value;
+                NotifyOfPropertyChange(() => Views);
+            }
+        }
 
         internal async Task LoadViews()
         {
@@ -38,11 +56,16 @@
             {
                 string jsonString = await httpClient.GetStringAsync($"https://www.googleapis.com/youtube/v3/videos?id={Id}&key=AIzaSyAL-OrAZ6gIEUxOObwvLgjSiMxXXf8TDYw&part=statistics");
 
-                Views = JsonConvert.DeserializeObject<VideoListResponse>(jsonString)
-                                   .Items
-                                   .Single()
-                                   .Statistics
-                                   .ViewCount ?? 0;
+                ulong? viewCount = JsonConvert.DeserializeObject<VideoListResponse>(jsonString)
+                                              .Items
+                                              .Single()
+                                              .Statistics
+                                              .ViewCount;
+
+                if (viewCount.HasValue)
+                {
+                    Views = viewCount.Value;
+                }
             }
         }
     }

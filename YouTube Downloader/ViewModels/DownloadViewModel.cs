@@ -1,6 +1,7 @@
 ﻿namespace YouTube.Downloader.ViewModels
 {
     using System;
+    using System.Threading.Tasks;
 
     using YouTube.Downloader.Models;
     using YouTube.Downloader.ViewModels.Interfaces;
@@ -11,6 +12,7 @@
 
         public void Initialise(YouTubeVideo downloadVideo)
         {
+            Task.Run(downloadVideo.LoadViews);
             DownloadVideo = downloadVideo;
         }
 

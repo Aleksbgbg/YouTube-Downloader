@@ -6,4 +6,15 @@
 			 xmlns:ViewModels="clr-namespace:YouTube.Downloader.ViewModels"
 			 mc:Ignorable="d"
 			 d:DataContext="{d:DesignInstance ViewModels:CurrentDownloadsViewModel}">
+    <DockPanel>
+        <TextBlock DockPanel.Dock="Top" Text="Downloads" FontSize="16"
+                   FontWeight="DemiBold" HorizontalAlignment="Center"
+                   Margin="5"/>
+
+        <ItemsControl ItemsSource="{Binding Downloads, Mode=OneTime}">
+            <ItemsControl.Resources>
+                <ResourceDictionary Source="DownloadView.xaml"/>
+            </ItemsControl.Resources>
+        </ItemsControl>
+    </DockPanel>
 </UserControl>

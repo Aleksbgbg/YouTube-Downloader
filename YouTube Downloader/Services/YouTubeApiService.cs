@@ -51,7 +51,7 @@
 
                 pageToken = response.NextPageToken;
 
-                videos.AddRange(response.Items.Select(video => new YouTubeVideo(video.Id, video.Snippet.Title)));
+                videos.AddRange(response.Items.Select(video => new YouTubeVideo(video)));
             } while (pageToken != null);
 
             return videos;

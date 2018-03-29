@@ -11,10 +11,12 @@
                    FontWeight="DemiBold" HorizontalAlignment="Center"
                    Margin="5"/>
 
-        <ItemsControl ItemsSource="{Binding Downloads, Mode=OneTime}">
-            <ItemsControl.Resources>
-                <ResourceDictionary Source="DownloadView.xaml"/>
-            </ItemsControl.Resources>
-        </ItemsControl>
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <ItemsControl ItemsSource="{Binding Downloads, Mode=OneTime}">
+                <ItemsControl.Resources>
+                    <ResourceDictionary Source="DownloadView.xaml"/>
+                </ItemsControl.Resources>
+            </ItemsControl>
+        </ScrollViewer>
     </DockPanel>
 </UserControl>

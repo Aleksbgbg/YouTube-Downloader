@@ -11,10 +11,13 @@
 
     internal class VideoCollectionViewModel : ViewModelBase, IVideoCollectionViewModel
     {
+        private readonly IEventAggregator _eventAggregator;
+
         private readonly IYouTubeFactory _youTubeFactory;
 
-        public VideoCollectionViewModel(IYouTubeFactory youTubeFactory)
+        public VideoCollectionViewModel(IEventAggregator eventAggregator, IYouTubeFactory youTubeFactory)
         {
+            _eventAggregator = eventAggregator;
             _youTubeFactory = youTubeFactory;
         }
 

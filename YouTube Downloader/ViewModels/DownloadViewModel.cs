@@ -1,5 +1,7 @@
 ﻿namespace YouTube.Downloader.ViewModels
 {
+    using System;
+
     using YouTube.Downloader.Models;
     using YouTube.Downloader.ViewModels.Interfaces;
 
@@ -11,5 +13,7 @@
         {
             DownloadVideo = downloadVideo;
         }
+
+        public event EventHandler DownloadCompleted;
     }
 }

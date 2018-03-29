@@ -7,10 +7,20 @@
 			 xmlns:ViewModels="clr-namespace:YouTube.Downloader.ViewModels"
 			 mc:Ignorable="d"
 			 d:DataContext="{d:DesignInstance ViewModels:MainViewModel}">
-    <DockPanel>
-        <ContentControl DockPanel.Dock="Right" Caliburn:View.Model="{Binding CurrentDownloadsViewModel, Mode=OneTime}" Width="250"/>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
 
         <ContentControl Caliburn:View.Model="{Binding QueryViewModel,
             Mode=OneTime}"/>
-    </DockPanel>
+
+        <GridSplitter Grid.Column="1" Background="DodgerBlue"
+                      HorizontalAlignment="Stretch" Width="5"
+                      Margin="0, 5"/>
+
+        <ContentControl Grid.Column="2" Caliburn:View.Model="{Binding CurrentDownloadsViewModel, Mode=OneTime}"/>
+    </Grid>
 </UserControl>

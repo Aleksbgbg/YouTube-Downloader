@@ -42,10 +42,10 @@
 
             _container.Singleton<IQueryViewModel, QueryViewModel>();
             _container.Singleton<IVideoCollectionViewModel, VideoCollectionViewModel>();
+            _container.PerRequest<IYouTubeVideoViewModel, YouTubeVideoViewModel>();
 
             _container.Singleton<ICurrentDownloadsViewModel, CurrentDownloadsViewModel>();
-
-            _container.PerRequest<IYouTubeVideoViewModel, YouTubeVideoViewModel>();
+            _container.PerRequest<IDownloadViewModel, DownloadViewModel>();
         }
 
         protected override object GetInstance(Type service, string key)

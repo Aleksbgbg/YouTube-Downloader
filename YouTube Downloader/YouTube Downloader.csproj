@@ -122,9 +122,24 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
+    <Compile Include="ViewModels\CurrentDownloadsViewModel.cs" />
+    <Compile Include="ViewModels\DownloadViewModel.cs" />
+    <Compile Include="ViewModels\Interfaces\ICurrentDownloadsViewModel.cs" />
+    <Compile Include="ViewModels\Interfaces\IDownloadViewModel.cs" />
+    <Compile Include="Views\CurrentDownloadsView.xaml.cs">
+      <DependentUpon>CurrentDownloadsView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\VideoCollectionView.xaml.cs">
       <DependentUpon>VideoCollectionView.xaml</DependentUpon>
     </Compile>
+    <Page Include="Views\CurrentDownloadsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\DownloadView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\MainView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

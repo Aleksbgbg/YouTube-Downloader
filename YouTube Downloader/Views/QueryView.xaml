@@ -32,7 +32,7 @@
             Mode=OneTime}"/>
 
             <Image Grid.Column="1" Grid.Row="1"
-                   Width="25" Visibility="{Binding IsLoading, Mode=OneWay,
+                   Width="20" Visibility="{Binding IsLoading, Mode=OneWay,
                 Converter={x:Static Converters:BooleanToVisibilityConverter.Default}}"
                    Margin="5, 0">
                 <Image.Triggers>

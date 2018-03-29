@@ -4,14 +4,40 @@
 			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:Caliburn="http://www.caliburnproject.org"
+             xmlns:Converters="clr-namespace:YouTube.Downloader.Converters"
 			 xmlns:ViewModels="clr-namespace:YouTube.Downloader.ViewModels"
 			 mc:Ignorable="d"
 			 d:DataContext="{d:DesignInstance ViewModels:QueryViewModel}">
     <DockPanel>
         <DockPanel DockPanel.Dock="Top">
+            <Image DockPanel.Dock="Right" Width="25"
+                   Visibility="{Binding IsLoading, Mode=OneWay,
+                Converter={x:Static Converters:BooleanToVisibilityConverter.Default}}" Margin="5, 0">
+                <Image.Triggers>
+                    <EventTrigger RoutedEvent="Image.Loaded">
+                        <BeginStoryboard>
+                            <Storyboard RepeatBehavior="Forever">
+                                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Source"
+                                                               Duration="0:0:0.8">
+                                    <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="{StaticResource SpinnerFrame1}"/>
+                                    <DiscreteObjectKeyFrame KeyTime="0:0:0.1" Value="{StaticResource SpinnerFrame2}"/>
+                                    <DiscreteObjectKeyFrame KeyTime="0:0:0.2" Value="{StaticResource SpinnerFrame3}"/>
+                                    <DiscreteObjectKeyFrame KeyTime="0:0:0.3" Value="{StaticResource SpinnerFrame4}"/>
+                                    <DiscreteObjectKeyFrame KeyTime="0:0:0.4" Value="{StaticResource SpinnerFrame5}"/>
+                                    <DiscreteObjectKeyFrame KeyTime="0:0:0.5" Value="{StaticResource SpinnerFrame6}"/>
+                                    <DiscreteObjectKeyFrame KeyTime="0:0:0.6" Value="{StaticResource SpinnerFrame7}"/>
+                                    <DiscreteObjectKeyFrame KeyTime="0:0:0.7" Value="{StaticResource SpinnerFrame8}"/>
+                                </ObjectAnimationUsingKeyFrames>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                </Image.Triggers>
+            </Image>
+
             <Button DockPanel.Dock="Right" Content="Search" 
                     Caliburn:Message.Attach="Search(query)" Width="75" 
                     Margin="5"/>
+            
             <TextBox x:Name="Query" Margin="5"/>
         </DockPanel>
         

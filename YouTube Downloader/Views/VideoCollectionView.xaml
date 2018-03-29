@@ -6,9 +6,15 @@
 			 xmlns:ViewModels="clr-namespace:YouTube.Downloader.ViewModels"
 			 mc:Ignorable="d"
 			 d:DataContext="{d:DesignInstance ViewModels:VideoCollectionViewModel}">
-    <ListBox ItemsSource="{Binding Videos, Mode=OneTime}">
-        <ListBox.Resources>
-            <ResourceDictionary Source="YouTubeVideoView.xaml"/>
-        </ListBox.Resources>
-    </ListBox>
+    <DockPanel>
+        <TextBlock DockPanel.Dock="Bottom" Margin="5">
+            <Run Text="{Binding Videos.Count, Mode=OneWay}"/> videos
+        </TextBlock>
+        
+        <ListBox ItemsSource="{Binding Videos, Mode=OneTime}">
+            <ListBox.Resources>
+                <ResourceDictionary Source="YouTubeVideoView.xaml"/>
+            </ListBox.Resources>
+        </ListBox>
+    </DockPanel>
 </UserControl>

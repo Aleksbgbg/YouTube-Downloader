@@ -122,6 +122,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
+    <Compile Include="Factories\DownloadFactory.cs" />
+    <Compile Include="Factories\Interfaces\IDownloadFactory.cs" />
     <Compile Include="ViewModels\CurrentDownloadsViewModel.cs" />
     <Compile Include="ViewModels\DownloadViewModel.cs" />
     <Compile Include="ViewModels\Interfaces\ICurrentDownloadsViewModel.cs" />

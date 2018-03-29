@@ -34,6 +34,7 @@
             _container.Singleton<IYouTubeApiService, YouTubeApiService>();
 
             // Register Factories
+            _container.Singleton<IDownloadFactory, DownloadFactory>();
             _container.Singleton<IYouTubeFactory, YouTubeFactory>();
 
             // Register ViewModels

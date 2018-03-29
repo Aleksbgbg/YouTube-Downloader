@@ -10,8 +10,9 @@
     {
         private readonly IDownloadFactory _downloadFactory;
 
-        public CurrentDownloadsViewModel(IDownloadFactory downloadFactory)
+        public CurrentDownloadsViewModel(IEventAggregator eventAggregator, IDownloadFactory downloadFactory)
         {
+            eventAggregator.Subscribe(this);
             _downloadFactory = downloadFactory;
         }
 

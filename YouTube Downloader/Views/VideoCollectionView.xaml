@@ -10,8 +10,9 @@
         <TextBlock DockPanel.Dock="Bottom" Margin="5">
             <Run Text="{Binding Videos.Count, Mode=OneWay}"/> videos
         </TextBlock>
-        
-        <ListBox ItemsSource="{Binding Videos, Mode=OneTime}">
+
+        <ListBox ItemsSource="{Binding Videos, Mode=OneTime}"
+                 SelectionMode="Extended">
             <ListBox.Resources>
                 <ResourceDictionary Source="YouTubeVideoView.xaml"/>
             </ListBox.Resources>

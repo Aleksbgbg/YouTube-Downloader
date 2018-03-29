@@ -16,6 +16,14 @@
             <ListBox.Resources>
                 <ResourceDictionary Source="YouTubeVideoView.xaml"/>
             </ListBox.Resources>
+            
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem"
+                       BasedOn="{StaticResource {x:Type ListBoxItem}}">
+                    <Setter Property="IsSelected" Value="{Binding IsSelected,
+                        Mode=TwoWay}"/>
+                </Style>
+            </ListBox.ItemContainerStyle>
         </ListBox>
     </DockPanel>
 </UserControl>

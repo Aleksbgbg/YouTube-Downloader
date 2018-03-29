@@ -39,8 +39,11 @@
             // Register ViewModels
             _container.Singleton<IShellViewModel, ShellViewModel>();
             _container.Singleton<IMainViewModel, MainViewModel>();
+
             _container.Singleton<IQueryViewModel, QueryViewModel>();
             _container.Singleton<IVideoCollectionViewModel, VideoCollectionViewModel>();
+
+            _container.Singleton<ICurrentDownloadsViewModel, CurrentDownloadsViewModel>();
 
             _container.PerRequest<IYouTubeVideoViewModel, YouTubeVideoViewModel>();
         }

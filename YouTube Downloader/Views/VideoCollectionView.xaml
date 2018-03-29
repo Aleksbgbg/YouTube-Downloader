@@ -7,12 +7,25 @@
 			 mc:Ignorable="d"
 			 d:DataContext="{d:DesignInstance ViewModels:VideoCollectionViewModel}">
     <DockPanel>
-        <TextBlock DockPanel.Dock="Bottom" Margin="5">
-            <Run Text="{Binding Videos.Count, Mode=OneWay}"/> videos
-        </TextBlock>
+        <StatusBar DockPanel.Dock="Bottom">
+            <TextBlock>
+                <Run Text="{Binding Videos.Count, Mode=OneWay}"/> videos
+            </TextBlock>
+            
+            <Separator/>
+
+            <TextBlock>
+                <Run Text="{Binding SelectedVideos, Mode=OneWay}"/> selected
+            </TextBlock>
+        </StatusBar>
 
         <ListBox ItemsSource="{Binding Videos, Mode=OneTime}"
                  SelectionMode="Extended">
+            <ListBox.InputBindings>
+                <KeyBinding Gesture="Ctrl+A" Command="{Binding SelectAllCommand,
+                    Mode=OneTime}"/>
+            </ListBox.InputBindings>
+
             <ListBox.Resources>
                 <ResourceDictionary Source="YouTubeVideoView.xaml"/>
             </ListBox.Resources>

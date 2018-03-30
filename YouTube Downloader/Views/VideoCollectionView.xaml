@@ -20,12 +20,8 @@
         </StatusBar>
 
         <ListBox ItemsSource="{Binding Videos, Mode=OneTime}"
-                 SelectionMode="Extended">
-            <ListBox.InputBindings>
-                <KeyBinding Gesture="Ctrl+A" Command="{Binding SelectAllCommand,
-                    Mode=OneTime}"/>
-            </ListBox.InputBindings>
-
+                 SelectionMode="Extended"
+                 VirtualizingPanel.IsVirtualizing="False">
             <ListBox.Resources>
                 <ResourceDictionary Source="YouTubeVideoView.xaml"/>
             </ListBox.Resources>
@@ -33,8 +29,7 @@
             <ListBox.ItemContainerStyle>
                 <Style TargetType="ListBoxItem"
                        BasedOn="{StaticResource {x:Type ListBoxItem}}">
-                    <Setter Property="IsSelected" Value="{Binding IsSelected,
-                        Mode=TwoWay}"/>
+                    <Setter Property="IsSelected" Value="{Binding IsSelected}"/>
                 </Style>
             </ListBox.ItemContainerStyle>
         </ListBox>

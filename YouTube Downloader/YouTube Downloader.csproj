@@ -126,7 +126,6 @@
     <Compile Include="Converters\IdToThumbnailConverter.cs" />
     <Compile Include="Factories\DownloadFactory.cs" />
     <Compile Include="Factories\Interfaces\IDownloadFactory.cs" />
-    <Compile Include="Helpers\RelayCommand.cs" />
     <Compile Include="Models\DownloadState.cs" />
     <Compile Include="Services\DownloadService.cs" />
     <Compile Include="Services\Interfaces\IDownloadService.cs" />
@@ -258,6 +257,7 @@
   <ItemGroup>
     <Folder Include="EventArgs\" />
     <Folder Include="Extensions\" />
+    <Folder Include="Helpers\" />
     <Folder Include="Utilities\Interfaces\" />
   </ItemGroup>
   <ItemGroup>

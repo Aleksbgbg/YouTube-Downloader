@@ -3,11 +3,8 @@
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Linq;
-    using System.Windows.Input;
 
     using Caliburn.Micro;
-
-    using Fidl.Helpers;
 
     using YouTube.Downloader.Factories.Interfaces;
     using YouTube.Downloader.Models;
@@ -28,14 +25,6 @@
         public IObservableCollection<IYouTubeVideoViewModel> Videos { get; } = new BindableCollection<IYouTubeVideoViewModel>();
 
         public IObservableCollection<IYouTubeVideoViewModel> SelectedVideos { get; } = new BindableCollection<IYouTubeVideoViewModel>();
-
-        public ICommand SelectAllCommand => new RelayCommand<object>(_ =>
-        {
-            foreach (IYouTubeVideoViewModel video in Videos)
-            {
-                video.IsSelected = true;
-            }
-        });
 
         public void Load(IEnumerable<YouTubeVideo> videos)
         {

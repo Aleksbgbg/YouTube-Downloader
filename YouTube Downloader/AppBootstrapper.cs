@@ -10,6 +10,8 @@
     using YouTube.Downloader.Factories.Interfaces;
     using YouTube.Downloader.Services;
     using YouTube.Downloader.Services.Interfaces;
+    using YouTube.Downloader.Utilities;
+    using YouTube.Downloader.Utilities.Interfaces;
     using YouTube.Downloader.ViewModels;
     using YouTube.Downloader.ViewModels.Interfaces;
 
@@ -35,6 +37,8 @@
 
             _container.Singleton<IDownloadService, DownloadService>();
             _container.Singleton<IYouTubeApiService, YouTubeApiService>();
+
+            _container.Singleton<IFileSystemUtility, FileSystemUtility>();
 
             // Register Factories
             _container.Singleton<IDownloadFactory, DownloadFactory>();

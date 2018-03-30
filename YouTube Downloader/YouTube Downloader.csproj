@@ -129,6 +129,8 @@
     <Compile Include="Models\DownloadState.cs" />
     <Compile Include="Services\DownloadService.cs" />
     <Compile Include="Services\Interfaces\IDownloadService.cs" />
+    <Compile Include="Utilities\FileSystemUtility.cs" />
+    <Compile Include="Utilities\Interfaces\IFileSystemUtility.cs" />
     <Compile Include="ViewModels\CurrentDownloadsViewModel.cs" />
     <Compile Include="ViewModels\DownloadViewModel.cs" />
     <Compile Include="ViewModels\Interfaces\ICurrentDownloadsViewModel.cs" />
@@ -261,7 +263,6 @@
     <Folder Include="EventArgs\" />
     <Folder Include="Extensions\" />
     <Folder Include="Helpers\" />
-    <Folder Include="Utilities\Interfaces\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="FodyWeavers.xml" />

@@ -273,6 +273,12 @@
     <Resource Include="Images\Spinner Frame 7.png" />
     <Resource Include="Images\Spinner Frame 8.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Completed.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Waiting.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

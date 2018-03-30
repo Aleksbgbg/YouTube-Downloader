@@ -4,6 +4,6 @@
     {
         string GetFolder(string name);
 
-        string GetFile(string name);
+        string GetFile(string name, string defaultContents = "");
     }
 }

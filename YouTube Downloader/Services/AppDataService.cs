@@ -31,13 +31,13 @@
             return directoryPath;
         }
 
-        public string GetFile(string name)
+        public string GetFile(string name, string defaultContents = "")
         {
             string filePath = Path.Combine(ApplicationPath, name);
 
             if (!File.Exists(filePath))
             {
-                File.WriteAllText(filePath, string.Empty);
+                File.WriteAllText(filePath, defaultContents);
             }
 
             return filePath;

@@ -54,7 +54,7 @@
         {
             using (HttpClient httpClient = new HttpClient())
             {
-                string jsonString = await httpClient.GetStringAsync($"https://www.googleapis.com/youtube/v3/videos?id={Id}&key=AIzaSyAL-OrAZ6gIEUxOObwvLgjSiMxXXf8TDYw&part=statistics");
+                string jsonString = await httpClient.GetStringAsync($"https://www.googleapis.com/youtube/v3/videos?id={Id}&key=AIzaSyAIj7OmVIu1pQYstco3V8EUh1Bo_PCqIPE&part=statistics");
 
                 ulong? viewCount = JsonConvert.DeserializeObject<VideoListResponse>(jsonString)
                                               .Items

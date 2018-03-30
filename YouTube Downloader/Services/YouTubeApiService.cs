@@ -21,15 +21,14 @@
 
         public YouTubeApiService()
         {
-            using (FileStream clientSecrets = File.OpenRead("Client Secret.json"))
+            using (FileStream clientSecrets = File.OpenRead("Resources/Client Secret.json"))
             {
                 _youTubeApiService = new YouTubeService(new BaseClientService.Initializer
                 {
                         HttpClientInitializer = GoogleWebAuthorizationBroker.AuthorizeAsync(GoogleClientSecrets.Load(clientSecrets).Secrets,
                                                                                             new string[] { YouTubeService.Scope.YoutubeReadonly },
                                                                                             "user",
-                                                                                            CancellationToken.None,
-                                                                                            new FileDataStore("YouTube Downloader")).Result
+                                                                                            CancellationToken.None).Result
                 });
             }
         }

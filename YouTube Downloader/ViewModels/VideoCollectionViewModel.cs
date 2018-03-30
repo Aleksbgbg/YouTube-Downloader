@@ -45,6 +45,7 @@
             }
 
             Videos.Apply(video => video.PropertyChanged -= VideoPropertyChanged);
+            SelectedVideos.Clear();
             Videos.Clear();
 
             Videos.AddRange(videos.Select(_youTubeFactory.MakeVideoViewModel));

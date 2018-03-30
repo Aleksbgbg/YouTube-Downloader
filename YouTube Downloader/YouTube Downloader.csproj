@@ -127,6 +127,7 @@
     <Compile Include="Factories\DownloadFactory.cs" />
     <Compile Include="Factories\Interfaces\IDownloadFactory.cs" />
     <Compile Include="Models\DownloadState.cs" />
+    <Compile Include="Models\Settings.cs" />
     <Compile Include="Services\DownloadService.cs" />
     <Compile Include="Services\Interfaces\IDownloadService.cs" />
     <Compile Include="Utilities\FileSystemUtility.cs" />

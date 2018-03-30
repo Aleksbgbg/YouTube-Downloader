@@ -8,5 +8,14 @@
 		mc:Ignorable="d"
 		d:DataContext="{d:DesignInstance ViewModels:ShellViewModel}" 
         WindowStartupLocation="CenterScreen">
-		<ContentControl Caliburn:View.Model="{Binding MainViewModel, Mode=OneTime}"/>
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="Settings">
+                <MenuItem Header="Toggle Settings"
+                          Caliburn:Message.Attach="ToggleSettings"/>
+            </MenuItem>
+        </Menu>
+
+        <ContentControl Caliburn:View.Model="{Binding ActiveItem}"/>
+    </DockPanel>
 </Window>

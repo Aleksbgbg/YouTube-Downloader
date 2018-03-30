@@ -1,7 +1,8 @@
 ﻿namespace YouTube.Downloader.ViewModels.Interfaces
 {
-    internal interface IShellViewModel : IViewModelBase
+    using Caliburn.Micro;
+
+    internal interface IShellViewModel : IViewModelBase, IConductor
     {
-        IMainViewModel MainViewModel { get; }
     }
 }

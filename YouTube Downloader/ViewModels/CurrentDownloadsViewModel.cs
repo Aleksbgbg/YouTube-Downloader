@@ -8,15 +8,19 @@
 
     using YouTube.Downloader.Factories.Interfaces;
     using YouTube.Downloader.Models;
+    using YouTube.Downloader.Services.Interfaces;
     using YouTube.Downloader.ViewModels.Interfaces;
 
     internal class CurrentDownloadsViewModel : ViewModelBase, ICurrentDownloadsViewModel, IHandle<IEnumerable<YouTubeVideo>>
     {
+        private readonly IDownloadService _downloadService;
+
         private readonly IDownloadFactory _downloadFactory;
 
-        public CurrentDownloadsViewModel(IEventAggregator eventAggregator, IDownloadFactory downloadFactory)
+        public CurrentDownloadsViewModel(IEventAggregator eventAggregator, IDownloadService downloadService, IDownloadFactory downloadFactory)
         {
             eventAggregator.Subscribe(this);
+            _downloadService = downloadService;
             _downloadFactory = downloadFactory;
         }
 
@@ -24,17 +28,22 @@
 
         public void Handle(IEnumerable<YouTubeVideo> message)
         {
-            foreach (IDownloadViewModel downloadViewModel in message.Select(_downloadFactory.MakeDownloadViewModel))
+            IDownloadViewModel[] newDownloads = message.Select(_downloadFactory.MakeDownloadViewModel).ToArray();
+
+            foreach (IDownloadViewModel download in newDownloads)
             {
                 void DownloadViewModelDownloadCompleted(object sender, EventArgs e)
                 {
-                    downloadViewModel.DownloadCompleted -= DownloadViewModelDownloadCompleted;
-                    Downloads.Remove(downloadViewModel);
+                    download.DownloadCompleted -= DownloadViewModelDownloadCompleted;
+                    Downloads.Remove(download);
                 }
 
-                downloadViewModel.DownloadCompleted += DownloadViewModelDownloadCompleted;
-                Downloads.Add(downloadViewModel);
+                download.DownloadCompleted += DownloadViewModelDownloadCompleted;
             }
+
+            Downloads.AddRange(newDownloads);
+
+            _downloadService.QueueDownloads(newDownloads);
         }
     }
 }

@@ -35,7 +35,9 @@
             _container.Singleton<IWindowManager, WindowManager>();
             _container.Singleton<IEventAggregator, EventAggregator>();
 
+            _container.Singleton<IAppDataService, AppDataService>();
             _container.Singleton<IDownloadService, DownloadService>();
+            _container.Singleton<ISettingsService, SettingsService>();
             _container.Singleton<IYouTubeApiService, YouTubeApiService>();
 
             _container.Singleton<IFileSystemUtility, FileSystemUtility>();

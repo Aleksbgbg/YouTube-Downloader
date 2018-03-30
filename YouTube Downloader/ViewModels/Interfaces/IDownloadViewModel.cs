@@ -8,6 +8,8 @@
     {
         YouTubeVideo DownloadVideo { get; }
 
+        DownloadState DownloadState { get; set; }
+
         void Initialise(YouTubeVideo downloadVideo);
 
         event EventHandler DownloadCompleted;

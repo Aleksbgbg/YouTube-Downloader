@@ -127,6 +127,9 @@
     <Compile Include="Factories\DownloadFactory.cs" />
     <Compile Include="Factories\Interfaces\IDownloadFactory.cs" />
     <Compile Include="Helpers\RelayCommand.cs" />
+    <Compile Include="Models\DownloadState.cs" />
+    <Compile Include="Services\DownloadService.cs" />
+    <Compile Include="Services\Interfaces\IDownloadService.cs" />
     <Compile Include="ViewModels\CurrentDownloadsViewModel.cs" />
     <Compile Include="ViewModels\DownloadViewModel.cs" />
     <Compile Include="ViewModels\Interfaces\ICurrentDownloadsViewModel.cs" />

@@ -32,6 +32,8 @@
             // Register Services
             _container.Singleton<IWindowManager, WindowManager>();
             _container.Singleton<IEventAggregator, EventAggregator>();
+
+            _container.Singleton<IDownloadService, DownloadService>();
             _container.Singleton<IYouTubeApiService, YouTubeApiService>();
 
             // Register Factories

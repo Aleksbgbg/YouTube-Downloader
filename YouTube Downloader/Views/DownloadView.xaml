@@ -49,7 +49,7 @@
                     </Image.Triggers>
                 </Image>
 
-                <TextBlock Text="Downloading..."/>
+                <TextBlock Text="{Binding DownloadState}"/>
             </DockPanel>
         </StackPanel>
     </DataTemplate>

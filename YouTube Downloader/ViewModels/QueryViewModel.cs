@@ -1,6 +1,7 @@
 ﻿namespace YouTube.Downloader.ViewModels
 {
     using System.Collections.Generic;
+    using System.Text.RegularExpressions;
 
     using Caliburn.Micro;
 
@@ -11,6 +12,8 @@
     internal class QueryViewModel : ViewModelBase, IQueryViewModel
     {
         private readonly IYouTubeApiService _youTubeApiService;
+
+        private readonly Regex _queryRegex = new Regex("[A-Za-z0-9_-]{34}");
 
         public QueryViewModel(IVideoCollectionViewModel videoCollectionViewModel, IYouTubeApiService youTubeApiService)
         {
@@ -34,11 +37,16 @@
             }
         }
 
+        public bool CanSearch(string query)
+        {
+            return _queryRegex.IsMatch(query);
+        }
+
         public IEnumerable<IResult> Search(string query)
         {
             IsLoading = true;
 
-            TaskResult<IEnumerable<YouTubeVideo>> getVideos = _youTubeApiService.GetVideos(query).AsResult();
+            TaskResult<IEnumerable<YouTubeVideo>> getVideos = _youTubeApiService.GetVideos(_queryRegex.Match(query).Value).AsResult();
 
             yield return getVideos;
 

@@ -42,25 +42,42 @@
                    Width="20" Visibility="{Binding IsLoading, Mode=OneWay,
                 Converter={x:Static Converters:BooleanToVisibilityConverter.Default}}"
                    Margin="5, 0">
-                <Image.Triggers>
-                    <EventTrigger RoutedEvent="Image.Loaded">
-                        <BeginStoryboard>
-                            <Storyboard RepeatBehavior="Forever">
-                                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Source"
-                                                               Duration="0:0:0.8">
-                                    <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="{StaticResource SpinnerFrame1}"/>
-                                    <DiscreteObjectKeyFrame KeyTime="0:0:0.1" Value="{StaticResource SpinnerFrame2}"/>
-                                    <DiscreteObjectKeyFrame KeyTime="0:0:0.2" Value="{StaticResource SpinnerFrame3}"/>
-                                    <DiscreteObjectKeyFrame KeyTime="0:0:0.3" Value="{StaticResource SpinnerFrame4}"/>
-                                    <DiscreteObjectKeyFrame KeyTime="0:0:0.4" Value="{StaticResource SpinnerFrame5}"/>
-                                    <DiscreteObjectKeyFrame KeyTime="0:0:0.5" Value="{StaticResource SpinnerFrame6}"/>
-                                    <DiscreteObjectKeyFrame KeyTime="0:0:0.6" Value="{StaticResource SpinnerFrame7}"/>
-                                    <DiscreteObjectKeyFrame KeyTime="0:0:0.7" Value="{StaticResource SpinnerFrame8}"/>
-                                </ObjectAnimationUsingKeyFrames>
-                            </Storyboard>
-                        </BeginStoryboard>
-                    </EventTrigger>
-                </Image.Triggers>
+                <Image.Style>
+                    <Style TargetType="Image" BasedOn="{StaticResource {x:Type Image}}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsLoading}" Value="True">
+                                <DataTrigger.EnterActions>
+                                    <BeginStoryboard x:Name="SpinnerStoryboard">
+                                        <Storyboard RepeatBehavior="Forever">
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Source"
+                                                                   Duration="0:0:0.8">
+                                                <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="{StaticResource SpinnerFrame1}"/>
+                                                <DiscreteObjectKeyFrame KeyTime="0:0:0.1"
+                                                                Value="{StaticResource SpinnerFrame2}"/>
+                                                <DiscreteObjectKeyFrame KeyTime="0:0:0.2"
+                                                                Value="{StaticResource SpinnerFrame3}"/>
+                                                <DiscreteObjectKeyFrame KeyTime="0:0:0.3"
+                                                                Value="{StaticResource SpinnerFrame4}"/>
+                                                <DiscreteObjectKeyFrame KeyTime="0:0:0.4"
+                                                                Value="{StaticResource SpinnerFrame5}"/>
+                                                <DiscreteObjectKeyFrame KeyTime="0:0:0.5"
+                                                                Value="{StaticResource SpinnerFrame6}"/>
+                                                <DiscreteObjectKeyFrame KeyTime="0:0:0.6"
+                                                                Value="{StaticResource SpinnerFrame7}"/>
+                                                <DiscreteObjectKeyFrame KeyTime="0:0:0.7"
+                                                                Value="{StaticResource SpinnerFrame8}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </DataTrigger.EnterActions>
+
+                                <DataTrigger.ExitActions>
+                                    <StopStoryboard BeginStoryboardName="SpinnerStoryboard"/>
+                                </DataTrigger.ExitActions>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Image.Style>
             </Image>
         </Grid>
     </DockPanel>

@@ -9,13 +9,15 @@
     <DockPanel>
         <StatusBar DockPanel.Dock="Bottom">
             <TextBlock>
-                <Run Text="{Binding Videos.Count, Mode=OneWay}"/> videos
+                <Run Text="{Binding Videos.Count, Mode=OneWay,
+                    StringFormat=N0}"/> videos
             </TextBlock>
 
             <Separator/>
 
             <TextBlock>
-                <Run Text="{Binding SelectedVideos.Count, Mode=OneWay}"/> selected
+                <Run Text="{Binding SelectedVideos.Count, Mode=OneWay,
+                    StringFormat=N0}"/> selected
             </TextBlock>
         </StatusBar>
 

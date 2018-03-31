@@ -22,5 +22,10 @@
         }
 
         public Settings Settings { get; }
+
+        public void Save()
+        {
+            File.WriteAllText(_settingsFile, JsonConvert.SerializeObject(Settings));
+        }
     }
 }

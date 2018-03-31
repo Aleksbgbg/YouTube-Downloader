@@ -27,5 +27,22 @@
                 NotifyOfPropertyChange(() => DownloadPath);
             }
         }
+
+        private DownloadType _downloadType;
+        [DisplayName("Download Type")]
+        [Description("Choose whether to download just audio, or audio and video.")]
+        [JsonProperty("DownloadType")]
+        public DownloadType DownloadType
+        {
+            get => _downloadType;
+
+            set
+            {
+                if (_downloadType == value) return;
+
+                _downloadType = value;
+                NotifyOfPropertyChange(() => DownloadType);
+            }
+        }
     }
 }

@@ -16,7 +16,11 @@
         {
             string settingsFolder = appDataService.GetFolder("Settings");
 
-            _settingsFile = appDataService.GetFile(Path.Combine(settingsFolder, "Settings.json"), JsonConvert.SerializeObject(new Settings { DownloadPath = $@"{fileSystemUtility.DownloadsFolderPath}\YouTube Downloader" }));
+            _settingsFile = appDataService.GetFile(Path.Combine(settingsFolder, "Settings.json"), JsonConvert.SerializeObject(new Settings
+            {
+                    DownloadPath = Path.Combine(fileSystemUtility.DownloadsFolderPath, "YouTube Downloader"),
+                    DownloadType = DownloadType.AudioVideo
+            }));
 
             Settings = JsonConvert.DeserializeObject<Settings>(File.ReadAllText(_settingsFile));
         }

@@ -145,6 +145,8 @@
     <Compile Include="Converters\IdToThumbnailConverter.cs" />
     <Compile Include="Factories\DownloadFactory.cs" />
     <Compile Include="Factories\Interfaces\IDownloadFactory.cs" />
+    <Compile Include="Helpers\EnumDescriptionConverter.cs" />
+    <Compile Include="Models\DownloadType.cs" />
     <Compile Include="Services\AppDataService.cs" />
     <Compile Include="Services\Interfaces\IAppDataService.cs" />
     <Compile Include="Services\Interfaces\ISettingsService.cs" />
@@ -302,7 +304,6 @@
   <ItemGroup>
     <Folder Include="EventArgs\" />
     <Folder Include="Extensions\" />
-    <Folder Include="Helpers\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="FodyWeavers.xml" />

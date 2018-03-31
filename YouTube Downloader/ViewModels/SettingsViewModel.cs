@@ -51,6 +51,7 @@
         {
             _settingsService.Save();
             _changedValues.Clear();
+            NotifyOfPropertyChange(() => CanApply);
         }
 
         private void Deactivate()

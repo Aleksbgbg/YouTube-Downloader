@@ -6,22 +6,21 @@
 
     using YouTube.Downloader.Models;
     using YouTube.Downloader.Services.Interfaces;
-    using YouTube.Downloader.Utilities.Interfaces;
     using YouTube.Downloader.ViewModels.Interfaces;
 
     internal class DownloadService : IDownloadService
     {
         private const int MaxConcurrentDownloads = 3;
 
-        private readonly string _downloadsDirectory;
-
         private readonly Queue<IDownloadViewModel> _downloadQueue = new Queue<IDownloadViewModel>();
+
+        private readonly ISettingsService _settingsService;
 
         private int _concurrentDownloads;
 
-        public DownloadService(IFileSystemUtility fileSystemUtility)
+        public DownloadService(ISettingsService settingsService)
         {
-            _downloadsDirectory = fileSystemUtility.DownloadsFolderPath;
+            _settingsService = settingsService;
         }
 
         public void QueueDownloads(IEnumerable<IDownloadViewModel> downloads)
@@ -50,7 +49,7 @@
             Process downloadProcess = new Process
             {
                 EnableRaisingEvents = true,
-                StartInfo = new ProcessStartInfo("Resources/youtube-dl.exe", $"-o \"{_downloadsDirectory}/YouTube Downloader/%(title)s.%(ext)s\" -f bestvideo+bestaudio \"{download.DownloadVideo.Id}\"")
+                StartInfo = new ProcessStartInfo("Resources/youtube-dl.exe", $"-o \"{_settingsService.Settings.DownloadPath}/YouTube Downloader/%(title)s.%(ext)s\" -f bestvideo+bestaudio \"{download.DownloadVideo.Id}\"")
                 {
                     CreateNoWindow = true,
                     UseShellExecute = false

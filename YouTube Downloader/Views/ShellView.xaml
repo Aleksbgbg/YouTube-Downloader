@@ -11,8 +11,8 @@
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="Settings">
-                <MenuItem Header="Toggle Settings"
-                          Caliburn:Message.Attach="ToggleSettings"/>
+                <MenuItem Header="Open Settings"
+                          Caliburn:Message.Attach="OpenSettings"/>
             </MenuItem>
         </Menu>
 

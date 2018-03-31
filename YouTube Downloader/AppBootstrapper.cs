@@ -57,7 +57,7 @@
             _container.Singleton<ICurrentDownloadsViewModel, CurrentDownloadsViewModel>();
             _container.PerRequest<IDownloadViewModel, DownloadViewModel>();
 
-            _container.PerRequest<ISettingsViewModel, SettingsViewModel>();
+            _container.Singleton<ISettingsViewModel, SettingsViewModel>();
         }
 
         protected override object GetInstance(Type service, string key)

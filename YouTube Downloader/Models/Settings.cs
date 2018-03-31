@@ -2,10 +2,30 @@
 {
     using System.ComponentModel;
 
-    internal class Settings
+    using Caliburn.Micro;
+
+    using Newtonsoft.Json;
+
+    using YouTube.Downloader.Views;
+
+    internal class Settings : PropertyChangedBase
     {
+        private string _downloadPath;
         [DisplayName("Download Path")]
         [Description("Path where downloaded videos are saved.")]
-        public string DownloadPath { get; set; }
+        [Editor(typeof(DownloadPathView), typeof(DownloadPathView))]
+        [JsonProperty("DownloadPath")]
+        public string DownloadPath
+        {
+            get => _downloadPath;
+
+            set
+            {
+                if (_downloadPath == value) return;
+
+                _downloadPath = value;
+                NotifyOfPropertyChange(() => DownloadPath);
+            }
+        }
     }
 }

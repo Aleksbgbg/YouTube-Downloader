@@ -1,14 +1,14 @@
 ﻿<Application x:Class="YouTube.Downloader.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-			 xmlns:YouTube.Downloader="clr-namespace:YouTube.Downloader">
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:YouTube.Downloader="clr-namespace:YouTube.Downloader">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary>
                     <YouTube.Downloader:AppBootstrapper x:Key="Bootstrapper"/>
                 </ResourceDictionary>
-                
+
                 <ResourceDictionary Source="Themes/Brushes.xaml"/>
                 <ResourceDictionary Source="Themes/Geometries.xaml"/>
                 <ResourceDictionary Source="Themes/Images.xaml"/>

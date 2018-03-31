@@ -5,20 +5,24 @@
     <DataTemplate DataType="{x:Type ViewModels:DownloadViewModel}">
         <StackPanel Margin="5">
             <DockPanel>
-                <Image Source="{Binding DownloadVideo.Id, Mode=OneTime,
+                <Image
+                    Source="{Binding DownloadVideo.Id, Mode=OneTime,
                 Converter={x:Static Converter:IdToThumbnailConverter.Default}}"
-                       Width="100" Margin="0, 0, 5, 0"/>
+                    Width="100" Margin="0, 0, 5, 0"/>
 
                 <TextBlock DockPanel.Dock="Top" Text="{Binding DownloadVideo.Title,
-                    Mode=OneTime}" FontSize="16" FontWeight="DemiBold"/>
+                    Mode=OneTime}"
+                           FontSize="16" FontWeight="DemiBold"/>
 
                 <StackPanel>
                     <TextBlock Text="{Binding DownloadVideo.Channel, Mode=OneTime}"/>
                     <TextBlock>
-                        <Run Text="{Binding DownloadVideo.DateUploaded, Mode=OneTime,
+                        <Run
+                            Text="{Binding DownloadVideo.DateUploaded, Mode=OneTime,
                             StringFormat={}{0:dd/MM/yyyy}}"/>
                         •
-                        <Run Text="{Binding DownloadVideo.Views, Mode=OneWay,
+                        <Run
+                            Text="{Binding DownloadVideo.Views, Mode=OneWay,
                             StringFormat=N0}"/>
                     </TextBlock>
                     <TextBlock Text="{Binding DownloadVideo.Description, Mode=OneTime}"

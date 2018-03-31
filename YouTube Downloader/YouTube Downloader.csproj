@@ -104,6 +104,7 @@
       <HintPath>..\packages\System.Security.Cryptography.X509Certificates.4.3.2\lib\net461\System.Security.Cryptography.X509Certificates.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Caliburn.Micro.3.2.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
     </Reference>
@@ -163,6 +164,9 @@
     <Compile Include="Views\CurrentDownloadsView.xaml.cs">
       <DependentUpon>CurrentDownloadsView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\DownloadPathView.xaml.cs">
+      <DependentUpon>DownloadPathView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\SettingsView.xaml.cs">
       <DependentUpon>SettingsView.xaml</DependentUpon>
     </Compile>
@@ -170,6 +174,10 @@
       <DependentUpon>VideoCollectionView.xaml</DependentUpon>
     </Compile>
     <Page Include="Views\CurrentDownloadsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\DownloadPathView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

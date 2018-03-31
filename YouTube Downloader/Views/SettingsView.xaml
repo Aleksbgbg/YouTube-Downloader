@@ -3,10 +3,24 @@
 			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:Caliburn="http://www.caliburnproject.org"
 			 xmlns:ViewModels="clr-namespace:YouTube.Downloader.ViewModels"
 			 xmlns:WpfToolkit="http://schemas.xceed.com/wpf/xaml/toolkit"
 			 mc:Ignorable="d"
 			 d:DataContext="{d:DesignInstance ViewModels:SettingsViewModel}">
-    <WpfToolkit:PropertyGrid AutoGenerateProperties="True"
-                             SelectedObject="{Binding Settings, Mode=OneTime}"/>
+    <DockPanel>
+        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal"
+                    HorizontalAlignment="Right" Margin="5">
+            <Button Content="OK" Width="75" Margin="5, 0" Caliburn:Message.Attach="Ok"/>
+            <Button Content="Cancel" Width="75" Margin="5, 0" Caliburn:Message.Attach="Cancel"/>
+            <Button Content="Apply" Width="75" Margin="5, 0" Caliburn:Message.Attach="Apply"/>
+        </StackPanel>
+
+        <WpfToolkit:PropertyGrid AutoGenerateProperties="False"
+                                 SelectedObject="{Binding Settings, Mode=OneTime}">
+            <WpfToolkit:PropertyGrid.PropertyDefinitions>
+                <WpfToolkit:PropertyDefinition TargetProperties="DownloadPath"/>
+            </WpfToolkit:PropertyGrid.PropertyDefinitions>
+        </WpfToolkit:PropertyGrid>
+    </DockPanel>
 </UserControl>

@@ -1,7 +1,33 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:ViewModels="clr-namespace:YouTube.Downloader.ViewModels">
-    <DataTemplate DataType="{x:Type ViewModels:YouTubeVideoViewModel}">
-        <TextBlock Text="{Binding Video.Title}"/>
-    </DataTemplate>
-</ResourceDictionary>
+﻿<UserControl x:Class="YouTube.Downloader.Views.YouTubeVideoView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:ViewModels="clr-namespace:YouTube.Downloader.ViewModels"
+			 xmlns:Converters="clr-namespace:YouTube.Downloader.Converters"
+			 mc:Ignorable="d"
+			 d:DataContext="{d:DesignInstance ViewModels:YouTubeVideoViewModel}">
+    <DockPanel>
+        <Image
+            Source="{Binding Video.Id, Mode=OneTime,
+                Converter={x:Static Converters:IdToThumbnailConverter.Default}}"
+            Width="100" Margin="0, 0, 5, 0"/>
+
+        <TextBlock DockPanel.Dock="Top" Text="{Binding Video.Title,
+                    Mode=OneTime}" FontSize="16"
+                   FontWeight="DemiBold"/>
+
+        <StackPanel>
+            <TextBlock Text="{Binding Video.Channel, Mode=OneTime}"/>
+            <TextBlock>
+                <Run
+                    Text="{Binding Video.DateUploaded, Mode=OneTime,
+                            StringFormat={}{0:dd/MM/yyyy}}"/>
+                •
+                <Run Text="{Binding Video.Views, Mode=OneWay,
+                            StringFormat=N0}"/>
+            </TextBlock>
+            <TextBlock Text="{Binding Video.Description, Mode=OneTime}" TextWrapping="WrapWithOverflow" MaxHeight="40"/>
+        </StackPanel>
+    </DockPanel>
+</UserControl>

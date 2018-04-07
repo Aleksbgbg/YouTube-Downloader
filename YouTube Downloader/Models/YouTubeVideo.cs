@@ -24,6 +24,8 @@
             {
                 DateUploaded = playlistItem.Snippet.PublishedAt.Value;
             }
+
+            Task.Run(LoadViews);
         }
 
         public string Id { get; }

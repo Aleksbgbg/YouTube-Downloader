@@ -1,34 +1,11 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:Converter="clr-namespace:YouTube.Downloader.Converters"
+                    xmlns:Caliburn="http://www.caliburnproject.org"
                     xmlns:ViewModels="clr-namespace:YouTube.Downloader.ViewModels">
     <DataTemplate DataType="{x:Type ViewModels:DownloadViewModel}">
         <StackPanel Margin="5">
-            <DockPanel>
-                <Image
-                    Source="{Binding DownloadVideo.Id, Mode=OneTime,
-                Converter={x:Static Converter:IdToThumbnailConverter.Default}}"
-                    Width="100" Margin="0, 0, 5, 0"/>
-
-                <TextBlock DockPanel.Dock="Top" Text="{Binding DownloadVideo.Title,
-                    Mode=OneTime}"
-                           FontSize="16" FontWeight="DemiBold"/>
-
-                <StackPanel>
-                    <TextBlock Text="{Binding DownloadVideo.Channel, Mode=OneTime}"/>
-                    <TextBlock>
-                        <Run
-                            Text="{Binding DownloadVideo.DateUploaded, Mode=OneTime,
-                            StringFormat={}{0:dd/MM/yyyy}}"/>
-                        •
-                        <Run
-                            Text="{Binding DownloadVideo.Views, Mode=OneWay,
-                            StringFormat=N0}"/>
-                    </TextBlock>
-                    <TextBlock Text="{Binding DownloadVideo.Description, Mode=OneTime}"
-                               TextWrapping="WrapWithOverflow" MaxHeight="40"/>
-                </StackPanel>
-            </DockPanel>
+            <ContentControl Caliburn:View.Model="{Binding YouTubeVideoViewModel, Mode=OneTime}"/>
 
             <DockPanel HorizontalAlignment="Center" Margin="5">
                 <Image Width="25" Margin="5, 0">

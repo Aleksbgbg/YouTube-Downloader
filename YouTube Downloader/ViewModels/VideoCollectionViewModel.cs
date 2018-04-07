@@ -54,7 +54,7 @@
 
         public void DownloadSelected()
         {
-            _eventAggregator.BeginPublishOnUIThread(SelectedVideos.Select(videoViewModel => videoViewModel.Video));
+            _eventAggregator.BeginPublishOnUIThread(SelectedVideos);
         }
     }
 }

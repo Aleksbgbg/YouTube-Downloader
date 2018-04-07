@@ -6,11 +6,11 @@
 
     internal interface IDownloadViewModel : IViewModelBase
     {
-        YouTubeVideo DownloadVideo { get; }
+        IYouTubeVideoViewModel YouTubeVideoViewModel { get; }
 
         DownloadState DownloadState { get; set; }
 
-        void Initialise(YouTubeVideo downloadVideo);
+        void Initialise(IYouTubeVideoViewModel youTubeVideoViewModel);
 
         event EventHandler DownloadCompleted;
     }

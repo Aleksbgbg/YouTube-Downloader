@@ -10,7 +10,7 @@
     {
         public event EventHandler DownloadCompleted;
 
-        public YouTubeVideo DownloadVideo { get; private set; }
+        public IYouTubeVideoViewModel YouTubeVideoViewModel { get; private set; }
 
         private DownloadState _downloadState = DownloadState.Waiting;
         public DownloadState DownloadState
@@ -31,10 +31,9 @@
             }
         }
 
-        public void Initialise(YouTubeVideo downloadVideo)
+        public void Initialise(IYouTubeVideoViewModel youTubeVideoViewModel)
         {
-            Task.Run(downloadVideo.LoadViews);
-            DownloadVideo = downloadVideo;
+            YouTubeVideoViewModel = youTubeVideoViewModel;
         }
     }
 }

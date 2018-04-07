@@ -11,7 +11,7 @@
     using YouTube.Downloader.Services.Interfaces;
     using YouTube.Downloader.ViewModels.Interfaces;
 
-    internal class CurrentDownloadsViewModel : ViewModelBase, ICurrentDownloadsViewModel, IHandle<IEnumerable<YouTubeVideo>>
+    internal class CurrentDownloadsViewModel : ViewModelBase, ICurrentDownloadsViewModel, IHandle<IEnumerable<IYouTubeVideoViewModel>>
     {
         private readonly IDownloadService _downloadService;
 
@@ -26,9 +26,9 @@
 
         public IObservableCollection<IDownloadViewModel> Downloads { get; } = new BindableCollection<IDownloadViewModel>();
 
-        public void Handle(IEnumerable<YouTubeVideo> message)
+        public void Handle(IEnumerable<IYouTubeVideoViewModel> message)
         {
-            IDownloadViewModel[] newDownloads = message.Select(_downloadFactory.MakeDownloadViewModel).ToArray();
+            IDownloadViewModel[] newDownloads = message.Select(downloadVideo => _downloadFactory.MakeDownloadViewModel(downloadVideo)).ToArray();
 
             foreach (IDownloadViewModel download in newDownloads)
             {

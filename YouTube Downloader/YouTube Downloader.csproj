@@ -175,6 +175,9 @@
     <Compile Include="Views\VideoCollectionView.xaml.cs">
       <DependentUpon>VideoCollectionView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\YouTubeVideoView.xaml.cs">
+      <DependentUpon>YouTubeVideoView.xaml</DependentUpon>
+    </Compile>
     <Page Include="Views\CurrentDownloadsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

@@ -7,7 +7,6 @@
     using Caliburn.Micro;
 
     using YouTube.Downloader.Factories.Interfaces;
-    using YouTube.Downloader.Models;
     using YouTube.Downloader.Services.Interfaces;
     using YouTube.Downloader.ViewModels.Interfaces;
 

@@ -1,7 +1,6 @@
 ﻿namespace YouTube.Downloader.ViewModels
 {
     using System;
-    using System.Threading.Tasks;
 
     using YouTube.Downloader.Models;
     using YouTube.Downloader.ViewModels.Interfaces;

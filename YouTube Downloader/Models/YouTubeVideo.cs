@@ -13,16 +13,20 @@
 
     internal class YouTubeVideo : PropertyChangedBase
     {
-        internal YouTubeVideo(PlaylistItem playlistItem)
+        internal YouTubeVideo(Video video) : this(video.Id, video.Snippet.Title, video.Snippet.ChannelTitle, video.Snippet.Description, video.Snippet.PublishedAt)
         {
-            Id = playlistItem.Snippet.ResourceId.VideoId;
-            Title = playlistItem.Snippet.Title;
-            Channel = playlistItem.Snippet.ChannelTitle;
-            Description = playlistItem.Snippet.Description;
+        }
 
-            if (playlistItem.Snippet.PublishedAt.HasValue)
+        private YouTubeVideo(string id, string title, string channel, string description, DateTime? dateUploaded)
+        {
+            Id = id;
+            Title = title;
+            Channel = channel;
+            Description = description;
+
+            if (dateUploaded.HasValue)
             {
-                DateUploaded = playlistItem.Snippet.PublishedAt.Value;
+                DateUploaded = dateUploaded.Value;
             }
 
             Task.Run(LoadViews);
@@ -52,7 +56,7 @@
             }
         }
 
-        internal async Task LoadViews()
+        private async Task LoadViews()
         {
             using (HttpClient httpClient = new HttpClient())
             {

@@ -40,16 +40,24 @@
 
             do
             {
-                PlaylistItemsResource.ListRequest listPlaylistRequest = _youTubeApiService.PlaylistItems.List("snippet");
-                listPlaylistRequest.PlaylistId = playlistId;
-                listPlaylistRequest.MaxResults = 50;
-                listPlaylistRequest.PageToken = pageToken;
+                PlaylistItemsResource.ListRequest playlistRequest = _youTubeApiService.PlaylistItems.List("snippet");
+                playlistRequest.PlaylistId = playlistId;
+                playlistRequest.MaxResults = 50;
+                playlistRequest.PageToken = pageToken;
 
-                PlaylistItemListResponse response = await listPlaylistRequest.ExecuteAsync();
+                PlaylistItemListResponse playlistResponse = await playlistRequest.ExecuteAsync();
 
-                pageToken = response.NextPageToken;
+                pageToken = playlistResponse.NextPageToken;
 
-                videos.AddRange(response.Items.Select(video => new YouTubeVideo(video)));
+                foreach (PlaylistItem playlistItem in playlistResponse.Items)
+                {
+                    VideosResource.ListRequest videoRequest = _youTubeApiService.Videos.List("snippet");
+                    videoRequest.Id = playlistItem.Snippet.ResourceId.VideoId;
+
+                    VideoListResponse videoResponse = await videoRequest.ExecuteAsync();
+
+                    videos.Add(new YouTubeVideo(videoResponse.Items[0]));
+                }
             } while (pageToken != null);
 
             return videos;

@@ -8,9 +8,9 @@
 
     internal class YouTubeFactory : IYouTubeFactory
     {
-        public IYouTubeVideoViewModel MakeVideoViewModel(YouTubeVideo video)
+        public IVideoViewModel MakeVideoViewModel(YouTubeVideo video)
         {
-            IYouTubeVideoViewModel videoViewModel = IoC.Get<IYouTubeVideoViewModel>();
+            IVideoViewModel videoViewModel = IoC.Get<IVideoViewModel>();
             videoViewModel.Initialise(video);
 
             return videoViewModel;

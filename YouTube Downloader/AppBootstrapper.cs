@@ -52,7 +52,7 @@
 
             _container.Singleton<IQueryViewModel, QueryViewModel>();
             _container.Singleton<IVideoCollectionViewModel, VideoCollectionViewModel>();
-            _container.PerRequest<IYouTubeVideoViewModel, YouTubeVideoViewModel>();
+            _container.PerRequest<IVideoViewModel, VideoViewModel>();
 
             _container.Singleton<ICurrentDownloadsViewModel, CurrentDownloadsViewModel>();
             _container.PerRequest<IDownloadViewModel, DownloadViewModel>();

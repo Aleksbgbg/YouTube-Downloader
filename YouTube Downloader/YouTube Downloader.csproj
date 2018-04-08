@@ -175,8 +175,8 @@
     <Compile Include="Views\VideoCollectionView.xaml.cs">
       <DependentUpon>VideoCollectionView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\YouTubeVideoView.xaml.cs">
-      <DependentUpon>YouTubeVideoView.xaml</DependentUpon>
+    <Compile Include="Views\VideoView.xaml.cs">
+      <DependentUpon>VideoView.xaml</DependentUpon>
     </Compile>
     <Page Include="Views\CurrentDownloadsView.xaml">
       <SubType>Designer</SubType>
@@ -213,10 +213,10 @@
     <Compile Include="Services\YouTubeApiService.cs" />
     <Compile Include="ViewModels\Interfaces\IQueryViewModel.cs" />
     <Compile Include="ViewModels\Interfaces\IVideoCollectionViewModel.cs" />
-    <Compile Include="ViewModels\Interfaces\IYouTubeVideoViewModel.cs" />
+    <Compile Include="ViewModels\Interfaces\IVideoViewModel.cs" />
     <Compile Include="ViewModels\QueryViewModel.cs" />
     <Compile Include="ViewModels\VideoCollectionViewModel.cs" />
-    <Compile Include="ViewModels\YouTubeVideoViewModel.cs" />
+    <Compile Include="ViewModels\VideoViewModel.cs" />
     <Compile Include="Views\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -269,7 +269,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\YouTubeVideoView.xaml">
+    <Page Include="Views\VideoView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

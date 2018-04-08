@@ -2,7 +2,7 @@
 {
     using YouTube.Downloader.Models;
 
-    internal interface IYouTubeVideoViewModel : IViewModelBase
+    internal interface IVideoViewModel : IViewModelBase
     {
         bool IsSelected { get; set; }
 

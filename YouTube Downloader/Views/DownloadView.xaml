@@ -5,7 +5,7 @@
                     xmlns:ViewModels="clr-namespace:YouTube.Downloader.ViewModels">
     <DataTemplate DataType="{x:Type ViewModels:DownloadViewModel}">
         <StackPanel Margin="5">
-            <ContentControl Caliburn:View.Model="{Binding YouTubeVideoViewModel, Mode=OneTime}"/>
+            <ContentControl Caliburn:View.Model="{Binding VideoViewModel, Mode=OneTime}"/>
 
             <DockPanel HorizontalAlignment="Center" Margin="5">
                 <Image Width="25" Margin="5, 0">

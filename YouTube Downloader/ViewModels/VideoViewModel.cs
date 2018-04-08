@@ -3,7 +3,7 @@
     using YouTube.Downloader.Models;
     using YouTube.Downloader.ViewModels.Interfaces;
 
-    internal class YouTubeVideoViewModel : ViewModelBase, IYouTubeVideoViewModel
+    internal class VideoViewModel : ViewModelBase, IVideoViewModel
     {
         private bool _isSelected;
         public bool IsSelected

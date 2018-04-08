@@ -4,6 +4,6 @@
 
     internal interface IDownloadFactory
     {
-        IDownloadViewModel MakeDownloadViewModel(IYouTubeVideoViewModel youTubeVideoViewModel);
+        IDownloadViewModel MakeDownloadViewModel(IVideoViewModel videoViewModel);
     }
 }

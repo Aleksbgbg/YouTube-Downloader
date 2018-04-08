@@ -22,17 +22,17 @@
             _youTubeFactory = youTubeFactory;
         }
 
-        public IObservableCollection<IYouTubeVideoViewModel> Videos { get; } = new BindableCollection<IYouTubeVideoViewModel>();
+        public IObservableCollection<IVideoViewModel> Videos { get; } = new BindableCollection<IVideoViewModel>();
 
-        public IObservableCollection<IYouTubeVideoViewModel> SelectedVideos { get; } = new BindableCollection<IYouTubeVideoViewModel>();
+        public IObservableCollection<IVideoViewModel> SelectedVideos { get; } = new BindableCollection<IVideoViewModel>();
 
         public void Load(IEnumerable<YouTubeVideo> videos)
         {
             void VideoPropertyChanged(object sender, PropertyChangedEventArgs e)
             {
-                if (e.PropertyName != nameof(IYouTubeVideoViewModel.IsSelected)) return;
+                if (e.PropertyName != nameof(IVideoViewModel.IsSelected)) return;
 
-                IYouTubeVideoViewModel video = (IYouTubeVideoViewModel)sender;
+                IVideoViewModel video = (IVideoViewModel)sender;
 
                 if (video.IsSelected)
                 {

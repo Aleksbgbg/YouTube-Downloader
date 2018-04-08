@@ -1,8 +1,8 @@
 ﻿namespace YouTube.Downloader.Views
 {
-    public partial class YouTubeVideoView
+    public partial class VideoView
     {
-        public YouTubeVideoView()
+        public VideoView()
         {
             InitializeComponent();
         }

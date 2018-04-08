@@ -8,9 +8,9 @@
 
     internal interface IVideoCollectionViewModel : IViewModelBase
     {
-        IObservableCollection<IYouTubeVideoViewModel> Videos { get; }
+        IObservableCollection<IVideoViewModel> Videos { get; }
 
-        IObservableCollection<IYouTubeVideoViewModel> SelectedVideos { get; }
+        IObservableCollection<IVideoViewModel> SelectedVideos { get; }
 
         void Load(IEnumerable<YouTubeVideo> videos);
 

@@ -9,7 +9,7 @@
     {
         public event EventHandler DownloadCompleted;
 
-        public IYouTubeVideoViewModel YouTubeVideoViewModel { get; private set; }
+        public IVideoViewModel VideoViewModel { get; private set; }
 
         private DownloadState _downloadState = DownloadState.Waiting;
         public DownloadState DownloadState
@@ -30,9 +30,9 @@
             }
         }
 
-        public void Initialise(IYouTubeVideoViewModel youTubeVideoViewModel)
+        public void Initialise(IVideoViewModel videoViewModel)
         {
-            YouTubeVideoViewModel = youTubeVideoViewModel;
+            VideoViewModel = videoViewModel;
         }
     }
 }

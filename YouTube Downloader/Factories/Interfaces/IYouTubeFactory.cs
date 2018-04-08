@@ -5,6 +5,6 @@
 
     internal interface IYouTubeFactory
     {
-        IYouTubeVideoViewModel MakeVideoViewModel(YouTubeVideo video);
+        IVideoViewModel MakeVideoViewModel(YouTubeVideo video);
     }
 }

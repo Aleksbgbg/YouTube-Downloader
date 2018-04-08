@@ -7,10 +7,10 @@
 
     internal class DownloadFactory : IDownloadFactory
     {
-        public IDownloadViewModel MakeDownloadViewModel(IYouTubeVideoViewModel youTubeVideoViewModel)
+        public IDownloadViewModel MakeDownloadViewModel(IVideoViewModel videoViewModel)
         {
             IDownloadViewModel downloadViewModel = IoC.Get<IDownloadViewModel>();
-            downloadViewModel.Initialise(youTubeVideoViewModel);
+            downloadViewModel.Initialise(videoViewModel);
 
             return downloadViewModel;
         }

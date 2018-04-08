@@ -6,7 +6,7 @@
     using YouTube.Downloader.Models;
     using YouTube.Downloader.ViewModels.Interfaces;
 
-    internal class YouTubeFactory : IYouTubeFactory
+    internal class VideoFactory : IVideoFactory
     {
         public IVideoViewModel MakeVideoViewModel(YouTubeVideo video)
         {

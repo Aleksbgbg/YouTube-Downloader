@@ -44,7 +44,7 @@
 
             // Register Factories
             _container.Singleton<IDownloadFactory, DownloadFactory>();
-            _container.Singleton<IYouTubeFactory, YouTubeFactory>();
+            _container.Singleton<IVideoFactory, VideoFactory>();
 
             // Register ViewModels
             _container.Singleton<IShellViewModel, ShellViewModel>();

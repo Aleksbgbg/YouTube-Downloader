@@ -14,12 +14,12 @@
     {
         private readonly IEventAggregator _eventAggregator;
 
-        private readonly IYouTubeFactory _youTubeFactory;
+        private readonly IVideoFactory _videoFactory;
 
-        public MatchedVideosViewModel(IEventAggregator eventAggregator, IYouTubeFactory youTubeFactory)
+        public MatchedVideosViewModel(IEventAggregator eventAggregator, IVideoFactory videoFactory)
         {
             _eventAggregator = eventAggregator;
-            _youTubeFactory = youTubeFactory;
+            _videoFactory = videoFactory;
         }
 
         public IObservableCollection<IMatchedVideoViewModel> Videos { get; } = new BindableCollection<IMatchedVideoViewModel>();
@@ -48,7 +48,7 @@
             SelectedVideos.Clear();
             Videos.Clear();
 
-            Videos.AddRange(videos.Select(_youTubeFactory.MakeMatchedVideoViewModel));
+            Videos.AddRange(videos.Select(_videoFactory.MakeMatchedVideoViewModel));
             Videos.Apply(video => video.PropertyChanged += VideoPropertyChanged);
         }
 

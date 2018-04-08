@@ -27,7 +27,7 @@
                  VirtualizingPanel.IsVirtualizing="False">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <ContentControl Caliburn:View.Model="{Binding}"/>
+                    <ContentControl Caliburn:View.Model="{Binding Mode=OneTime}"/>
                 </DataTemplate>
             </ListBox.ItemTemplate>
 

@@ -22,17 +22,17 @@
             _youTubeFactory = youTubeFactory;
         }
 
-        public IObservableCollection<IVideoViewModel> Videos { get; } = new BindableCollection<IVideoViewModel>();
+        public IObservableCollection<IMatchedVideoViewModel> Videos { get; } = new BindableCollection<IMatchedVideoViewModel>();
 
-        public IObservableCollection<IVideoViewModel> SelectedVideos { get; } = new BindableCollection<IVideoViewModel>();
+        public IObservableCollection<IMatchedVideoViewModel> SelectedVideos { get; } = new BindableCollection<IMatchedVideoViewModel>();
 
         public void Load(IEnumerable<YouTubeVideo> videos)
         {
             void VideoPropertyChanged(object sender, PropertyChangedEventArgs e)
             {
-                if (e.PropertyName != nameof(IVideoViewModel.IsSelected)) return;
+                if (e.PropertyName != nameof(IMatchedVideoViewModel.IsSelected)) return;
 
-                IVideoViewModel video = (IVideoViewModel)sender;
+                IMatchedVideoViewModel video = (IMatchedVideoViewModel)sender;
 
                 if (video.IsSelected)
                 {
@@ -48,13 +48,13 @@
             SelectedVideos.Clear();
             Videos.Clear();
 
-            Videos.AddRange(videos.Select(_youTubeFactory.MakeVideoViewModel));
+            Videos.AddRange(videos.Select(_youTubeFactory.MakeMatchedVideoViewModel));
             Videos.Apply(video => video.PropertyChanged += VideoPropertyChanged);
         }
 
         public void DownloadSelected()
         {
-            _eventAggregator.BeginPublishOnUIThread(SelectedVideos);
+            _eventAggregator.BeginPublishOnUIThread(SelectedVideos.Select(matchedVideo => matchedVideo.VideoViewModel));
         }
     }
 }

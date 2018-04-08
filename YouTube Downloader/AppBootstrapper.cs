@@ -52,10 +52,12 @@
 
             _container.Singleton<IQueryViewModel, QueryViewModel>();
             _container.Singleton<IVideoCollectionViewModel, VideoCollectionViewModel>();
-            _container.PerRequest<IVideoViewModel, VideoViewModel>();
+            _container.PerRequest<IMatchedVideoViewModel, MatchedVideoViewModel>();
 
             _container.Singleton<ICurrentDownloadsViewModel, CurrentDownloadsViewModel>();
             _container.PerRequest<IDownloadViewModel, DownloadViewModel>();
+
+            _container.PerRequest<IVideoViewModel, VideoViewModel>();
 
             _container.Singleton<ISettingsViewModel, SettingsViewModel>();
         }

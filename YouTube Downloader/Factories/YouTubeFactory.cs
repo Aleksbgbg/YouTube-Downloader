@@ -15,5 +15,18 @@
 
             return videoViewModel;
         }
+
+        public IMatchedVideoViewModel MakeMatchedVideoViewModel(YouTubeVideo video)
+        {
+            return MakeMatchedVideoViewModel(MakeVideoViewModel(video));
+        }
+
+        public IMatchedVideoViewModel MakeMatchedVideoViewModel(IVideoViewModel videoViewModel)
+        {
+            IMatchedVideoViewModel matchedVideoViewModel = IoC.Get<IMatchedVideoViewModel>();
+            matchedVideoViewModel.Initialise(videoViewModel);
+
+            return matchedVideoViewModel;
+        }
     }
 }

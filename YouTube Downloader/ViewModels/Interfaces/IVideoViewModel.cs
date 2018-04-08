@@ -4,8 +4,6 @@
 
     internal interface IVideoViewModel : IViewModelBase
     {
-        bool IsSelected { get; set; }
-
         YouTubeVideo Video { get; }
 
         void Initialise(YouTubeVideo video);

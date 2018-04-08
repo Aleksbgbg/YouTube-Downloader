@@ -51,7 +51,7 @@
             _container.Singleton<IMainViewModel, MainViewModel>();
 
             _container.Singleton<IQueryViewModel, QueryViewModel>();
-            _container.Singleton<IVideoCollectionViewModel, VideoCollectionViewModel>();
+            _container.Singleton<IMatchedVideosViewModel, MatchedVideosViewModel>();
             _container.PerRequest<IMatchedVideoViewModel, MatchedVideoViewModel>();
 
             _container.Singleton<ICurrentDownloadsViewModel, CurrentDownloadsViewModel>();

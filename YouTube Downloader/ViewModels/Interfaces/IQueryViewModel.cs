@@ -2,7 +2,7 @@
 {
     internal interface IQueryViewModel : IViewModelBase
     {
-        IVideoCollectionViewModel VideoCollectionViewModel { get; }
+        IMatchedVideosViewModel MatchedVideosViewModel { get; }
 
         bool IsLoading { get; }
     }

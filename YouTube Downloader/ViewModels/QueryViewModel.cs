@@ -12,13 +12,13 @@
     {
         private readonly IYouTubeApiService _youTubeApiService;
 
-        public QueryViewModel(IVideoCollectionViewModel videoCollectionViewModel, IYouTubeApiService youTubeApiService)
+        public QueryViewModel(IMatchedVideosViewModel matchedVideosViewModel, IYouTubeApiService youTubeApiService)
         {
-            VideoCollectionViewModel = videoCollectionViewModel;
+            MatchedVideosViewModel = matchedVideosViewModel;
             _youTubeApiService = youTubeApiService;
         }
 
-        public IVideoCollectionViewModel VideoCollectionViewModel { get; }
+        public IMatchedVideosViewModel MatchedVideosViewModel { get; }
 
         private bool _isLoading;
         public bool IsLoading
@@ -42,14 +42,14 @@
 
             yield return getVideos;
 
-            VideoCollectionViewModel.Load(getVideos.Result);
+            MatchedVideosViewModel.Load(getVideos.Result);
 
             IsLoading = false;
         }
 
         public void Download()
         {
-            VideoCollectionViewModel.DownloadSelected();
+            MatchedVideosViewModel.DownloadSelected();
         }
     }
 }

@@ -10,13 +10,13 @@
     using YouTube.Downloader.Models;
     using YouTube.Downloader.ViewModels.Interfaces;
 
-    internal class VideoCollectionViewModel : ViewModelBase, IVideoCollectionViewModel
+    internal class MatchedVideosViewModel : ViewModelBase, IMatchedVideosViewModel
     {
         private readonly IEventAggregator _eventAggregator;
 
         private readonly IYouTubeFactory _youTubeFactory;
 
-        public VideoCollectionViewModel(IEventAggregator eventAggregator, IYouTubeFactory youTubeFactory)
+        public MatchedVideosViewModel(IEventAggregator eventAggregator, IYouTubeFactory youTubeFactory)
         {
             _eventAggregator = eventAggregator;
             _youTubeFactory = youTubeFactory;

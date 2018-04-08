@@ -6,7 +6,7 @@
 
     using YouTube.Downloader.Models;
 
-    internal interface IVideoCollectionViewModel : IViewModelBase
+    internal interface IMatchedVideosViewModel : IViewModelBase
     {
         IObservableCollection<IMatchedVideoViewModel> Videos { get; }
 

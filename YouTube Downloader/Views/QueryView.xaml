@@ -12,7 +12,7 @@
         <DockPanel DockPanel.Dock="Top">
             <Button DockPanel.Dock="Right" Content="Download" HorizontalAlignment="Right"
                     Width="75" Margin="5"
-                    IsEnabled="{Binding VideoCollectionViewModel.SelectedVideos.Count,
+                    IsEnabled="{Binding MatchedVideosViewModel.SelectedVideos.Count,
                 Converter={x:Static Converters:CountToBooleanConverter.Default}}"
                     Caliburn:Message.Attach="Download"/>
 
@@ -35,7 +35,7 @@
             </Grid.RowDefinitions>
 
             <ContentControl Grid.ColumnSpan="2" Grid.RowSpan="2"
-                            Caliburn:View.Model="{Binding VideoCollectionViewModel,
+                            Caliburn:View.Model="{Binding MatchedVideosViewModel,
                     Mode=OneTime}"/>
 
             <Image Grid.Column="1" Grid.Row="1"

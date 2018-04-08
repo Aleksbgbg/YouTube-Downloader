@@ -177,8 +177,8 @@
     <Compile Include="Views\SettingsView.xaml.cs">
       <DependentUpon>SettingsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\VideoCollectionView.xaml.cs">
-      <DependentUpon>VideoCollectionView.xaml</DependentUpon>
+    <Compile Include="Views\MatchedVideosView.xaml.cs">
+      <DependentUpon>MatchedVideosView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\VideoView.xaml.cs">
       <DependentUpon>VideoView.xaml</DependentUpon>
@@ -221,10 +221,10 @@
     <Compile Include="Services\Interfaces\IYouTubeApiService.cs" />
     <Compile Include="Services\YouTubeApiService.cs" />
     <Compile Include="ViewModels\Interfaces\IQueryViewModel.cs" />
-    <Compile Include="ViewModels\Interfaces\IVideoCollectionViewModel.cs" />
+    <Compile Include="ViewModels\Interfaces\IMatchedVideosViewModel.cs" />
     <Compile Include="ViewModels\Interfaces\IVideoViewModel.cs" />
     <Compile Include="ViewModels\QueryViewModel.cs" />
-    <Compile Include="ViewModels\VideoCollectionViewModel.cs" />
+    <Compile Include="ViewModels\MatchedVideosViewModel.cs" />
     <Compile Include="ViewModels\VideoViewModel.cs" />
     <Compile Include="Views\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
@@ -274,7 +274,7 @@
     <Compile Include="AppBootstrapper.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Views\VideoCollectionView.xaml">
+    <Page Include="Views\MatchedVideosView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

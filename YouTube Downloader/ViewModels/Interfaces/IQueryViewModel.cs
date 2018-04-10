@@ -5,5 +5,9 @@
         IMatchedVideosViewModel MatchedVideosViewModel { get; }
 
         bool IsLoading { get; }
+
+        bool QueryBoxIsExpanded { get; }
+
+        string Query { get; set; }
     }
 }

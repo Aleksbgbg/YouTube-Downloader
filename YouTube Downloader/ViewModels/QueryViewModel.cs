@@ -35,15 +35,49 @@
             }
         }
 
-        public IEnumerable<IResult> Search(string queryLines)
+        private bool _queryBoxIsExpanded;
+        public bool QueryBoxIsExpanded
+        {
+            get => _queryBoxIsExpanded;
+
+            private set
+            {
+                if (_queryBoxIsExpanded == value || !value && Query.Contains('\n')) return;
+
+                _queryBoxIsExpanded = value;
+                NotifyOfPropertyChange(() => QueryBoxIsExpanded);
+            }
+        }
+
+        private string _query;
+        public string Query
+        {
+            get => _query;
+
+            set
+            {
+                if (_query == value) return;
+
+                _query = value;
+                NotifyOfPropertyChange(() => Query);
+
+                if (_query.Contains('\n'))
+                {
+                    QueryBoxIsExpanded = true;
+                }
+            }
+        }
+
+        public IEnumerable<IResult> Search()
         {
             IsLoading = true;
 
             MatchedVideosViewModel.Clear();
 
-            foreach (TaskResult<IEnumerable<YouTubeVideo>> queryResult in queryLines
+            foreach (TaskResult<IEnumerable<YouTubeVideo>> queryResult in Query
                                                                           .Split('\n')
                                                                           .Where(line => !string.IsNullOrWhiteSpace(line))
+                                                                          .Select(query => query.Trim())
                                                                           .Select(query => _youTubeApiService.QueryVideos(query).AsResult()))
             {
                 yield return queryResult;
@@ -52,6 +86,11 @@
             }
 
             IsLoading = false;
+        }
+
+        public void ToggleQueryBoxState()
+        {
+            QueryBoxIsExpanded = !QueryBoxIsExpanded;
         }
 
         public void Download()

@@ -11,16 +11,53 @@
     <DockPanel>
         <DockPanel DockPanel.Dock="Top">
             <Button DockPanel.Dock="Right" Content="Download" HorizontalAlignment="Right"
-                    Width="75" Margin="5"
+                    VerticalAlignment="Top" Height="25" Width="75" Margin="5"
                     IsEnabled="{Binding MatchedVideosViewModel.SelectedVideos.Count,
                 Converter={x:Static Converters:CountToBooleanConverter.Default}}"
                     Caliburn:Message.Attach="Download"/>
 
             <Button DockPanel.Dock="Right" Content="Search"
-                    Caliburn:Message.Attach="Search(query)" Width="75"
-                    Margin="5"/>
+                    VerticalAlignment="Top" Height="25" Width="75" Margin="5"
+                    Caliburn:Message.Attach="Search"/>
 
-            <TextBox x:Name="Query" AcceptsReturn="True" Margin="5"/>
+            <Button DockPanel.Dock="Right" Margin="0, 5, 5, 5"
+                    Caliburn:Message.Attach="ToggleQueryBoxState">
+                <Image Source="{StaticResource DropDownArrow}"
+                       RenderTransformOrigin="0.5, 0.5"
+                       Height="20" Width="20">
+                    <Image.Style>
+                        <Style TargetType="Image" BasedOn="{StaticResource {x:Type Image}}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding QueryBoxIsExpanded}" Value="True">
+                                    <Setter Property="RenderTransform">
+                                        <Setter.Value>
+                                            <ScaleTransform ScaleY="-1"/>
+                                        </Setter.Value>
+                                    </Setter>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Image.Style>
+                </Image>
+            </Button>
+
+            <TextBox AcceptsReturn="True"
+                     Text="{Binding Query, UpdateSourceTrigger=PropertyChanged}"
+                     VerticalScrollBarVisibility="Auto" Margin="5, 5, 0, 5">
+                <TextBox.Style>
+                    <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding QueryBoxIsExpanded}" Value="True">
+                                <Setter Property="Height" Value="150"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding QueryBoxIsExpanded}"
+                                         Value="False">
+                                <Setter Property="VerticalContentAlignment" Value="Center"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBox.Style>
+            </TextBox>
         </DockPanel>
 
         <Grid>

@@ -28,8 +28,11 @@
 
         public void Onload(IEnumerable<YouTubeVideo> videos)
         {
-            Videos.AddRange(videos.Select(_videoFactory.MakeMatchedVideoViewModel));
-            Videos.Apply(video => video.PropertyChanged += VideoPropertyChanged);
+            IMatchedVideoViewModel[] newVideos = videos.Select(_videoFactory.MakeMatchedVideoViewModel).ToArray();
+
+            Videos.AddRange(newVideos);
+
+            newVideos.Apply(video => video.PropertyChanged += VideoPropertyChanged);
         }
 
         public void Clear()

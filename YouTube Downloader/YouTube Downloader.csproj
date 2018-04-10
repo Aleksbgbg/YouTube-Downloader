@@ -143,6 +143,7 @@
     <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
     <Compile Include="Converters\CountToBooleanConverter.cs" />
     <Compile Include="Converters\IdToThumbnailConverter.cs" />
+    <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Factories\DownloadFactory.cs" />
     <Compile Include="Factories\Interfaces\IDownloadFactory.cs" />
     <Compile Include="Helpers\EnumDescriptionConverter.cs" />
@@ -315,7 +316,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="EventArgs\" />
-    <Folder Include="Extensions\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="FodyWeavers.xml" />

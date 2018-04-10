@@ -1,6 +1,7 @@
 ﻿namespace YouTube.Downloader.ViewModels
 {
     using System.Collections.Generic;
+    using System.Linq;
 
     using Caliburn.Micro;
 
@@ -34,15 +35,21 @@
             }
         }
 
-        public IEnumerable<IResult> Search(string query)
+        public IEnumerable<IResult> Search(string queryLines)
         {
             IsLoading = true;
 
-            TaskResult<IEnumerable<YouTubeVideo>> getVideos = _youTubeApiService.GetVideos(query).AsResult();
+            MatchedVideosViewModel.Clear();
 
-            yield return getVideos;
+            foreach (TaskResult<IEnumerable<YouTubeVideo>> queryResult in queryLines
+                                                                          .Split('\n')
+                                                                          .Where(line => !string.IsNullOrWhiteSpace(line))
+                                                                          .Select(query => _youTubeApiService.QueryVideos(query).AsResult()))
+            {
+                yield return queryResult;
 
-            MatchedVideosViewModel.Load(getVideos.Result);
+                MatchedVideosViewModel.Onload(queryResult.Result);
+            }
 
             IsLoading = false;
         }

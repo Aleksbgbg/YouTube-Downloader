@@ -20,7 +20,7 @@
                     Caliburn:Message.Attach="Search(query)" Width="75"
                     Margin="5"/>
 
-            <TextBox x:Name="Query" Margin="5"/>
+            <TextBox x:Name="Query" AcceptsReturn="True" Margin="5"/>
         </DockPanel>
 
         <Grid>

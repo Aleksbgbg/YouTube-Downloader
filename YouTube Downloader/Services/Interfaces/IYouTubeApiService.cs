@@ -7,6 +7,6 @@
 
     internal interface IYouTubeApiService
     {
-        Task<IEnumerable<YouTubeVideo>> GetVideos(string playlistId);
+        Task<IEnumerable<YouTubeVideo>> QueryVideos(string query);
     }
 }

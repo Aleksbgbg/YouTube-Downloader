@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using System.Net.Http;
     using System.Text.RegularExpressions;
     using System.Threading;
     using System.Threading.Tasks;
@@ -12,13 +13,17 @@
     using Google.Apis.YouTube.v3;
     using Google.Apis.YouTube.v3.Data;
 
+    using Newtonsoft.Json;
+
     using YouTube.Downloader.Extensions;
     using YouTube.Downloader.Models;
     using YouTube.Downloader.Services.Interfaces;
 
-    internal class YouTubeApiService : IYouTubeApiService
+    internal sealed class YouTubeApiService : IYouTubeApiService
     {
         private readonly YouTubeService _youTubeApiService;
+
+        private readonly HttpClient _httpClient = new HttpClient();
 
         public YouTubeApiService()
         {
@@ -32,6 +37,16 @@
                                                                                             CancellationToken.None).Result
                 });
             }
+        }
+
+        ~YouTubeApiService()
+        {
+            Dispose(false);
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
         }
 
         public async Task<IEnumerable<YouTubeVideo>> QueryVideos(string query)
@@ -115,7 +130,23 @@
 
             VideoListResponse videoResponse = await videoRequest.ExecuteAsync();
 
-            return new YouTubeVideo(videoResponse.Items[0]);
+            Video video = videoResponse.Items.First();
+
+            string statistics = await _httpClient.GetStringAsync($"https://www.googleapis.com/youtube/v3/videos?id={video.Id}&key=AIzaSyAIj7OmVIu1pQYstco3V8EUh1Bo_PCqIPE&part=statistics");
+
+            return new YouTubeVideo(video, JsonConvert.DeserializeObject<VideoListResponse>(statistics)
+                                                      .Items
+                                                      .Single()
+                                                      .Statistics
+                                                      .ViewCount);
+        }
+
+        private void Dispose(bool disposing)
+        {
+            if (!disposing) return;
+
+            _youTubeApiService.Dispose();
+            _httpClient.Dispose();
         }
     }
 }

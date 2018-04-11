@@ -24,7 +24,7 @@
                     Text="{Binding Video.DateUploaded, Mode=OneTime,
                             StringFormat={}{0:dd/MM/yyyy}}"/>
                 •
-                <Run Text="{Binding Video.Views, Mode=OneWay,
+                <Run Text="{Binding Video.Views, Mode=OneTime,
                             StringFormat=N0}"/>
             </TextBlock>
             <TextBlock Text="{Binding Video.Description, Mode=OneTime}" TextWrapping="WrapWithOverflow" MaxHeight="40"/>

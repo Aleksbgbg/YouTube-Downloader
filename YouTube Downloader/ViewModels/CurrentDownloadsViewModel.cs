@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading.Tasks;
 
     using Caliburn.Micro;
 
@@ -34,7 +35,8 @@
                 void DownloadViewModelDownloadCompleted(object sender, EventArgs e)
                 {
                     download.DownloadCompleted -= DownloadViewModelDownloadCompleted;
-                    Downloads.Remove(download);
+
+                    Task.Delay(3_000).ContinueWith(task => Downloads.Remove(download));
                 }
 
                 download.DownloadCompleted += DownloadViewModelDownloadCompleted;

@@ -7,15 +7,15 @@
 			 xmlns:Converters="clr-namespace:YouTube.Downloader.Converters"
 			 mc:Ignorable="d"
 			 d:DataContext="{d:DesignInstance ViewModels:VideoViewModel}">
-    <DockPanel>
+    <DockPanel MaxWidth="500">
         <Image
             Source="{Binding Video.Id, Mode=OneTime,
                 Converter={x:Static Converters:IdToThumbnailConverter.Default}}"
             Width="100" Margin="0, 0, 5, 0"/>
 
-        <TextBlock DockPanel.Dock="Top" Text="{Binding Video.Title,
-                    Mode=OneTime}" FontSize="16"
-                   FontWeight="DemiBold"/>
+        <TextBlock DockPanel.Dock="Top"
+                   Text="{Binding Video.Title, Mode=OneTime}"
+                   FontSize="16" FontWeight="DemiBold"/>
 
         <StackPanel>
             <TextBlock Text="{Binding Video.Channel, Mode=OneTime}"/>

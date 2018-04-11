@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading.Tasks;
 
     using Caliburn.Micro;
 
@@ -72,18 +73,16 @@
         {
             IsLoading = true;
 
-            MatchedVideosViewModel.Clear();
+            TaskResult<IEnumerable<YouTubeVideo>[]> tasks = Task.WhenAll(Query
+                                                                        .Split('\n')
+                                                                        .Where(line => !string.IsNullOrWhiteSpace(line))
+                                                                        .Select(query => query.Trim())
+                                                                        .Select(query => _youTubeApiService.QueryVideos(query)))
+                                                                .AsResult();
 
-            foreach (TaskResult<IEnumerable<YouTubeVideo>> queryResult in Query
-                                                                          .Split('\n')
-                                                                          .Where(line => !string.IsNullOrWhiteSpace(line))
-                                                                          .Select(query => query.Trim())
-                                                                          .Select(query => _youTubeApiService.QueryVideos(query).AsResult()))
-            {
-                yield return queryResult;
+            yield return tasks;
 
-                MatchedVideosViewModel.Onload(queryResult.Result);
-            }
+            MatchedVideosViewModel.Load(tasks.Result.SelectMany(enumerable => enumerable));
 
             IsLoading = false;
         }

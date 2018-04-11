@@ -11,5 +11,10 @@
         {
             Video = video;
         }
+
+        public override object GetView(object context = default)
+        {
+            return null;
+        }
     }
 }

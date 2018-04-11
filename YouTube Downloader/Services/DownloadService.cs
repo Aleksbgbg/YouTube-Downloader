@@ -86,7 +86,7 @@
             Process downloadProcess = new Process
             {
                 EnableRaisingEvents = true,
-                StartInfo = new ProcessStartInfo("Resources/youtube-dl.exe", $"-o \"{_settingsService.Settings.DownloadPath}/%(title)s.%(ext)s\" -f {(_settingsService.Settings.DownloadType == DownloadType.Audio ? "bestaudio" : "bestvideo+bestaudio")} {download.VideoViewModel.Video.Id}")
+                StartInfo = new ProcessStartInfo("Resources/youtube-dl.exe", $"-o \"{_settingsService.Settings.DownloadPath}/%(title)s.%(ext)s\" -f {(_settingsService.Settings.DownloadType == DownloadType.Audio ? "bestaudio" : "bestvideo+bestaudio")} \"{download.VideoViewModel.Video.Id}\"")
                 {
                     CreateNoWindow = true,
                     UseShellExecute = false,

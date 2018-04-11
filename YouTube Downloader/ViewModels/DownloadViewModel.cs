@@ -30,6 +30,20 @@
             }
         }
 
+        private DownloadProgress _downloadProgress;
+        public DownloadProgress DownloadProgress
+        {
+            get => _downloadProgress;
+
+            set
+            {
+                if (_downloadProgress == value) return;
+
+                _downloadProgress = value;
+                NotifyOfPropertyChange(() => DownloadProgress);
+            }
+        }
+
         public void Initialise(IVideoViewModel videoViewModel)
         {
             VideoViewModel = videoViewModel;

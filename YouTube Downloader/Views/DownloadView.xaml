@@ -1,62 +1,103 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:Caliburn="http://www.caliburnproject.org"
-                    xmlns:ViewModels="clr-namespace:YouTube.Downloader.ViewModels">
-    <DataTemplate DataType="{x:Type ViewModels:DownloadViewModel}">
-        <StackPanel Margin="5">
-            <ContentControl Caliburn:View.Model="{Binding VideoViewModel, Mode=OneTime}"/>
+﻿<UserControl x:Class="YouTube.Downloader.Views.DownloadView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:Caliburn="http://www.caliburnproject.org"
+			 xmlns:ViewModels="clr-namespace:YouTube.Downloader.ViewModels"
+			 mc:Ignorable="d"
+			 d:DataContext="{d:DesignInstance ViewModels:DownloadViewModel}">
+    <StackPanel Margin="5">
+        <ContentControl Caliburn:View.Model="{Binding VideoViewModel, Mode=OneTime}"/>
 
-            <DockPanel HorizontalAlignment="Center" Margin="5">
-                <Image Width="25" Margin="5, 0">
-                    <Image.Style>
-                        <Style TargetType="Image" BasedOn="{StaticResource {x:Type Image}}">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding DownloadState}" Value="Waiting">
-                                    <Setter Property="Source" Value="{StaticResource Waiting}"/>
-                                </DataTrigger>
+        <DockPanel HorizontalAlignment="Center" Margin="5">
+            <Image Width="25" Margin="5, 0">
+                <Image.Style>
+                    <Style TargetType="Image" BasedOn="{StaticResource {x:Type Image}}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding DownloadState}" Value="Waiting">
+                                <Setter Property="Source" Value="{StaticResource Waiting}"/>
+                            </DataTrigger>
 
-                                <DataTrigger Binding="{Binding DownloadState}" Value="Downloading">
-                                    <DataTrigger.EnterActions>
-                                        <BeginStoryboard x:Name="SpinnerStoryboard">
-                                            <Storyboard RepeatBehavior="Forever">
-                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Source"
+                            <DataTrigger Binding="{Binding DownloadState}" Value="Downloading">
+                                <DataTrigger.EnterActions>
+                                    <BeginStoryboard x:Name="SpinnerStoryboard">
+                                        <Storyboard RepeatBehavior="Forever">
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Source"
                                                                                Duration="0:0:0.8">
-                                                    <DiscreteObjectKeyFrame KeyTime="0:0:0"
+                                                <DiscreteObjectKeyFrame KeyTime="0:0:0"
                                                                             Value="{StaticResource SpinnerFrame1}"/>
-                                                    <DiscreteObjectKeyFrame KeyTime="0:0:0.1"
+                                                <DiscreteObjectKeyFrame KeyTime="0:0:0.1"
                                                                             Value="{StaticResource SpinnerFrame2}"/>
-                                                    <DiscreteObjectKeyFrame KeyTime="0:0:0.2"
+                                                <DiscreteObjectKeyFrame KeyTime="0:0:0.2"
                                                                             Value="{StaticResource SpinnerFrame3}"/>
-                                                    <DiscreteObjectKeyFrame KeyTime="0:0:0.3"
+                                                <DiscreteObjectKeyFrame KeyTime="0:0:0.3"
                                                                             Value="{StaticResource SpinnerFrame4}"/>
-                                                    <DiscreteObjectKeyFrame KeyTime="0:0:0.4"
+                                                <DiscreteObjectKeyFrame KeyTime="0:0:0.4"
                                                                             Value="{StaticResource SpinnerFrame5}"/>
-                                                    <DiscreteObjectKeyFrame KeyTime="0:0:0.5"
+                                                <DiscreteObjectKeyFrame KeyTime="0:0:0.5"
                                                                             Value="{StaticResource SpinnerFrame6}"/>
-                                                    <DiscreteObjectKeyFrame KeyTime="0:0:0.6"
+                                                <DiscreteObjectKeyFrame KeyTime="0:0:0.6"
                                                                             Value="{StaticResource SpinnerFrame7}"/>
-                                                    <DiscreteObjectKeyFrame KeyTime="0:0:0.7"
+                                                <DiscreteObjectKeyFrame KeyTime="0:0:0.7"
                                                                             Value="{StaticResource SpinnerFrame8}"/>
-                                                </ObjectAnimationUsingKeyFrames>
-                                            </Storyboard>
-                                        </BeginStoryboard>
-                                    </DataTrigger.EnterActions>
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </DataTrigger.EnterActions>
 
-                                    <DataTrigger.ExitActions>
-                                        <StopStoryboard BeginStoryboardName="SpinnerStoryboard"/>
-                                    </DataTrigger.ExitActions>
-                                </DataTrigger>
+                                <DataTrigger.ExitActions>
+                                    <StopStoryboard BeginStoryboardName="SpinnerStoryboard"/>
+                                </DataTrigger.ExitActions>
+                            </DataTrigger>
 
-                                <DataTrigger Binding="{Binding DownloadState}" Value="Completed">
-                                    <Setter Property="Source" Value="{StaticResource Completed}"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Image.Style>
-                </Image>
+                            <DataTrigger Binding="{Binding DownloadState}" Value="Completed">
+                                <Setter Property="Source" Value="{StaticResource Completed}"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Image.Style>
+            </Image>
 
-                <TextBlock Text="{Binding DownloadState}"/>
-            </DockPanel>
-        </StackPanel>
-    </DataTemplate>
-</ResourceDictionary>
+            <ContentControl>
+                <ContentControl.Style>
+                    <Style TargetType="ContentControl" BasedOn="{StaticResource {x:Type ContentControl}}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding DownloadState}" Value="Downloading">
+                                <Setter Property="Content">
+                                    <Setter.Value>
+                                        <StackPanel HorizontalAlignment="Center" Margin="5">
+                                            <TextBlock Foreground="DarkGray" HorizontalAlignment="Center">
+                                                <Run Text="{Binding DownloadProgress.SizeDownloaded, Mode=OneWay, StringFormat=N2}"/> MiB of
+                                                <Run Text="{Binding DownloadProgress.TotalDownloadSize, Mode=OneWay, StringFormat=N2}"/> MiB
+                                                (<Run Text="{Binding DownloadProgress.ProgressPercentage, Mode=OneWay, StringFormat=N2}"/>%)
+                                            </TextBlock>
+                                            
+                                            <ProgressBar Value="{Binding DownloadProgress.ProgressPercentage}" Maximum="100"
+                                                         Height="5" Width="250" Foreground="DodgerBlue"/>
+                                            
+                                            <TextBlock HorizontalAlignment="Center">
+                                                <Run Text="{Binding DownloadProgress.DownloadSpeed, Mode=OneWay, StringFormat=N2}"/> MiB/s
+                                            </TextBlock>
+
+                                            <TextBlock Text="{Binding DownloadProgress.StageText}"
+                                                       HorizontalAlignment="Center"/>
+                                        </StackPanel>
+                                    </Setter.Value>
+                                </Setter>
+                            </DataTrigger>
+
+                            <DataTrigger Binding="{Binding DownloadState}" Value="Waiting">
+                                <Setter Property="Content">
+                                    <Setter.Value>
+                                        <TextBlock Text="Waiting"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ContentControl.Style>
+            </ContentControl>
+        </DockPanel>
+    </StackPanel>
+</UserControl>

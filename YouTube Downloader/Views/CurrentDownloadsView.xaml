@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:Caliburn="http://www.caliburnproject.org"
              xmlns:ViewModels="clr-namespace:YouTube.Downloader.ViewModels"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance ViewModels:CurrentDownloadsViewModel}">
@@ -13,9 +14,11 @@
 
         <ScrollViewer VerticalScrollBarVisibility="Auto">
             <ItemsControl ItemsSource="{Binding Downloads, Mode=OneTime}">
-                <ItemsControl.Resources>
-                    <ResourceDictionary Source="DownloadView.xaml"/>
-                </ItemsControl.Resources>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <ContentControl Caliburn:View.Model="{Binding Mode=OneTime}"/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
             </ItemsControl>
         </ScrollViewer>
     </DockPanel>

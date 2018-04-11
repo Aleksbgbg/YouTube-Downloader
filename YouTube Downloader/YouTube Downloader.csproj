@@ -149,6 +149,7 @@
     <Compile Include="Factories\DownloadFactory.cs" />
     <Compile Include="Factories\Interfaces\IDownloadFactory.cs" />
     <Compile Include="Helpers\EnumDescriptionConverter.cs" />
+    <Compile Include="Models\DownloadProgress.cs" />
     <Compile Include="Models\DownloadType.cs" />
     <Compile Include="Services\AppDataService.cs" />
     <Compile Include="Services\Interfaces\IAppDataService.cs" />
@@ -173,6 +174,9 @@
     </Compile>
     <Compile Include="Views\DownloadPathView.xaml.cs">
       <DependentUpon>DownloadPathView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\DownloadView.xaml.cs">
+      <DependentUpon>DownloadView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MatchedVideoView.xaml.cs">
       <DependentUpon>MatchedVideoView.xaml</DependentUpon>

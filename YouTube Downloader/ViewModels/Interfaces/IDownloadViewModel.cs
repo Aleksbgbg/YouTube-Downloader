@@ -10,6 +10,8 @@
 
         DownloadState DownloadState { get; set; }
 
+        DownloadProgress DownloadProgress { get; set; }
+
         void Initialise(IVideoViewModel videoViewModel);
 
         event EventHandler DownloadCompleted;

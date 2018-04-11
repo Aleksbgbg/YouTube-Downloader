@@ -43,14 +43,15 @@
 
             private set
             {
-                if (_queryBoxIsExpanded == value || !value && Query.Contains('\n')) return;
+                if (_queryBoxIsExpanded == value) return;
 
                 _queryBoxIsExpanded = value;
                 NotifyOfPropertyChange(() => QueryBoxIsExpanded);
+                NotifyOfPropertyChange(() => CanToggleQueryBoxState);
             }
         }
 
-        private string _query;
+        private string _query = string.Empty;
         public string Query
         {
             get => _query;
@@ -61,6 +62,7 @@
 
                 _query = value;
                 NotifyOfPropertyChange(() => Query);
+                NotifyOfPropertyChange(() => CanToggleQueryBoxState);
 
                 if (_query.Contains('\n'))
                 {
@@ -68,6 +70,8 @@
                 }
             }
         }
+
+        public bool CanToggleQueryBoxState => !QueryBoxIsExpanded || QueryBoxIsExpanded && !Query.Contains('\n');
 
         public IEnumerable<IResult> Search()
         {

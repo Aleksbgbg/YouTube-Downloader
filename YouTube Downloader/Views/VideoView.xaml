@@ -13,13 +13,14 @@
                 Converter={x:Static Converters:IdToThumbnailConverter.Default}}"
             Width="100" Margin="0, 0, 5, 0"/>
 
-        <TextBlock DockPanel.Dock="Top"
-                   Text="{Binding Video.Title, Mode=OneTime}"
-                   FontSize="16" FontWeight="DemiBold"/>
+        <StackPanel VerticalAlignment="Center">
+            <TextBlock Text="{Binding Video.Title, Mode=OneTime}" FontSize="16"
+                       FontWeight="DemiBold"/>
 
-        <StackPanel>
-            <TextBlock Text="{Binding Video.Channel, Mode=OneTime}"/>
-            <TextBlock>
+            <TextBlock Text="{Binding Video.Channel, Mode=OneTime}" 
+                       Foreground="#9E9E9E"/>
+
+            <TextBlock Foreground="#9E9E9E">
                 <Run
                     Text="{Binding Video.DateUploaded, Mode=OneTime,
                             StringFormat={}{0:dd/MM/yyyy}}"/>
@@ -27,7 +28,6 @@
                 <Run Text="{Binding Video.Views, Mode=OneTime,
                             StringFormat=N0}"/>
             </TextBlock>
-            <TextBlock Text="{Binding Video.Description, Mode=OneTime}" TextWrapping="WrapWithOverflow" MaxHeight="40"/>
         </StackPanel>
     </DockPanel>
 </UserControl>

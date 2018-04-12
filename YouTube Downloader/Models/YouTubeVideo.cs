@@ -8,17 +8,15 @@
 
     internal class YouTubeVideo : PropertyChangedBase
     {
-        internal YouTubeVideo(Video video, ulong? views) : this(video.Id, video.Snippet.Title, video.Snippet.ChannelTitle,
-                                                                video.Snippet.Description, video.Snippet.PublishedAt, views)
+        internal YouTubeVideo(Video video, ulong? views) : this(video.Id, video.Snippet.Title, video.Snippet.ChannelTitle, video.Snippet.PublishedAt, views)
         {
         }
 
-        private YouTubeVideo(string id, string title, string channel, string description, DateTime? dateUploaded, ulong? views)
+        private YouTubeVideo(string id, string title, string channel, DateTime? dateUploaded, ulong? views)
         {
             Id = id;
             Title = title;
             Channel = channel;
-            Description = description;
 
             if (dateUploaded.HasValue)
             {
@@ -38,8 +36,6 @@
         public string Channel { get; }
 
         public DateTime DateUploaded { get; }
-
-        public string Description { get; }
 
         public ulong Views { get; }
     }

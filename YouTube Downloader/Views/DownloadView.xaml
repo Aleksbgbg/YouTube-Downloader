@@ -77,10 +77,10 @@
                                                          Height="5" Width="250" Foreground="DodgerBlue"/>
                                             
                                             <TextBlock HorizontalAlignment="Center">
-                                                <Run Text="{Binding DownloadProgress.DownloadSpeed, Mode=OneWay, StringFormat=N2}"/> MiB/s
+                                                Downloading at <Run Text="{Binding DownloadProgress.DownloadSpeed, Mode=OneWay, StringFormat=N2}"/> MiB/s
                                             </TextBlock>
 
-                                            <TextBlock Text="{Binding DownloadProgress.StageText}"
+                                            <TextBlock Text="{Binding DownloadProgress.StatusText}"
                                                        HorizontalAlignment="Center"/>
                                         </StackPanel>
                                     </Setter.Value>
@@ -90,7 +90,7 @@
                             <DataTrigger Binding="{Binding DownloadState}" Value="Waiting">
                                 <Setter Property="Content">
                                     <Setter.Value>
-                                        <TextBlock Text="Waiting"/>
+                                        <TextBlock Text="Queued"/>
                                     </Setter.Value>
                                 </Setter>
                             </DataTrigger>

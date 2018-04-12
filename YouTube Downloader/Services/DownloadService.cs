@@ -42,21 +42,27 @@
             }
         }
 
-        private static void MonitorOutput(Process process, DownloadProgress downloadProgress)
+        private static void MonitorOutput(Process process, DownloadProgress downloadProgress, DownloadType downloadType)
         {
             Task.Run(() =>
             {
-                using (StreamReader processStream = process.StandardOutput)
+                int stage = 0;
+
+                downloadProgress.StatusText = "Gathering Data";
+
+                using (StreamReader processStreamReader = process.StandardOutput)
                 {
-                    while (!processStream.EndOfStream)
+                    while (!processStreamReader.EndOfStream)
                     {
-                        string line = processStream.ReadLine();
-
-                        Console.WriteLine(line);
-
-                        Match match = ProgressReportRegex.Match(line);
+                        Match match = ProgressReportRegex.Match(processStreamReader.ReadLine());
 
                         if (!match.Success) continue;
+
+                        if (stage == 0)
+                        {
+                            ++stage;
+                            downloadProgress.StatusText = downloadType == DownloadType.Audio ? "Downloading Audio" : "Downloading Video";
+                        }
 
                         downloadProgress.DownloadSpeed = double.Parse(match.Groups["DownloadSpeed"].Value);
 
@@ -65,6 +71,19 @@
                         if (downloadProgress.TotalDownloadSize == 0 || newProgressPercentage < downloadProgress.ProgressPercentage)
                         {
                             downloadProgress.TotalDownloadSize = double.Parse(match.Groups["TotalDownloadSize"].Value);
+                        }
+                        else if (newProgressPercentage == 100)
+                        {
+                            switch (++stage)
+                            {
+                                case 2:
+                                    downloadProgress.StatusText = downloadType == DownloadType.Audio ? "Finalising" : "Downloading Audio";
+                                    break;
+
+                                case 3:
+                                    downloadProgress.StatusText = "Finalising";
+                                    break;
+                            }
                         }
 
                         downloadProgress.ProgressPercentage = newProgressPercentage;
@@ -109,10 +128,10 @@
 
             ++_concurrentDownloads;
 
-            DownloadProgress downloadProgress = new DownloadProgress(_settingsService.Settings.DownloadType);
+            DownloadProgress downloadProgress = new DownloadProgress();
             download.DownloadProgress = downloadProgress;
 
-            MonitorOutput(downloadProcess, downloadProgress);
+            MonitorOutput(downloadProcess, downloadProgress, _settingsService.Settings.DownloadType);
         }
     }
 }

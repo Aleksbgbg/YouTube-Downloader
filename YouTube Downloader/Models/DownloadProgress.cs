@@ -4,11 +4,6 @@
 
     internal class DownloadProgress : PropertyChangedBase
     {
-        internal DownloadProgress(DownloadType downloadType)
-        {
-            TotalStages = downloadType == DownloadType.Audio ? 1 : 2;
-        }
-
         private double _progressPercentage;
         public double ProgressPercentage
         {
@@ -17,11 +12,6 @@
             set
             {
                 if (_progressPercentage == value) return;
-
-                if (_progressPercentage > value)
-                {
-                    ++CurrentStage;
-                }
 
                 _progressPercentage = value;
                 NotifyOfPropertyChange(() => ProgressPercentage);
@@ -72,33 +62,17 @@
             }
         }
 
-        private int _currentStage = 1;
-        public int CurrentStage
+        private string _statusText;
+        public string StatusText
         {
-            get => _currentStage;
+            get => _statusText;
 
-            private set
+            set
             {
-                if (_currentStage == value) return;
+                if (_statusText == value) return;
 
-                _currentStage = value;
-                NotifyOfPropertyChange(() => CurrentStage);
-                NotifyOfPropertyChange(() => StageText);
-            }
-        }
-
-        public int TotalStages { get; }
-
-        public string StageText
-        {
-            get
-            {
-                if (TotalStages == 2)
-                {
-                    return CurrentStage == 1 ? "Downloading Video" : "Downloading Audio";
-                }
-
-                return "Downloading Audio";
+                _statusText = value;
+                NotifyOfPropertyChange(() => StatusText);
             }
         }
     }

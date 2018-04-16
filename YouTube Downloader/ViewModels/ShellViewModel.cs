@@ -1,5 +1,7 @@
 ﻿namespace YouTube.Downloader.ViewModels
 {
+    using System.Windows;
+
     using Caliburn.Micro;
 
     using YouTube.Downloader.ViewModels.Interfaces;
@@ -16,6 +18,11 @@
             settingsViewModel.Closed += (sender, e) => ChangeActiveItem(mainViewModel, false);
 
             ActivateItem(mainViewModel);
+        }
+
+        public void Exit()
+        {
+            Application.Current.Shutdown();
         }
 
         public void OpenSettings()

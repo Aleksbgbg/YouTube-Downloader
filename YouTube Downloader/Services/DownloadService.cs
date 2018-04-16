@@ -6,7 +6,6 @@
     using System.IO;
     using System.Text.RegularExpressions;
     using System.Threading.Tasks;
-    using System.Windows;
 
     using YouTube.Downloader.Models;
     using YouTube.Downloader.Services.Interfaces;
@@ -16,7 +15,7 @@
     {
         private const int MaxConcurrentDownloads = 3;
 
-        private static readonly Regex ProgressReportRegex = new Regex(@"^\[download] (?<ProgressPercentage>[ 1][ 0-9][0-9]\.[0-9])% of (?<TotalDownloadSize>.+)?MiB at  (?<DownloadSpeed>.+)MiB\/s");
+        private static readonly Regex ProgressReportRegex = new Regex(@"^\[download] (?<ProgressPercentage>[ 1][ 0-9][0-9]\.[0-9])% of .*?(?<TotalDownloadSize>[\d\.]+)?MiB at  (?<DownloadSpeed>.+)MiB\/s");
 
         private readonly Queue<IDownloadViewModel> _downloadQueue = new Queue<IDownloadViewModel>();
 

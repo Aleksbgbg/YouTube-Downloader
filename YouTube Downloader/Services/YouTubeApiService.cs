@@ -1,5 +1,6 @@
 ﻿namespace YouTube.Downloader.Services
 {
+    using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
@@ -47,6 +48,7 @@
         public void Dispose()
         {
             Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         public async Task<IEnumerable<YouTubeVideo>> QueryVideos(string query)

@@ -2,6 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <BitmapImage x:Key="Completed" UriSource="/Images/Completed.png"/>
     <BitmapImage x:Key="DropDownArrow" UriSource="/Images/Drop Down Arrow.png"/>
+    <BitmapImage x:Key="Pause" UriSource="/Images/Pause.png"/>
     <BitmapImage x:Key="SpinnerFrame1" UriSource="/Images/Spinner Frame 1.png"/>
     <BitmapImage x:Key="SpinnerFrame2" UriSource="/Images/Spinner Frame 2.png"/>
     <BitmapImage x:Key="SpinnerFrame3" UriSource="/Images/Spinner Frame 3.png"/>

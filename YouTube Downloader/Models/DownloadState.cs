@@ -4,6 +4,7 @@
     {
         Queued,
         Downloading,
+        Paused,
         Completed
     }
 }

@@ -15,7 +15,7 @@
                 <Image.Style>
                     <Style TargetType="Image" BasedOn="{StaticResource {x:Type Image}}">
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding DownloadState}" Value="Waiting">
+                            <DataTrigger Binding="{Binding DownloadState}" Value="Queued">
                                 <Setter Property="Source" Value="{StaticResource Waiting}"/>
                             </DataTrigger>
 
@@ -51,6 +51,10 @@
                                 </DataTrigger.ExitActions>
                             </DataTrigger>
 
+                            <DataTrigger Binding="{Binding DownloadState}" Value="Paused">
+                                <Setter Property="Source" Value="{StaticResource Pause}"/>
+                            </DataTrigger>
+
                             <DataTrigger Binding="{Binding DownloadState}" Value="Completed">
                                 <Setter Property="Source" Value="{StaticResource Completed}"/>
                             </DataTrigger>
@@ -63,6 +67,14 @@
                 <ContentControl.Style>
                     <Style TargetType="ContentControl" BasedOn="{StaticResource {x:Type ContentControl}}">
                         <Style.Triggers>
+                            <DataTrigger Binding="{Binding DownloadState}" Value="Queued">
+                                <Setter Property="Content">
+                                    <Setter.Value>
+                                        <TextBlock Text="Queued"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </DataTrigger>
+
                             <DataTrigger Binding="{Binding DownloadState}" Value="Downloading">
                                 <Setter Property="Content">
                                     <Setter.Value>
@@ -87,10 +99,10 @@
                                 </Setter>
                             </DataTrigger>
 
-                            <DataTrigger Binding="{Binding DownloadState}" Value="Waiting">
+                            <DataTrigger Binding="{Binding DownloadState}" Value="Paused">
                                 <Setter Property="Content">
                                     <Setter.Value>
-                                        <TextBlock Text="Queued"/>
+                                        <TextBlock Text="Paused"/>
                                     </Setter.Value>
                                 </Setter>
                             </DataTrigger>

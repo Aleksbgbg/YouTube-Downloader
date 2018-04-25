@@ -2,7 +2,7 @@
 {
     internal enum DownloadState
     {
-        Waiting,
+        Queued,
         Downloading,
         Completed
     }

@@ -11,7 +11,7 @@
 
         public IVideoViewModel VideoViewModel { get; private set; }
 
-        private DownloadState _downloadState = DownloadState.Waiting;
+        private DownloadState _downloadState = DownloadState.Queued;
         public DownloadState DownloadState
         {
             get => _downloadState;

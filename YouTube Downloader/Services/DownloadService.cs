@@ -7,6 +7,7 @@
     using System.Text.RegularExpressions;
     using System.Threading.Tasks;
 
+    using YouTube.Downloader.Helpers;
     using YouTube.Downloader.Models;
     using YouTube.Downloader.Services.Interfaces;
     using YouTube.Downloader.ViewModels.Interfaces;
@@ -98,39 +99,41 @@
                 return;
             }
 
-            IDownloadViewModel download = _downloadQueue.Dequeue();
-            download.DownloadState = DownloadState.Downloading;
+            IDownloadViewModel downloadViewModel = _downloadQueue.Dequeue();
+            downloadViewModel.DownloadState = DownloadState.Downloading;
 
-            Process downloadProcess = new Process
-            {
-                EnableRaisingEvents = true,
-                StartInfo = new ProcessStartInfo("Resources/youtube-dl.exe", $"-o \"{_settingsService.Settings.DownloadPath}/%(title)s.%(ext)s\" -f {(_settingsService.Settings.DownloadType == DownloadType.Audio ? "bestaudio" : "bestvideo+bestaudio")} \"{download.VideoViewModel.Video.Id}\"")
-                {
-                    CreateNoWindow = true,
-                    UseShellExecute = false,
-                    RedirectStandardOutput = true
-                }
-            };
+            //Process downloadProcess = new Process
+            //{
+            //    EnableRaisingEvents = true,
+            //    StartInfo = new ProcessStartInfo("Resources/youtube-dl.exe", $"-o \"{_settingsService.Settings.DownloadPath}/%(title)s.%(ext)s\" -f {(_settingsService.Settings.DownloadType == DownloadType.Audio ? "bestaudio" : "bestvideo+bestaudio")} \"{download.VideoViewModel.Video.Id}\"")
+            //    {
+            //        CreateNoWindow = true,
+            //        UseShellExecute = false,
+            //        RedirectStandardOutput = true
+            //    }
+            //};
+
+            Download download = new Download(downloadViewModel.VideoViewModel.Video, _settingsService.Settings);
 
             void DownloadProcessExited(object sender, EventArgs e)
             {
-                downloadProcess.Exited -= DownloadProcessExited;
-                download.DownloadState = DownloadState.Completed;
+                download.Process.Exited -= DownloadProcessExited;
+                downloadViewModel.DownloadState = DownloadState.Completed;
 
                 --_concurrentDownloads;
 
                 DownloadNext();
             }
 
-            downloadProcess.Exited += DownloadProcessExited;
-            downloadProcess.Start();
+            download.Process.Exited += DownloadProcessExited;
+            download.Start();
 
             ++_concurrentDownloads;
 
             DownloadProgress downloadProgress = new DownloadProgress();
-            download.DownloadProgress = downloadProgress;
+            downloadViewModel.DownloadProgress = downloadProgress;
 
-            MonitorOutput(downloadProcess, downloadProgress, _settingsService.Settings.DownloadType);
+            MonitorOutput(download.Process, downloadProgress, _settingsService.Settings.DownloadType);
         }
     }
 }

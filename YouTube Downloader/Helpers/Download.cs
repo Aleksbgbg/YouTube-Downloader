@@ -13,7 +13,7 @@
         {
             _processArguments = new List<string>
             {
-                $"-o \"{settings.DownloadPath}/%(title)s.%(ext)s",
+                $"-o {settings.DownloadPath}/%(title)s.%(ext)s",
                 $"-f {(settings.DownloadType == DownloadType.Audio ? "bestaudio" : "bestvideo+bestaudio")}",
                 $"\"{video.Id}\""
             };

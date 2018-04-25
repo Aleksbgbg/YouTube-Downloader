@@ -148,6 +148,7 @@
     <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Factories\DownloadFactory.cs" />
     <Compile Include="Factories\Interfaces\IDownloadFactory.cs" />
+    <Compile Include="Helpers\Download.cs" />
     <Compile Include="Helpers\EnumDescriptionConverter.cs" />
     <Compile Include="Models\DownloadProgress.cs" />
     <Compile Include="Models\DownloadType.cs" />

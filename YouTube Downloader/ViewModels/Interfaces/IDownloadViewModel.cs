@@ -2,6 +2,7 @@
 {
     using System;
 
+    using YouTube.Downloader.Helpers;
     using YouTube.Downloader.Models;
 
     internal interface IDownloadViewModel : IViewModelBase
@@ -11,6 +12,8 @@
         DownloadState DownloadState { get; set; }
 
         DownloadProgress DownloadProgress { get; set; }
+
+        Download Download { get; set; }
 
         void Initialise(IVideoViewModel videoViewModel);
 

@@ -2,6 +2,7 @@
 {
     using System;
 
+    using YouTube.Downloader.Helpers;
     using YouTube.Downloader.Models;
     using YouTube.Downloader.ViewModels.Interfaces;
 
@@ -44,9 +45,27 @@
             }
         }
 
+        public Download Download { get; set; }
+
         public void Initialise(IVideoViewModel videoViewModel)
         {
             VideoViewModel = videoViewModel;
+        }
+
+        private bool isPaused;
+
+        public void TogglePause()
+        {
+            if (isPaused)
+            {
+                Download.Resume();
+            }
+            else
+            {
+                Download.Pause();
+            }
+
+            isPaused = !isPaused;
         }
     }
 }

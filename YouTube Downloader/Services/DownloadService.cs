@@ -114,6 +114,7 @@
             //};
 
             Download download = new Download(downloadViewModel.VideoViewModel.Video, _settingsService.Settings);
+            downloadViewModel.Download = download;
 
             void DownloadProcessExited(object sender, EventArgs e)
             {

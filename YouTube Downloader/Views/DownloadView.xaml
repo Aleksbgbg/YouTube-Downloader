@@ -9,6 +9,8 @@
 			 d:DataContext="{d:DesignInstance ViewModels:DownloadViewModel}">
     <StackPanel Margin="5">
         <ContentControl Caliburn:View.Model="{Binding VideoViewModel, Mode=OneTime}"/>
+        
+        <Button Content="Toggle Pause" Caliburn:Message.Attach="TogglePause"/>
 
         <DockPanel HorizontalAlignment="Center" Margin="5">
             <Image Width="25" Margin="5, 0">
@@ -26,7 +28,7 @@
                                             <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Source"
                                                                                Duration="0:0:0.8">
                                                 <DiscreteObjectKeyFrame KeyTime="0:0:0"
-                                                                            Value="{StaticResource SpinnerFrame1}"/>
+                                                                        Value="{StaticResource SpinnerFrame1}"/>
                                                 <DiscreteObjectKeyFrame KeyTime="0:0:0.1"
                                                                             Value="{StaticResource SpinnerFrame2}"/>
                                                 <DiscreteObjectKeyFrame KeyTime="0:0:0.2"

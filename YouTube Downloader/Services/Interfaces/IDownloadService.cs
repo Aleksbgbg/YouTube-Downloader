@@ -7,5 +7,7 @@
     internal interface IDownloadService
     {
         void QueueDownloads(IEnumerable<IDownloadViewModel> downloads);
+
+        void TerminateAllDownloads();
     }
 }

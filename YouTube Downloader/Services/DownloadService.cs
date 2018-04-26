@@ -7,6 +7,8 @@
     using System.Text.RegularExpressions;
     using System.Threading.Tasks;
 
+    using Caliburn.Micro;
+
     using YouTube.Downloader.Helpers;
     using YouTube.Downloader.Models;
     using YouTube.Downloader.Services.Interfaces;
@@ -20,9 +22,9 @@
 
         private readonly Queue<IDownloadViewModel> _downloadQueue = new Queue<IDownloadViewModel>();
 
-        private readonly ISettingsService _settingsService;
+        private readonly List<Download> _currentDownloads = new List<Download>();
 
-        private int _concurrentDownloads;
+        private readonly ISettingsService _settingsService;
 
         public DownloadService(ISettingsService settingsService)
         {
@@ -36,10 +38,16 @@
                 _downloadQueue.Enqueue(download);
             }
 
-            for (int downloadsStarted = _concurrentDownloads; downloadsStarted < MaxConcurrentDownloads && _downloadQueue.Count > 0; ++downloadsStarted)
+            for (int downloadsStarted = _currentDownloads.Count; downloadsStarted < MaxConcurrentDownloads && _downloadQueue.Count > 0; ++downloadsStarted)
             {
                 DownloadNext();
             }
+        }
+
+        public void TerminateAllDownloads()
+        {
+            _currentDownloads.Apply(download => download.Kill());
+            _currentDownloads.Clear();
         }
 
         private static void MonitorOutput(Process process, DownloadProgress downloadProgress, DownloadType downloadType)
@@ -118,10 +126,10 @@
 
             void DownloadProcessExited(object sender, EventArgs e)
             {
+                _currentDownloads.Remove(download);
                 download.Process.Exited -= DownloadProcessExited;
-                downloadViewModel.DownloadState = DownloadState.Completed;
 
-                --_concurrentDownloads;
+                downloadViewModel.DownloadState = DownloadState.Completed;
 
                 DownloadNext();
             }
@@ -129,7 +137,7 @@
             download.Process.Exited += DownloadProcessExited;
             download.Start();
 
-            ++_concurrentDownloads;
+            _currentDownloads.Add(download);
 
             DownloadProgress downloadProgress = new DownloadProgress();
             downloadViewModel.DownloadProgress = downloadProgress;

@@ -76,5 +76,10 @@
         {
             DisplayRootViewFor<IShellViewModel>();
         }
+
+        protected override void OnExit(object sender, EventArgs e)
+        {
+            IoC.Get<IDownloadService>().TerminateAllDownloads();
+        }
     }
 }

@@ -41,8 +41,7 @@
 
         public void TerminateAllDownloads()
         {
-            _currentDownloads.Apply(download => download.Kill());
-            _currentDownloads.Clear();
+            _currentDownloads.ToArray().Apply(download => download.Kill());
         }
 
         private void DownloadNext()

@@ -66,10 +66,14 @@
                         if (!match.Success)
                         {
 #if DEBUG
-                            Console.WriteLine(line);
+                            Console.WriteLine("Rejected: {0}", line);
 #endif
                             continue;
                         }
+
+#if DEBUG
+                        Console.WriteLine("Accepted: {0}", line);
+#endif
 
                         long GetBytes(double size, string units)
                         {

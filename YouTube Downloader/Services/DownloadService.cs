@@ -49,63 +49,10 @@
             if (_downloadQueue.Count == 0)
             {
                 return;
-            }//int stage = 0;
-
-                //downloadProgress.StatusText = "Gathering Data";
-
-                //using (StreamReader processStreamReader = process.StandardOutput)
-                //{
-                //    while (!processStreamReader.EndOfStream)
-                //    {
-                //        Match match = ProgressReportRegex.Match(processStreamReader.ReadLine());
-
-                //        if (!match.Success) continue;
-
-                //        if (stage == 0)
-                //        {
-                //            ++stage;
-                //            downloadProgress.StatusText = downloadType == DownloadType.Audio ? "Downloading Audio" : "Downloading Video";
-                //        }
-
-                //        downloadProgress.DownloadSpeed = double.Parse(match.Groups["DownloadSpeed"].Value);
-
-                //        double newProgressPercentage = double.Parse(match.Groups["ProgressPercentage"].Value);
-
-                //        if (downloadProgress.TotalDownloadSize == 0 || newProgressPercentage < downloadProgress.ProgressPercentage)
-                //        {
-                //            downloadProgress.TotalDownloadSize = double.Parse(match.Groups["TotalDownloadSize"].Value);
-                //        }
-                //        else if (newProgressPercentage == 100)
-                //        {
-                //            switch (++stage)
-                //            {
-                //                case 2:
-                //                    downloadProgress.StatusText = downloadType == DownloadType.Audio ? "Finalising" : "Downloading Audio";
-                //                    break;
-
-                //                case 3:
-                //                    downloadProgress.StatusText = "Finalising";
-                //                    break;
-                //            }
-                //        }
-
-                //        downloadProgress.ProgressPercentage = newProgressPercentage;
-                //    }
-                //}
+            }
 
             IDownloadViewModel downloadViewModel = _downloadQueue.Dequeue();
             downloadViewModel.DownloadState = DownloadState.Downloading;
-
-            //Process downloadProcess = new Process
-            //{
-            //    EnableRaisingEvents = true,
-            //    StartInfo = new ProcessStartInfo("Resources/youtube-dl.exe", $"-o \"{_settingsService.Settings.DownloadPath}/%(title)s.%(ext)s\" -f {(_settingsService.Settings.DownloadType == DownloadType.Audio ? "bestaudio" : "bestvideo+bestaudio")} \"{download.VideoViewModel.Video.Id}\"")
-            //    {
-            //        CreateNoWindow = true,
-            //        UseShellExecute = false,
-            //        RedirectStandardOutput = true
-            //    }
-            //};
 
             Download download = new Download(downloadViewModel.VideoViewModel.Video, _settingsService.Settings);
             downloadViewModel.Download = download;

@@ -4,24 +4,8 @@
 
     internal class DownloadProgress : PropertyChangedBase
     {
-        private double _progressPercentage;
-        public double ProgressPercentage
-        {
-            get => _progressPercentage;
-
-            set
-            {
-                if (_progressPercentage == value) return;
-
-                _progressPercentage = value;
-                NotifyOfPropertyChange(() => ProgressPercentage);
-
-                SizeDownloaded = TotalDownloadSize * (ProgressPercentage / 100);
-            }
-        }
-
-        private double _sizeDownloaded;
-        public double SizeDownloaded
+        private long _sizeDownloaded;
+        public long SizeDownloaded
         {
             get => _sizeDownloaded;
 
@@ -34,8 +18,8 @@
             }
         }
 
-        private double _totalDownloadSize;
-        public double TotalDownloadSize
+        private long _totalDownloadSize;
+        public long TotalDownloadSize
         {
             get => _totalDownloadSize;
 
@@ -48,8 +32,24 @@
             }
         }
 
-        private double _downloadSpeed;
-        public double DownloadSpeed
+        private double _progressPercentage;
+        public double ProgressPercentage
+        {
+            get => _progressPercentage;
+
+            set
+            {
+                if (_progressPercentage == value) return;
+
+                _progressPercentage = value;
+                NotifyOfPropertyChange(() => ProgressPercentage);
+
+                SizeDownloaded = (long)(TotalDownloadSize * (ProgressPercentage / 100));
+            }
+        }
+
+        private long _downloadSpeed;
+        public long DownloadSpeed
         {
             get => _downloadSpeed;
 

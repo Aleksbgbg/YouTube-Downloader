@@ -4,6 +4,7 @@
 			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:Caliburn="http://www.caliburnproject.org"
+             xmlns:Converters="clr-namespace:YouTube.Downloader.Converters"
 			 xmlns:ViewModels="clr-namespace:YouTube.Downloader.ViewModels"
 			 mc:Ignorable="d"
 			 d:DataContext="{d:DesignInstance ViewModels:DownloadViewModel}">
@@ -82,8 +83,8 @@
                                     <Setter.Value>
                                         <StackPanel HorizontalAlignment="Center" Margin="5">
                                             <TextBlock Foreground="DarkGray" HorizontalAlignment="Center">
-                                                <Run Text="{Binding DownloadProgress.SizeDownloaded, Mode=OneWay, StringFormat=N2}"/> MiB of
-                                                <Run Text="{Binding DownloadProgress.TotalDownloadSize, Mode=OneWay, StringFormat=N2}"/> MiB
+                                                <Run Text="{Binding DownloadProgress.SizeDownloaded, Mode=OneWay, Converter={x:Static Converters:AppropriateDataSizeConverter.Default}}"/> of
+                                                <Run Text="{Binding DownloadProgress.TotalDownloadSize, Mode=OneWay, Converter={x:Static Converters:AppropriateDataSizeConverter.Default}}"/>
                                                 (<Run Text="{Binding DownloadProgress.ProgressPercentage, Mode=OneWay, StringFormat=N2}"/>%)
                                             </TextBlock>
                                             
@@ -91,7 +92,7 @@
                                                          Height="5" Width="250" Foreground="DodgerBlue"/>
                                             
                                             <TextBlock HorizontalAlignment="Center">
-                                                Downloading at <Run Text="{Binding DownloadProgress.DownloadSpeed, Mode=OneWay, StringFormat=N2}"/> MiB/s
+                                                Downloading at <Run Text="{Binding DownloadProgress.DownloadSpeed, Mode=OneWay, Converter={x:Static Converters:AppropriateDataSizeConverter.Default}}"/>/s
                                             </TextBlock>
 
                                             <TextBlock Text="{Binding DownloadProgress.StatusText}"

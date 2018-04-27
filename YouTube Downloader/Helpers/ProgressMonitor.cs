@@ -65,6 +65,9 @@
 
                         if (!match.Success)
                         {
+#if DEBUG
+                            Console.WriteLine(line);
+#endif
                             continue;
                         }
 

@@ -124,17 +124,43 @@
             Download download = new Download(downloadViewModel.VideoViewModel.Video, _settingsService.Settings);
             downloadViewModel.Download = download;
 
-            void DownloadProcessExited(object sender, EventArgs e)
+            void DownloadCompleted(object sender, EventArgs e)
             {
-                _currentDownloads.Remove(download);
-                download.Process.Exited -= DownloadProcessExited;
-
-                downloadViewModel.DownloadState = DownloadState.Completed;
-
-                DownloadNext();
+                DetachDownload();
             }
 
-            download.Process.Exited += DownloadProcessExited;
+            void DownloadPaused(object sender, EventArgs e)
+            {
+                downloadViewModel.DownloadState = DownloadState.Paused;
+            }
+
+            void DownloadResumed(object sender, EventArgs e)
+            {
+                downloadViewModel.DownloadState = DownloadState.Downloading;
+            }
+
+            void DownloadKilled(object sender, EventArgs e)
+            {
+                DetachDownload();
+            }
+
+            void DetachDownload()
+            {
+                download.Completed -= DownloadCompleted;
+                download.Paused -= DownloadPaused;
+                download.Resumed -= DownloadResumed;
+                download.Killed -= DownloadKilled;
+
+                _currentDownloads.Remove(download);
+
+                downloadViewModel.DownloadState = DownloadState.Completed;
+            }
+
+            download.Completed += DownloadCompleted;
+            download.Paused += DownloadPaused;
+            download.Resumed += DownloadResumed;
+            download.Killed += DownloadKilled;
+
             download.Start();
 
             _currentDownloads.Add(download);

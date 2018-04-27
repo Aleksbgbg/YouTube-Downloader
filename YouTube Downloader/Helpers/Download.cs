@@ -7,6 +7,8 @@
 
     internal class Download
     {
+        private const string ContinueSwitch = "-c";
+
         private readonly List<string> _processArguments;
 
         internal Download(YouTubeVideo video, Settings settings)
@@ -37,9 +39,9 @@
 
         internal void Start()
         {
-            if (_processArguments.Contains("-c"))
+            if (_processArguments.Contains(ContinueSwitch))
             {
-                _processArguments.Remove("-c");
+                _processArguments.Remove(ContinueSwitch);
             }
 
             Process.Start();
@@ -53,7 +55,7 @@
 
         internal void Resume()
         {
-            _processArguments.Add("-c");
+            _processArguments.Add(ContinueSwitch);
             GenerateProcess();
             Process.Start();
         }

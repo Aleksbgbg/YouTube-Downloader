@@ -57,6 +57,8 @@
             Download download = new Download(downloadViewModel.VideoViewModel.Video, _settingsService.Settings);
             downloadViewModel.Download = download;
 
+            ProgressMonitor progressMonitor = new ProgressMonitor(download.Process);
+
             void DownloadCompleted(object sender, EventArgs e)
             {
                 DetachDownload();
@@ -64,12 +66,14 @@
 
             void DownloadPaused(object sender, EventArgs e)
             {
+                progressMonitor.Pause();
                 downloadViewModel.DownloadState = DownloadState.Paused;
             }
 
             void DownloadResumed(object sender, EventArgs e)
             {
                 downloadViewModel.DownloadState = DownloadState.Downloading;
+                progressMonitor.Resume(download.Process);
             }
 
             void DownloadKilled(object sender, EventArgs e)
@@ -100,8 +104,6 @@
 
             DownloadProgress downloadProgress = new DownloadProgress();
             downloadViewModel.DownloadProgress = downloadProgress;
-
-            ProgressMonitor progressMonitor = new ProgressMonitor(download.Process);
 
             void ProgressUpdated(object sender, ProgressUpdatedEventArgs e)
             {

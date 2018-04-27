@@ -12,7 +12,9 @@
     {
         private static readonly Regex ProgressReportRegex = new Regex(@"^\[download] (?<ProgressPercentage>[ 1][ 0-9][0-9]\.[0-9])% of .*?(?<TotalDownloadSize>[\d\.]+)?(?<TotalDownloadSizeUnits>.iB) at  (?<DownloadSpeed>.+)(?<DownloadSpeedUnits>.iB)\/s");
 
-        private readonly Process _process;
+        private bool _isPaused;
+
+        private Process _process;
 
         internal ProgressMonitor(Process process)
         {
@@ -25,6 +27,24 @@
 
         internal void Run()
         {
+            RunMonitoringThread();
+        }
+
+        internal void Pause()
+        {
+            _isPaused = true;
+            _process = null;
+        }
+
+        internal void Resume(Process process)
+        {
+            _process = process;
+            _isPaused = false;
+            RunMonitoringThread();
+        }
+
+        private void RunMonitoringThread()
+        {
             Task.Run(() =>
             {
                 using (StreamReader progressReader = _process.StandardOutput)
@@ -32,7 +52,7 @@
                     int stage = 0;
                     double lastProgress = double.MaxValue;
 
-                    while (!progressReader.EndOfStream)
+                    while (!progressReader.EndOfStream && _process != null)
                     {
                         string line = progressReader.ReadLine();
 
@@ -89,7 +109,13 @@
                         lastProgress = progressPercentage;
                     }
                 }
-            }).ContinueWith(task => FinishedMonitoring?.Invoke(this, EventArgs.Empty));
+            }).ContinueWith(task =>
+            {
+                if (!_isPaused)
+                {
+                    FinishedMonitoring?.Invoke(this, EventArgs.Empty);
+                }
+            });
         }
     }
 }

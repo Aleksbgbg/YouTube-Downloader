@@ -47,6 +47,7 @@
 
         internal void Pause()
         {
+            Kill();
             Process = null;
         }
 

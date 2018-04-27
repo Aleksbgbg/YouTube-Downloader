@@ -2,13 +2,10 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
-    using System.IO;
-    using System.Text.RegularExpressions;
-    using System.Threading.Tasks;
 
     using Caliburn.Micro;
 
+    using YouTube.Downloader.EventArgs;
     using YouTube.Downloader.Helpers;
     using YouTube.Downloader.Models;
     using YouTube.Downloader.Services.Interfaces;
@@ -17,8 +14,6 @@
     internal class DownloadService : IDownloadService
     {
         private const int MaxConcurrentDownloads = 3;
-
-        private static readonly Regex ProgressReportRegex = new Regex(@"^\[download] (?<ProgressPercentage>[ 1][ 0-9][0-9]\.[0-9])% of .*?(?<TotalDownloadSize>[\d\.]+)?MiB at  (?<DownloadSpeed>.+)MiB\/s");
 
         private readonly Queue<IDownloadViewModel> _downloadQueue = new Queue<IDownloadViewModel>();
 
@@ -50,62 +45,54 @@
             _currentDownloads.Clear();
         }
 
-        private static void MonitorOutput(Process process, DownloadProgress downloadProgress, DownloadType downloadType)
-        {
-            Task.Run(() =>
-            {
-                int stage = 0;
-
-                downloadProgress.StatusText = "Gathering Data";
-
-                using (StreamReader processStreamReader = process.StandardOutput)
-                {
-                    while (!processStreamReader.EndOfStream)
-                    {
-                        Match match = ProgressReportRegex.Match(processStreamReader.ReadLine());
-
-                        if (!match.Success) continue;
-
-                        if (stage == 0)
-                        {
-                            ++stage;
-                            downloadProgress.StatusText = downloadType == DownloadType.Audio ? "Downloading Audio" : "Downloading Video";
-                        }
-
-                        downloadProgress.DownloadSpeed = double.Parse(match.Groups["DownloadSpeed"].Value);
-
-                        double newProgressPercentage = double.Parse(match.Groups["ProgressPercentage"].Value);
-
-                        if (downloadProgress.TotalDownloadSize == 0 || newProgressPercentage < downloadProgress.ProgressPercentage)
-                        {
-                            downloadProgress.TotalDownloadSize = double.Parse(match.Groups["TotalDownloadSize"].Value);
-                        }
-                        else if (newProgressPercentage == 100)
-                        {
-                            switch (++stage)
-                            {
-                                case 2:
-                                    downloadProgress.StatusText = downloadType == DownloadType.Audio ? "Finalising" : "Downloading Audio";
-                                    break;
-
-                                case 3:
-                                    downloadProgress.StatusText = "Finalising";
-                                    break;
-                            }
-                        }
-
-                        downloadProgress.ProgressPercentage = newProgressPercentage;
-                    }
-                }
-            });
-        }
-
         private void DownloadNext()
         {
             if (_downloadQueue.Count == 0)
             {
                 return;
-            }
+            }//int stage = 0;
+
+                //downloadProgress.StatusText = "Gathering Data";
+
+                //using (StreamReader processStreamReader = process.StandardOutput)
+                //{
+                //    while (!processStreamReader.EndOfStream)
+                //    {
+                //        Match match = ProgressReportRegex.Match(processStreamReader.ReadLine());
+
+                //        if (!match.Success) continue;
+
+                //        if (stage == 0)
+                //        {
+                //            ++stage;
+                //            downloadProgress.StatusText = downloadType == DownloadType.Audio ? "Downloading Audio" : "Downloading Video";
+                //        }
+
+                //        downloadProgress.DownloadSpeed = double.Parse(match.Groups["DownloadSpeed"].Value);
+
+                //        double newProgressPercentage = double.Parse(match.Groups["ProgressPercentage"].Value);
+
+                //        if (downloadProgress.TotalDownloadSize == 0 || newProgressPercentage < downloadProgress.ProgressPercentage)
+                //        {
+                //            downloadProgress.TotalDownloadSize = double.Parse(match.Groups["TotalDownloadSize"].Value);
+                //        }
+                //        else if (newProgressPercentage == 100)
+                //        {
+                //            switch (++stage)
+                //            {
+                //                case 2:
+                //                    downloadProgress.StatusText = downloadType == DownloadType.Audio ? "Finalising" : "Downloading Audio";
+                //                    break;
+
+                //                case 3:
+                //                    downloadProgress.StatusText = "Finalising";
+                //                    break;
+                //            }
+                //        }
+
+                //        downloadProgress.ProgressPercentage = newProgressPercentage;
+                //    }
+                //}
 
             IDownloadViewModel downloadViewModel = _downloadQueue.Dequeue();
             downloadViewModel.DownloadState = DownloadState.Downloading;
@@ -168,7 +155,64 @@
             DownloadProgress downloadProgress = new DownloadProgress();
             downloadViewModel.DownloadProgress = downloadProgress;
 
-            MonitorOutput(download.Process, downloadProgress, _settingsService.Settings.DownloadType);
+            ProgressMonitor progressMonitor = new ProgressMonitor(download.Process);
+
+            void ProgressUpdated(object sender, ProgressUpdatedEventArgs e)
+            {
+                string GetStageText(int stage)
+                {
+                    if (stage == 0)
+                    {
+                        return "Gathering Data";
+                    }
+
+                    if (_settingsService.Settings.DownloadType == DownloadType.Audio)
+                    {
+                        switch (stage)
+                        {
+                            case 1:
+                                return "Downloading Audio";
+
+                            case 2:
+                                return "Finalising";
+
+                            default:
+                                return "Unknown";
+                        }
+                    }
+
+                    switch (stage)
+                    {
+                        case 1:
+                            return "Downloading Video";
+
+                        case 2:
+                            return "Downloading Audio";
+
+                        case 3:
+                            return "Finalising";
+
+                        default:
+                            return "Unknown";
+                    }
+                }
+
+                downloadProgress.StatusText = GetStageText(e.Stage);
+                downloadProgress.DownloadSpeed = e.DownloadSpeed;
+                downloadProgress.ProgressPercentage = e.DownloadPercentage;
+                downloadProgress.TotalDownloadSize = e.TotalDownloadSize;
+            }
+
+            void FinishedMonitoring(object sender, EventArgs e)
+            {
+                progressMonitor.FinishedMonitoring -= FinishedMonitoring;
+                progressMonitor.ProgressUpdated -= ProgressUpdated;
+            }
+
+            progressMonitor.FinishedMonitoring += FinishedMonitoring;
+            progressMonitor.ProgressUpdated += ProgressUpdated;
+
+            progressMonitor.Run();
         }
     }
 }

@@ -145,11 +145,13 @@
     <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
     <Compile Include="Converters\CountToBooleanConverter.cs" />
     <Compile Include="Converters\IdToThumbnailConverter.cs" />
+    <Compile Include="EventArgs\ProgressUpdatedEventArgs.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Factories\DownloadFactory.cs" />
     <Compile Include="Factories\Interfaces\IDownloadFactory.cs" />
     <Compile Include="Helpers\Download.cs" />
     <Compile Include="Helpers\EnumDescriptionConverter.cs" />
+    <Compile Include="Helpers\ProgressMonitor.cs" />
     <Compile Include="Models\DownloadProgress.cs" />
     <Compile Include="Models\DownloadType.cs" />
     <Compile Include="Services\AppDataService.cs" />
@@ -321,9 +323,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="EventArgs\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="FodyWeavers.xml" />
   </ItemGroup>

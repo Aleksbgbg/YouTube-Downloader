@@ -1,5 +1,6 @@
 ﻿namespace YouTube.Downloader.Helpers
 {
+    using System;
     using System.Collections.Generic;
     using System.Diagnostics;
 
@@ -11,6 +12,8 @@
 
         private readonly List<string> _processArguments;
 
+        private bool _isPaused;
+
         internal Download(YouTubeVideo video, Settings settings)
         {
             _processArguments = new List<string>
@@ -20,6 +23,14 @@
                 $"\"{video.Id}\""
             };
         }
+
+        internal event EventHandler Completed;
+
+        internal event EventHandler Paused;
+
+        internal event EventHandler Resumed;
+
+        internal event EventHandler Killed;
 
         private Process _process;
         public Process Process
@@ -34,7 +45,28 @@
                 return _process;
             }
 
-            private set => _process = value;
+            private set
+            {
+                void ProcessExited(object sender, EventArgs e)
+                {
+                    if (_process != null)
+                    {
+                        Completed?.Invoke(this, EventArgs.Empty);
+                    }
+                }
+
+                if (_process != null)
+                {
+                    _process.Exited -= ProcessExited;
+                }
+
+                _process = value;
+
+                if (_process != null)
+                {
+                    _process.Exited += ProcessExited;
+                }
+            }
         }
 
         internal void Start()
@@ -49,20 +81,42 @@
 
         internal void Pause()
         {
-            Kill();
-            Process = null;
+            if (_isPaused)
+            {
+                throw new InvalidOperationException("Cannot pause a paused download.");
+            }
+
+            KillProcess(Paused);
+            _isPaused = true;
         }
 
         internal void Resume()
         {
+            if (!_isPaused)
+            {
+                throw new InvalidOperationException("Cannot resume a download in progress.");
+            }
+
             _processArguments.Add(ContinueSwitch);
             GenerateProcess();
             Process.Start();
+
+            _isPaused = false;
+
+            Resumed?.Invoke(this, EventArgs.Empty);
         }
 
         internal void Kill()
         {
+            KillProcess(Killed);
+        }
+
+        private void KillProcess(EventHandler invokeEvent)
+        {
             Process.Kill();
+            Process = null;
+
+            invokeEvent?.Invoke(this, EventArgs.Empty);
         }
 
         private void GenerateProcess()

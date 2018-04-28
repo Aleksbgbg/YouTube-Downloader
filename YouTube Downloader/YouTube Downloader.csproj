@@ -150,6 +150,7 @@
     <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Factories\DownloadFactory.cs" />
     <Compile Include="Factories\Interfaces\IDownloadFactory.cs" />
+    <Compile Include="Helpers\DebugLogger.cs" />
     <Compile Include="Helpers\Download.cs" />
     <Compile Include="Helpers\EnumDescriptionConverter.cs" />
     <Compile Include="Helpers\ProgressMonitor.cs" />

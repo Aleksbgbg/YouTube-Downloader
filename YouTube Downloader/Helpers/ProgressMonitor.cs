@@ -12,6 +12,10 @@
     {
         private static readonly Regex ProgressReportRegex = new Regex(@"^\[download] (?<ProgressPercentage>[ 1][ 0-9][0-9]\.[0-9])% of .*?(?<TotalDownloadSize>[\d\.]+)?(?<TotalDownloadSizeUnits>.iB) at  (?<DownloadSpeed>.+)(?<DownloadSpeedUnits>.iB)\/s");
 
+#if DEBUG
+        private readonly DebugLogger _debugLogger = new DebugLogger();
+#endif
+
         private bool _isPaused;
 
         private Process _process;
@@ -66,13 +70,13 @@
                         if (!match.Success)
                         {
 #if DEBUG
-                            Console.WriteLine("Rejected: {0}", line);
+                            _debugLogger.Log(line);
 #endif
                             continue;
                         }
 
 #if DEBUG
-                        Console.WriteLine("Accepted: {0}", line);
+                        _debugLogger.Log(line);
 #endif
 
                         long GetBytes(double size, string units)

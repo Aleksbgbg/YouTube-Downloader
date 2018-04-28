@@ -17,9 +17,9 @@
         private readonly DebugLogger _debugLogger = new DebugLogger();
 #endif // DEBUG
 
-        private bool _isPaused;
-
         private Process _process;
+
+        private bool _isPaused;
 
         private int _stage;
 

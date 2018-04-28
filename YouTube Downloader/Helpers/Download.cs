@@ -1,16 +1,13 @@
 ﻿namespace YouTube.Downloader.Helpers
 {
     using System;
-    using System.Collections.Generic;
     using System.Diagnostics;
 
     using YouTube.Downloader.Models;
 
     internal class Download
     {
-        private const string ContinueSwitch = "-c";
-
-        private readonly List<string> _processArguments;
+        private readonly string _processArguments;
 
         private bool _isPaused;
 
@@ -18,12 +15,9 @@
 
         internal Download(YouTubeVideo video, Settings settings)
         {
-            _processArguments = new List<string>
-            {
-                $"-o {settings.DownloadPath}/%(title)s.%(ext)s",
-                $"-f {(settings.DownloadType == DownloadType.Audio ? "bestaudio" : "bestvideo+bestaudio")}",
-                $"\"{video.Id}\""
-            };
+            _processArguments = $"-o {settings.DownloadPath}/%(title)s.%(ext)s" + " " +
+                                $"-f {(settings.DownloadType == DownloadType.Audio ? "bestaudio" : "bestvideo+bestaudio")}" + " " +
+                                $"\"{video.Id}\"";
         }
 
         internal event EventHandler Completed;
@@ -77,11 +71,6 @@
 
         internal void Start()
         {
-            if (_processArguments.Contains(ContinueSwitch))
-            {
-                _processArguments.Remove(ContinueSwitch);
-            }
-
             Process.Start();
         }
 
@@ -103,7 +92,6 @@
                 throw new InvalidOperationException("Cannot resume a download in progress.");
             }
 
-            _processArguments.Add(ContinueSwitch);
             GenerateProcess();
             Process.Start();
 
@@ -134,7 +122,7 @@
             Process = new Process
             {
                 EnableRaisingEvents = true,
-                StartInfo = new ProcessStartInfo("Resources/youtube-dl.exe", string.Join(" ", _processArguments))
+                StartInfo = new ProcessStartInfo("Resources/youtube-dl.exe", _processArguments)
                 {
                     CreateNoWindow = true,
                     UseShellExecute = false,

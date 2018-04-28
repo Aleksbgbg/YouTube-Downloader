@@ -19,7 +19,10 @@ namespace YouTube.Downloader.Helpers
 
         internal DebugLogger()
         {
-            _fileStreamWriter = new StreamWriter($"Debug/{DateTime.Now.ToString(CultureInfo.InvariantCulture).Replace('/', '-').Replace(':', '-')}.log");
+            _fileStreamWriter = new StreamWriter($"Debug/{DateTime.Now.ToString(CultureInfo.InvariantCulture).Replace('/', '-').Replace(':', '-')}.log")
+            {
+                AutoFlush = true
+            };
         }
 
         internal void Log(string message)

@@ -20,6 +20,11 @@
         {
             int stage = (int)value;
 
+            if (stage == 0)
+            {
+                return "Gathering Data";
+            }
+
             if (Settings.DownloadType == DownloadType.Audio)
             {
                 switch (stage)

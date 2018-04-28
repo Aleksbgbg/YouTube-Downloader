@@ -23,8 +23,6 @@
 
         private int _stage;
 
-        private double _lastProgress = double.MaxValue;
-
         internal ProgressMonitor(Process process)
         {
             _process = process;
@@ -141,14 +139,12 @@
 
             double progressPercentage = double.Parse(match.Groups["ProgressPercentage"].Value);
 
-            if (progressPercentage < _lastProgress)
+            if (_stage == 0 || progressPercentage == 100)
             {
                 ++_stage;
             }
 
             ProgressUpdated?.Invoke(this, new ProgressUpdatedEventArgs(totalDownloadSize, progressPercentage, GetDownloadSpeed(), _stage));
-
-            _lastProgress = progressPercentage;
         }
     }
 }

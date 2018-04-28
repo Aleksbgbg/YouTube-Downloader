@@ -69,28 +69,36 @@
             <ContentControl>
                 <ContentControl.Style>
                     <Style TargetType="ContentControl" BasedOn="{StaticResource {x:Type ContentControl}}">
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding DownloadState}" Value="Queued">
-                                <Setter Property="Content">
-                                    <Setter.Value>
-                                        <TextBlock Text="Queued"/>
-                                    </Setter.Value>
-                                </Setter>
-                            </DataTrigger>
+                        <Style.Resources>
+                            <DataTemplate x:Key="DownloadProgress">
+                                <StackPanel>
+                                    <TextBlock Foreground="DarkGray" HorizontalAlignment="Center">
+                                        <Run Text="{Binding DownloadProgress.SizeDownloaded, Mode=OneWay, Converter={x:Static Converters:AppropriateDataSizeConverter.Default}}"/>
+                                        of
+                                        <Run Text="{Binding DownloadProgress.TotalDownloadSize, Mode=OneWay, Converter={x:Static Converters:AppropriateDataSizeConverter.Default}}"/>
+                                        (<Run Text="{Binding DownloadProgress.ProgressPercentage, Mode=OneWay, StringFormat=N2}"/>%)
+                                    </TextBlock>
 
+                                    <ProgressBar Value="{Binding DownloadProgress.ProgressPercentage}" Maximum="100"
+                                                 Height="5" Width="250" Foreground="DodgerBlue"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </Style.Resources>
+
+                        <Setter Property="Content">
+                            <Setter.Value>
+                                <TextBlock Text="{Binding DownloadState}"/>
+                            </Setter.Value>
+                        </Setter>
+
+                        <Style.Triggers>
                             <DataTrigger Binding="{Binding DownloadState}" Value="Downloading">
                                 <Setter Property="Content">
                                     <Setter.Value>
                                         <StackPanel HorizontalAlignment="Center" Margin="5">
-                                            <TextBlock Foreground="DarkGray" HorizontalAlignment="Center">
-                                                <Run Text="{Binding DownloadProgress.SizeDownloaded, Mode=OneWay, Converter={x:Static Converters:AppropriateDataSizeConverter.Default}}"/> of
-                                                <Run Text="{Binding DownloadProgress.TotalDownloadSize, Mode=OneWay, Converter={x:Static Converters:AppropriateDataSizeConverter.Default}}"/>
-                                                (<Run Text="{Binding DownloadProgress.ProgressPercentage, Mode=OneWay, StringFormat=N2}"/>%)
-                                            </TextBlock>
-                                            
-                                            <ProgressBar Value="{Binding DownloadProgress.ProgressPercentage}" Maximum="100"
-                                                         Height="5" Width="250" Foreground="DodgerBlue"/>
-                                            
+                                            <ContentControl Content="{Binding Mode=OneTime}"
+                                                            ContentTemplate="{StaticResource DownloadProgress}"/>
+
                                             <TextBlock HorizontalAlignment="Center">
                                                 Downloading at <Run Text="{Binding DownloadProgress.DownloadSpeed, Mode=OneWay, Converter={x:Static Converters:AppropriateDataSizeConverter.Default}}"/>/s
                                             </TextBlock>
@@ -101,11 +109,14 @@
                                     </Setter.Value>
                                 </Setter>
                             </DataTrigger>
-
+                            
                             <DataTrigger Binding="{Binding DownloadState}" Value="Paused">
                                 <Setter Property="Content">
                                     <Setter.Value>
-                                        <TextBlock Text="Paused"/>
+                                        <StackPanel HorizontalAlignment="Center" Margin="5">
+                                            <ContentControl Content="{Binding Mode=OneTime}" ContentTemplate="{StaticResource DownloadProgress}"/>
+                                            <TextBlock Text="Paused" HorizontalAlignment="Center"/>
+                                        </StackPanel>
                                     </Setter.Value>
                                 </Setter>
                             </DataTrigger>

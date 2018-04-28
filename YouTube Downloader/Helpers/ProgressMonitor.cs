@@ -15,7 +15,7 @@
 
 #if DEBUG
         private readonly DebugLogger _debugLogger = new DebugLogger();
-#endif
+#endif // DEBUG
 
         private bool _isPaused;
 
@@ -61,7 +61,7 @@
 #if DEBUG
                     try
                     {
-#endif
+#endif // DEBUG
 
                         while (!progressReader.EndOfStream)
                         {
@@ -69,7 +69,7 @@
 
 #if DEBUG
                             _debugLogger.Log(line);
-#endif
+#endif // DEBUG
 
                             if (line == null) continue;
 
@@ -88,7 +88,7 @@
                             _debugLogger.Exit();
                         }
                     }
-#endif
+#endif // DEBUG
                 }
             }).ContinueWith(task =>
             {

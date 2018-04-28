@@ -1,5 +1,5 @@
 ﻿#if DEBUG
-namespace YouTube.Downloader.Helpers
+namespace YouTube.Downloader.Debug
 {
     using System;
     using System.Globalization;
@@ -52,9 +52,9 @@ namespace YouTube.Downloader.Helpers
         {
             if (disposing)
             {
-                _fileStreamWriter?.Dispose();
+                _fileStreamWriter.Dispose();
             }
         }
     }
 }
-#endif
+#endif // DEBUG

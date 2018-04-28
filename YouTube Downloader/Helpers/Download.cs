@@ -14,6 +14,8 @@
 
         private bool _isPaused;
 
+        private bool _isExited;
+
         internal Download(YouTubeVideo video, Settings settings)
         {
             _processArguments = new List<string>
@@ -49,6 +51,10 @@
             {
                 void ProcessExited(object sender, EventArgs e)
                 {
+                    _process.Exited -= ProcessExited;
+
+                    _isExited = true;
+
                     if (_process != null)
                     {
                         Completed?.Invoke(this, EventArgs.Empty);
@@ -113,7 +119,11 @@
 
         private void KillProcess(EventHandler invokeEvent)
         {
-            Process.Kill();
+            if (!_isExited)
+            {
+                Process.Kill();
+            }
+
             Process = null;
 
             invokeEvent?.Invoke(this, EventArgs.Empty);

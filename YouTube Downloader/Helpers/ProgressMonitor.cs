@@ -56,69 +56,81 @@
                     int stage = 0;
                     double lastProgress = double.MaxValue;
 
-                    while (!progressReader.EndOfStream && _process != null)
+#if DEBUG
+                    try
                     {
-                        string line = progressReader.ReadLine();
+#endif
 
-                        if (line == null)
+                        while (!progressReader.EndOfStream && _process != null)
                         {
-                            continue;
-                        }
+                            string line = progressReader.ReadLine();
 
-                        Match match = ProgressReportRegex.Match(line);
+                            if (line == null)
+                            {
+                                continue;
+                            }
 
-                        if (!match.Success)
-                        {
+                            Match match = ProgressReportRegex.Match(line);
+
+                            if (!match.Success)
+                            {
+#if DEBUG
+                                _debugLogger.Log(line);
+#endif
+                                continue;
+                            }
+
 #if DEBUG
                             _debugLogger.Log(line);
 #endif
-                            continue;
-                        }
 
-#if DEBUG
-                        _debugLogger.Log(line);
-#endif
-
-                        long GetBytes(double size, string units)
-                        {
-                            int GetMultiplier()
+                            long GetBytes(double size, string units)
                             {
-                                switch (units)
+                                int GetMultiplier()
                                 {
-                                    case "KiB":
-                                        return 1024;
+                                    switch (units)
+                                    {
+                                        case "KiB":
+                                            return 1024;
 
-                                    case "MiB":
-                                        return 1024 * 1024;
+                                        case "MiB":
+                                            return 1024 * 1024;
 
-                                    case "GiB":
-                                        return 1024 * 1024 * 1024;
+                                        case "GiB":
+                                            return 1024 * 1024 * 1024;
 
-                                    default:
-                                        throw new InvalidOperationException("Invalid units for multiplier.");
+                                        default:
+                                            throw new InvalidOperationException("Invalid units for multiplier.");
+                                    }
                                 }
+
+                                return (long)(size * GetMultiplier());
                             }
 
-                            return (long)(size * GetMultiplier());
+                            long totalDownloadSize = GetBytes(double.Parse(match.Groups["TotalDownloadSize"].Value),
+                                                              match.Groups["TotalDownloadSizeUnits"].Value);
+
+                            long downloadSpeed = GetBytes(double.Parse(match.Groups["DownloadSpeed"].Value),
+                                                          match.Groups["DownloadSpeedUnits"].Value);
+
+                            double progressPercentage = double.Parse(match.Groups["ProgressPercentage"].Value);
+
+                            if (progressPercentage < lastProgress)
+                            {
+                                ++stage;
+                            }
+
+                            ProgressUpdated?.Invoke(this, new ProgressUpdatedEventArgs(totalDownloadSize, progressPercentage, downloadSpeed, stage));
+
+                            lastProgress = progressPercentage;
                         }
-
-                        long totalDownloadSize = GetBytes(double.Parse(match.Groups["TotalDownloadSize"].Value),
-                                                          match.Groups["TotalDownloadSizeUnits"].Value);
-
-                        long downloadSpeed = GetBytes(double.Parse(match.Groups["DownloadSpeed"].Value),
-                                                      match.Groups["DownloadSpeedUnits"].Value);
-
-                        double progressPercentage = double.Parse(match.Groups["ProgressPercentage"].Value);
-
-                        if (progressPercentage < lastProgress)
-                        {
-                            ++stage;
-                        }
-
-                        ProgressUpdated?.Invoke(this, new ProgressUpdatedEventArgs(totalDownloadSize, progressPercentage, downloadSpeed, stage));
-
-                        lastProgress = progressPercentage;
+#if DEBUG
                     }
+                    finally
+                    {
+                        _debugLogger.Exit();
+                    }
+#endif
                 }
             }).ContinueWith(task =>
             {

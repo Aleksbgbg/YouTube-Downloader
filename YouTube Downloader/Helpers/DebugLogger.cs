@@ -28,6 +28,12 @@ namespace YouTube.Downloader.Helpers
             _fileStreamWriter.WriteLine(message);
         }
 
+        internal void Exit()
+        {
+            _fileStreamWriter.Flush();
+            _fileStreamWriter.Close();
+        }
+
         ~DebugLogger()
         {
             Dispose(false);

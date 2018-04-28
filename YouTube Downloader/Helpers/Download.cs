@@ -107,7 +107,7 @@
 
         private void KillProcess(EventHandler invokeEvent)
         {
-            if (!_isExited)
+            if (!_isExited && !_isPaused)
             {
                 Process.Kill();
             }

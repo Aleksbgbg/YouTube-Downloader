@@ -2,9 +2,9 @@
 {
     using System.Collections.Generic;
 
-    internal static class EnumerableExtensions
+    internal static class ObjectExtensions
     {
-        internal static IEnumerable<T> ToEnumerable<T>(T item)
+        internal static IEnumerable<T> ToEnumerable<T>(this T item)
         {
             yield return item;
         }

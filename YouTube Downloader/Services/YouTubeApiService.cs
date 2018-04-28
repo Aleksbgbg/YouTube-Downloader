@@ -86,7 +86,7 @@
             {
                 if (result.Id.Kind.Contains("video")) // Query types 1, 2, 3
                 {
-                    return EnumerableExtensions.ToEnumerable(await GetVideo(result.Id.VideoId));
+                    return (await GetVideo(result.Id.VideoId)).ToEnumerable();
                 }
 
                 if (result.Id.Kind.Contains("playlist")) // Query types 5, 6

@@ -4,7 +4,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:Caliburn="http://www.caliburnproject.org"
-             xmlns:Converters="clr-namespace:YouTube.Downloader.Converters"
              xmlns:ViewModels="clr-namespace:YouTube.Downloader.ViewModels"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance ViewModels:CurrentDownloadsViewModel}">
@@ -13,73 +12,69 @@
                    FontWeight="DemiBold" HorizontalAlignment="Center"
                    Margin="5"/>
 
-        <ScrollViewer VerticalScrollBarVisibility="Auto">
-            <ListBox ItemsSource="{Binding Downloads, Mode=OneTime}">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel>
-                            <CheckBox IsChecked="{Binding IsSelected, RelativeSource={RelativeSource FindAncestor, AncestorType=ListBoxItem}}"
-                                      Visibility="{Binding IsSelected, RelativeSource={RelativeSource FindAncestor, AncestorType=ListBoxItem},
-                                Converter={x:Static Converters:BooleanToHiddenVisibilityConverter.Default}}"
-                                      Margin="5, 0"/>
-                            <ContentControl Caliburn:View.Model="{Binding Mode=OneTime}"/>
-                        </StackPanel>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
+        <ListBox ItemsSource="{Binding Downloads, Mode=OneTime}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel>
+                        <CheckBox IsChecked="{Binding IsSelected, RelativeSource={RelativeSource FindAncestor, AncestorType=ListBoxItem}}"
+                                  Margin="5, 0"/>
+                        <ContentControl Caliburn:View.Model="{Binding Mode=OneTime}"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
 
-                <ListBox.ItemContainerStyle>
-                    <Style TargetType="ListBoxItem" BasedOn="{StaticResource {x:Type ListBoxItem}}">
-                        <Style.Resources>
-                            <Color x:Key="SelectedBackgroundColor">#E8F6F3</Color>
-                            <Color x:Key="SelectedUnfocusedColor">#DDDDDD</Color>
-                        </Style.Resources>
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem" BasedOn="{StaticResource {x:Type ListBoxItem}}">
+                    <Style.Resources>
+                        <Color x:Key="SelectedBackgroundColor">#E8F6F3</Color>
+                        <Color x:Key="SelectedUnfocusedColor">#DDDDDD</Color>
+                    </Style.Resources>
 
-                        <Setter Property="SnapsToDevicePixels" Value="True"/>
-                        <Setter Property="OverridesDefaultStyle" Value="True"/>
-                        
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="ListBoxItem">
-                                    <Border x:Name="Border"
+                    <Setter Property="SnapsToDevicePixels" Value="True"/>
+                    <Setter Property="OverridesDefaultStyle" Value="True"/>
+
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="ListBoxItem">
+                                <Border x:Name="Border"
                                             Padding="2"
                                             SnapsToDevicePixels="True">
-                                        <Border.Background>
-                                            <SolidColorBrush Color="Transparent"/>
-                                        </Border.Background>
-                                        
-                                        <VisualStateManager.VisualStateGroups>
-                                            <VisualStateGroup x:Name="SelectionStates">
-                                                <VisualState x:Name="Unselected"/>
-                                                
-                                                <VisualState x:Name="Selected">
-                                                    <Storyboard>
-                                                        <ColorAnimationUsingKeyFrames Storyboard.TargetName="Border"
+                                    <Border.Background>
+                                        <SolidColorBrush Color="Transparent"/>
+                                    </Border.Background>
+
+                                    <VisualStateManager.VisualStateGroups>
+                                        <VisualStateGroup x:Name="SelectionStates">
+                                            <VisualState x:Name="Unselected"/>
+
+                                            <VisualState x:Name="Selected">
+                                                <Storyboard>
+                                                    <ColorAnimationUsingKeyFrames Storyboard.TargetName="Border"
                                                                                       Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)">
-                                                            <EasingColorKeyFrame KeyTime="0"
+                                                        <EasingColorKeyFrame KeyTime="0"
                                                                                  Value="{StaticResource SelectedBackgroundColor}"/>
-                                                        </ColorAnimationUsingKeyFrames>
-                                                    </Storyboard>
-                                                </VisualState>
-                                                
-                                                <VisualState x:Name="SelectedUnfocused">
-                                                    <Storyboard>
-                                                        <ColorAnimationUsingKeyFrames Storyboard.TargetName="Border"
+                                                    </ColorAnimationUsingKeyFrames>
+                                                </Storyboard>
+                                            </VisualState>
+
+                                            <VisualState x:Name="SelectedUnfocused">
+                                                <Storyboard>
+                                                    <ColorAnimationUsingKeyFrames Storyboard.TargetName="Border"
                                                                                       Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)">
-                                                            <EasingColorKeyFrame KeyTime="0"
+                                                        <EasingColorKeyFrame KeyTime="0"
                                                                                  Value="{StaticResource SelectedUnfocusedColor}"/>
-                                                        </ColorAnimationUsingKeyFrames>
-                                                    </Storyboard>
-                                                </VisualState>
-                                            </VisualStateGroup>
-                                        </VisualStateManager.VisualStateGroups>
-                                        <ContentPresenter/>
-                                    </Border>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </ListBox.ItemContainerStyle>
-            </ListBox>
-        </ScrollViewer>
+                                                    </ColorAnimationUsingKeyFrames>
+                                                </Storyboard>
+                                            </VisualState>
+                                        </VisualStateGroup>
+                                    </VisualStateManager.VisualStateGroups>
+                                    <ContentPresenter/>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </ListBox.ItemContainerStyle>
+        </ListBox>
     </DockPanel>
 </UserControl>

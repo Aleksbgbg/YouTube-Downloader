@@ -20,6 +20,10 @@
 
         private Process _process;
 
+        private int _stage;
+
+        private double _lastProgress = double.MaxValue;
+
         internal ProgressMonitor(Process process)
         {
             _process = process;
@@ -53,9 +57,6 @@
             {
                 using (StreamReader progressReader = _process.StandardOutput)
                 {
-                    int stage = 0;
-                    double lastProgress = double.MaxValue;
-
 #if DEBUG
                     try
                     {
@@ -84,60 +85,16 @@
                             _debugLogger.Log(line);
 #endif
 
-                            long GetBytes(double size, string units)
-                            {
-                                int GetMultiplier()
-                                {
-                                    switch (units)
-                                    {
-                                        case "KiB":
-                                            return 1024;
-
-                                        case "MiB":
-                                            return 1024 * 1024;
-
-                                        case "GiB":
-                                            return 1024 * 1024 * 1024;
-
-                                        default:
-                                            throw new InvalidOperationException("Invalid units for multiplier.");
-                                    }
-                                }
-
-                                return (long)(size * GetMultiplier());
-                            }
-
-                            long totalDownloadSize = GetBytes(double.Parse(match.Groups["TotalDownloadSize"].Value),
-                                                              match.Groups["TotalDownloadSizeUnits"].Value);
-
-                            double progressPercentage = double.Parse(match.Groups["ProgressPercentage"].Value);
-
-                            if (progressPercentage < lastProgress)
-                            {
-                                ++stage;
-                            }
-
-                            long? GetDownloadSpeed()
-                            {
-                                string downloadSpeed = match.Groups["DownloadSpeed"].Value;
-
-                                if (downloadSpeed == string.Empty)
-                                {
-                                    return null;
-                                }
-
-                                return GetBytes(double.Parse(downloadSpeed), match.Groups["DownloadSpeedUnits"].Value);
-                            }
-
-                            ProgressUpdated?.Invoke(this, new ProgressUpdatedEventArgs(totalDownloadSize, progressPercentage, GetDownloadSpeed(), stage));
-
-                            lastProgress = progressPercentage;
+                            ReportProgress(match);
                         }
 #if DEBUG
                     }
                     finally
                     {
-                        _debugLogger.Exit();
+                        if (!_isPaused)
+                        {
+                            _debugLogger.Exit();
+                        }
                     }
 #endif
                 }
@@ -148,6 +105,58 @@
                     FinishedMonitoring?.Invoke(this, EventArgs.Empty);
                 }
             });
+        }
+
+        private void ReportProgress(Match match)
+        {
+            long GetBytes(double size, string units)
+            {
+                int GetMultiplier()
+                {
+                    switch (units)
+                    {
+                        case "KiB":
+                            return 1024;
+
+                        case "MiB":
+                            return 1024 * 1024;
+
+                        case "GiB":
+                            return 1024 * 1024 * 1024;
+
+                        default:
+                            throw new InvalidOperationException("Invalid units for multiplier.");
+                    }
+                }
+
+                return (long)(size * GetMultiplier());
+            }
+
+            long? GetDownloadSpeed()
+            {
+                string downloadSpeed = match.Groups["DownloadSpeed"].Value;
+
+                if (downloadSpeed == string.Empty)
+                {
+                    return null;
+                }
+
+                return GetBytes(double.Parse(downloadSpeed), match.Groups["DownloadSpeedUnits"].Value);
+            }
+
+            long totalDownloadSize = GetBytes(double.Parse(match.Groups["TotalDownloadSize"].Value),
+                                              match.Groups["TotalDownloadSizeUnits"].Value);
+
+            double progressPercentage = double.Parse(match.Groups["ProgressPercentage"].Value);
+
+            if (progressPercentage < _lastProgress)
+            {
+                ++_stage;
+            }
+
+            ProgressUpdated?.Invoke(this, new ProgressUpdatedEventArgs(totalDownloadSize, progressPercentage, GetDownloadSpeed(), _stage));
+
+            _lastProgress = progressPercentage;
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace YouTube.Downloader.Views
+﻿namespace YouTube.Downloader.Controls
 {
     using System.Windows;
     using System.Windows.Data;
@@ -9,14 +9,15 @@
 
     using Binding = System.Windows.Data.Binding;
 
-    public partial class DownloadPathView : ITypeEditor
+    public partial class DownloadPathControl : ITypeEditor
     {
         private static readonly DependencyProperty ValueProperty = DependencyProperty.Register("Value",
                                                                                                typeof(string),
-                                                                                               typeof(DownloadPathView),
-                                                                                               new FrameworkPropertyMetadata(string.Empty, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+                                                                                               typeof(DownloadPathControl),
+                                                                                               new FrameworkPropertyMetadata(string.Empty,
+                                                                                                                             FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
-        public DownloadPathView()
+        public DownloadPathControl()
         {
             InitializeComponent();
         }
@@ -42,7 +43,10 @@
 
         private void Browse_Click(object sender, RoutedEventArgs e)
         {
-            FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog { Description = "Select a folder to serve as the downloads folder." };
+            FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog
+            {
+                Description = "Select a folder to serve as the downloads folder."
+            };
 
             if (folderBrowserDialog.ShowDialog() != DialogResult.OK) return;
 

@@ -6,14 +6,14 @@
 
     using Newtonsoft.Json;
 
-    using YouTube.Downloader.Views;
+    using YouTube.Downloader.Controls;
 
     internal class Settings : PropertyChangedBase
     {
         private string _downloadPath;
         [DisplayName("Download Path")]
         [Description("Path where downloaded videos are saved.")]
-        [Editor(typeof(DownloadPathView), typeof(DownloadPathView))]
+        [Editor(typeof(DownloadPathControl), typeof(DownloadPathControl))]
         [JsonProperty("DownloadPath")]
         public string DownloadPath
         {

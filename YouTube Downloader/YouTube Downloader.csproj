@@ -177,8 +177,8 @@
     <Compile Include="Views\CurrentDownloadsView.xaml.cs">
       <DependentUpon>CurrentDownloadsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\DownloadPathView.xaml.cs">
-      <DependentUpon>DownloadPathView.xaml</DependentUpon>
+    <Compile Include="Controls\DownloadPathControl.xaml.cs">
+      <DependentUpon>DownloadPathControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\DownloadView.xaml.cs">
       <DependentUpon>DownloadView.xaml</DependentUpon>
@@ -199,7 +199,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\DownloadPathView.xaml">
+    <Page Include="Controls\DownloadPathControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

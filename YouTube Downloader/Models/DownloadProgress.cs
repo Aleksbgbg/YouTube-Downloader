@@ -62,7 +62,7 @@
             }
         }
 
-        private string _statusText;
+        private string _statusText = "Gathering Data";
         public string StatusText
         {
             get => _statusText;

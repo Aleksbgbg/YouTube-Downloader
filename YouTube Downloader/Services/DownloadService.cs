@@ -109,11 +109,6 @@
             {
                 string GetStageText(int stage)
                 {
-                    if (stage == 0)
-                    {
-                        return "Gathering Data";
-                    }
-
                     if (_settingsService.Settings.DownloadType == DownloadType.Audio)
                     {
                         switch (stage)

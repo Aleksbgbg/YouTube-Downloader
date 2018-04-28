@@ -63,28 +63,19 @@
                     {
 #endif
 
-                        while (!progressReader.EndOfStream && _process != null)
+                        while (!progressReader.EndOfStream)
                         {
                             string line = progressReader.ReadLine();
-
-                            if (line == null)
-                            {
-                                continue;
-                            }
-
-                            Match match = ProgressReportRegex.Match(line);
-
-                            if (!match.Success)
-                            {
-#if DEBUG
-                                _debugLogger.Log(line);
-#endif
-                                continue;
-                            }
 
 #if DEBUG
                             _debugLogger.Log(line);
 #endif
+
+                            if (line == null) continue;
+
+                            Match match = ProgressReportRegex.Match(line);
+
+                            if (!match.Success) continue;
 
                             ReportProgress(match);
                         }

@@ -62,17 +62,17 @@
             }
         }
 
-        private string _statusText = "Gathering Data";
-        public string StatusText
+        private int _stage;
+        public int Stage
         {
-            get => _statusText;
+            get => _stage;
 
             set
             {
-                if (_statusText == value) return;
+                if (_stage == value) return;
 
-                _statusText = value;
-                NotifyOfPropertyChange(() => StatusText);
+                _stage = value;
+                NotifyOfPropertyChange(() => Stage);
             }
         }
     }

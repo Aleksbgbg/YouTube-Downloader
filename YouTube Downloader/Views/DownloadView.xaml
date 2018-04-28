@@ -103,7 +103,7 @@
                                                 Downloading at <Run Text="{Binding DownloadProgress.DownloadSpeed, Mode=OneWay, Converter={x:Static Converters:AppropriateDataSizeConverter.Default}}"/>/s
                                             </TextBlock>
 
-                                            <TextBlock Text="{Binding DownloadProgress.StatusText}"
+                                            <TextBlock Text="{Binding DownloadProgress.Stage, Converter={x:Static Converters:StageTextConverter.Default}}"
                                                        HorizontalAlignment="Center"/>
                                         </StackPanel>
                                     </Setter.Value>

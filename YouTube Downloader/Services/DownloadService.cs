@@ -107,40 +107,7 @@
 
             void ProgressUpdated(object sender, ProgressUpdatedEventArgs e)
             {
-                string GetStageText(int stage)
-                {
-                    if (_settingsService.Settings.DownloadType == DownloadType.Audio)
-                    {
-                        switch (stage)
-                        {
-                            case 1:
-                                return "Downloading Audio";
-
-                            case 2:
-                                return "Finalising";
-
-                            default:
-                                return "Unknown";
-                        }
-                    }
-
-                    switch (stage)
-                    {
-                        case 1:
-                            return "Downloading Video";
-
-                        case 2:
-                            return "Downloading Audio";
-
-                        case 3:
-                            return "Finalising";
-
-                        default:
-                            return "Unknown";
-                    }
-                }
-
-                downloadProgress.StatusText = GetStageText(e.Stage);
+                downloadProgress.Stage = e.Stage;
 
                 if (e.DownloadSpeed.HasValue)
                 {

@@ -146,7 +146,12 @@
                 }
 
                 downloadProgress.StatusText = GetStageText(e.Stage);
-                downloadProgress.DownloadSpeed = e.DownloadSpeed;
+
+                if (e.DownloadSpeed.HasValue)
+                {
+                    downloadProgress.DownloadSpeed = e.DownloadSpeed.Value;
+                }
+
                 downloadProgress.ProgressPercentage = e.DownloadPercentage;
                 downloadProgress.TotalDownloadSize = e.TotalDownloadSize;
             }

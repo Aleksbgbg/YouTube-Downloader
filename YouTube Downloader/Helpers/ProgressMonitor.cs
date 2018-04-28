@@ -10,7 +10,7 @@
 
     internal class ProgressMonitor
     {
-        private static readonly Regex ProgressReportRegex = new Regex(@"^\[download] (?<ProgressPercentage>[ 1][ 0-9][0-9]\.[0-9])% of .*?(?<TotalDownloadSize>[\d\.]+)?(?<TotalDownloadSizeUnits>.iB) at  (?<DownloadSpeed>.+)(?<DownloadSpeedUnits>.iB)\/s");
+        private static readonly Regex ProgressReportRegex = new Regex(@"^\[download] (?<ProgressPercentage>[ 1][ 0-9][0-9]\.[0-9])% of .*?(?<TotalDownloadSize>[\d\.]+)?(?<TotalDownloadSizeUnits>.iB) at +(?:(?<DownloadSpeed>.+)(?<DownloadSpeedUnits>.iB)\/s|Unknown speed)");
 
 #if DEBUG
         private readonly DebugLogger _debugLogger = new DebugLogger();
@@ -110,9 +110,6 @@
                             long totalDownloadSize = GetBytes(double.Parse(match.Groups["TotalDownloadSize"].Value),
                                                               match.Groups["TotalDownloadSizeUnits"].Value);
 
-                            long downloadSpeed = GetBytes(double.Parse(match.Groups["DownloadSpeed"].Value),
-                                                          match.Groups["DownloadSpeedUnits"].Value);
-
                             double progressPercentage = double.Parse(match.Groups["ProgressPercentage"].Value);
 
                             if (progressPercentage < lastProgress)
@@ -120,7 +117,19 @@
                                 ++stage;
                             }
 
-                            ProgressUpdated?.Invoke(this, new ProgressUpdatedEventArgs(totalDownloadSize, progressPercentage, downloadSpeed, stage));
+                            long? GetDownloadSpeed()
+                            {
+                                string downloadSpeed = match.Groups["DownloadSpeed"].Value;
+
+                                if (downloadSpeed == string.Empty)
+                                {
+                                    return null;
+                                }
+
+                                return GetBytes(double.Parse(downloadSpeed), match.Groups["DownloadSpeedUnits"].Value);
+                            }
+
+                            ProgressUpdated?.Invoke(this, new ProgressUpdatedEventArgs(totalDownloadSize, progressPercentage, GetDownloadSpeed(), stage));
 
                             lastProgress = progressPercentage;
                         }

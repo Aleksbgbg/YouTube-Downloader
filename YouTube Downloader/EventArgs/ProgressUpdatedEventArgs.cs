@@ -4,7 +4,7 @@
 
     internal class ProgressUpdatedEventArgs : EventArgs
     {
-        internal ProgressUpdatedEventArgs(long totalDownloadSize, double downloadPercentage, long downloadSpeed, int stage)
+        internal ProgressUpdatedEventArgs(long totalDownloadSize, double downloadPercentage, long? downloadSpeed, int stage)
         {
             TotalDownloadSize = totalDownloadSize;
             DownloadPercentage = downloadPercentage;
@@ -16,7 +16,7 @@
 
         public double DownloadPercentage { get; }
 
-        public long DownloadSpeed { get; }
+        public long? DownloadSpeed { get; }
 
         public int Stage { get; }
     }

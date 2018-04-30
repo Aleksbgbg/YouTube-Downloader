@@ -22,7 +22,8 @@
             </TextBlock>
         </StatusBar>
 
-        <ListBox ItemsSource="{Binding Videos, Mode=OneTime}"
+        <ListBox BorderThickness="0"
+                 ItemsSource="{Binding Videos, Mode=OneTime}"
                  SelectionMode="Extended"
                  VirtualizingPanel.IsVirtualizing="False">
             <ListBox.ItemTemplate>

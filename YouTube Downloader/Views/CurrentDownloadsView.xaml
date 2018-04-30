@@ -31,7 +31,8 @@
                     Caliburn:Message.Attach="Kill"/>
         </StackPanel>
 
-        <ListBox ItemsSource="{Binding Downloads, Mode=OneTime}"
+        <ListBox BorderThickness="0"
+                 ItemsSource="{Binding Downloads, Mode=OneTime}"
                  SelectionMode="Extended"
                  VirtualizingPanel.IsVirtualizing="False">
             <ListBox.ItemTemplate>

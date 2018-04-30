@@ -4,6 +4,8 @@
     using System.Globalization;
     using System.Windows.Data;
 
+    using YouTube.Downloader.Core;
+
     [ValueConversion(typeof(int), typeof(bool))]
     internal class CountToBooleanConverter : IValueConverter
     {
@@ -16,7 +18,7 @@
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            throw new NotSupportedException("ConvertBack is not supported.");
+            throw ThrowHelper.NotSupported();
         }
     }
 }

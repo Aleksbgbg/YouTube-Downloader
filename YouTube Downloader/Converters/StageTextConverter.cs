@@ -6,6 +6,7 @@
 
     using Caliburn.Micro;
 
+    using YouTube.Downloader.Core;
     using YouTube.Downloader.Models;
     using YouTube.Downloader.Services.Interfaces;
 
@@ -58,7 +59,7 @@
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            throw new NotSupportedException("ConvertBack isn ot supported.");
+            throw ThrowHelper.NotSupported();
         }
     }
 }

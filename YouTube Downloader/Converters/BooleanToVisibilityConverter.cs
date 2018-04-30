@@ -5,6 +5,8 @@
     using System.Windows;
     using System.Windows.Data;
 
+    using YouTube.Downloader.Core;
+
     [ValueConversion(typeof(bool), typeof(Visibility))]
     internal class BooleanToVisibilityConverter : IValueConverter
     {
@@ -17,7 +19,7 @@
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return (Visibility)value == Visibility.Visible;
+            throw ThrowHelper.NotSupported();
         }
     }
 }

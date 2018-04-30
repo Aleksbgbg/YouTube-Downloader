@@ -1,4 +1,4 @@
-﻿namespace YouTube.Downloader.Helpers
+﻿namespace YouTube.Downloader.Core
 {
     using System;
     using System.ComponentModel;

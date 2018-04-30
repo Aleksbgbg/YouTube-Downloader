@@ -2,7 +2,7 @@
 {
     using System;
 
-    using YouTube.Downloader.Helpers;
+    using YouTube.Downloader.Core.Downloading;
     using YouTube.Downloader.Models;
 
     internal interface IDownloadViewModel : IViewModelBase

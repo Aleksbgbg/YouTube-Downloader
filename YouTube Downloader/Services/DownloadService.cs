@@ -5,8 +5,8 @@
 
     using Caliburn.Micro;
 
+    using YouTube.Downloader.Core.Downloading;
     using YouTube.Downloader.EventArgs;
-    using YouTube.Downloader.Helpers;
     using YouTube.Downloader.Models;
     using YouTube.Downloader.Services.Interfaces;
     using YouTube.Downloader.ViewModels.Interfaces;

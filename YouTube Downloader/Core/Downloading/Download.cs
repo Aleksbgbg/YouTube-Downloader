@@ -1,4 +1,4 @@
-﻿namespace YouTube.Downloader.Helpers
+﻿namespace YouTube.Downloader.Core.Downloading
 {
     using System;
     using System.Diagnostics;

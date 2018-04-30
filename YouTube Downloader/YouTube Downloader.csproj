@@ -140,9 +140,9 @@
     <Compile Include="Factories\DownloadFactory.cs" />
     <Compile Include="Factories\Interfaces\IDownloadFactory.cs" />
     <Compile Include="Debug\DebugLogger.cs" />
-    <Compile Include="Helpers\Download.cs" />
-    <Compile Include="Helpers\EnumDescriptionConverter.cs" />
-    <Compile Include="Helpers\ProgressMonitor.cs" />
+    <Compile Include="Core\Downloading\Download.cs" />
+    <Compile Include="Core\EnumDescriptionConverter.cs" />
+    <Compile Include="Core\Downloading\ProgressMonitor.cs" />
     <Compile Include="Models\DownloadProgress.cs" />
     <Compile Include="Models\DownloadType.cs" />
     <Compile Include="Services\AppDataService.cs" />
@@ -314,7 +314,9 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Helpers\" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="FodyWeavers.xml" />
   </ItemGroup>

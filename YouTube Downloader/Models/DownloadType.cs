@@ -2,7 +2,7 @@
 {
     using System.ComponentModel;
 
-    using YouTube.Downloader.Helpers;
+    using YouTube.Downloader.Core;
 
     [TypeConverter(typeof(EnumDescriptionConverter))]
     internal enum DownloadType

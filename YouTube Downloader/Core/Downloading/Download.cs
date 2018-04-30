@@ -100,6 +100,17 @@
             Resumed?.Invoke(this, EventArgs.Empty);
         }
 
+        internal void TogglePause()
+        {
+            if (IsPaused)
+            {
+                Resume();
+                return;
+            }
+
+            Pause();
+        }
+
         internal void Kill()
         {
             KillProcess(Killed);

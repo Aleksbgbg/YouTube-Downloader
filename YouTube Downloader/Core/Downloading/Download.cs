@@ -9,10 +9,6 @@
     {
         private readonly string _processArguments;
 
-        private bool _isPaused;
-
-        private bool _isExited;
-
         internal Download(YouTubeVideo video, Settings settings)
         {
             _processArguments = $"-o {settings.DownloadPath}/%(title)s.%(ext)s" + " " +
@@ -27,6 +23,10 @@
         internal event EventHandler Resumed;
 
         internal event EventHandler Killed;
+
+        public bool IsPaused { get; private set; }
+
+        public bool IsExited { get; private set; }
 
         private Process _process;
         public Process Process
@@ -47,7 +47,7 @@
                 {
                     _process.Exited -= ProcessExited;
 
-                    _isExited = true;
+                    IsExited = true;
 
                     if (_process != null)
                     {
@@ -76,18 +76,18 @@
 
         internal void Pause()
         {
-            if (_isPaused)
+            if (IsPaused)
             {
                 throw new InvalidOperationException("Cannot pause a paused download.");
             }
 
             KillProcess(Paused);
-            _isPaused = true;
+            IsPaused = true;
         }
 
         internal void Resume()
         {
-            if (!_isPaused)
+            if (!IsPaused)
             {
                 throw new InvalidOperationException("Cannot resume a download in progress.");
             }
@@ -95,7 +95,7 @@
             GenerateProcess();
             Process.Start();
 
-            _isPaused = false;
+            IsPaused = false;
 
             Resumed?.Invoke(this, EventArgs.Empty);
         }
@@ -107,7 +107,7 @@
 
         private void KillProcess(EventHandler invokeEvent)
         {
-            if (!_isExited && !_isPaused)
+            if (!IsExited && !IsPaused)
             {
                 Process.Kill();
             }

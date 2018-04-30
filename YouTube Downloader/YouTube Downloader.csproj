@@ -139,7 +139,7 @@
     <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="Factories\DownloadFactory.cs" />
     <Compile Include="Factories\Interfaces\IDownloadFactory.cs" />
-    <Compile Include="Debug\DebugLogger.cs" />
+    <Compile Include="Core\Debug\DebugLogger.cs" />
     <Compile Include="Core\Downloading\Download.cs" />
     <Compile Include="Core\EnumDescriptionConverter.cs" />
     <Compile Include="Core\Downloading\ProgressMonitor.cs" />

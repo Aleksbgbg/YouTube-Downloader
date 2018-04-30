@@ -1,5 +1,5 @@
 ﻿#if DEBUG
-namespace YouTube.Downloader.Debug
+namespace YouTube.Downloader.Core.Debug
 {
     using System;
     using System.Globalization;

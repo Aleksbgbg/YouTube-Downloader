@@ -4,6 +4,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:Caliburn="http://www.caliburnproject.org"
+             xmlns:Converters="clr-namespace:YouTube.Downloader.Converters"
              xmlns:ViewModels="clr-namespace:YouTube.Downloader.ViewModels"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance ViewModels:CurrentDownloadsViewModel}">
@@ -12,11 +13,31 @@
                    FontWeight="DemiBold" HorizontalAlignment="Center"
                    Margin="5"/>
 
-        <ListBox ItemsSource="{Binding Downloads, Mode=OneTime}">
+        <StackPanel DockPanel.Dock="Bottom" HorizontalAlignment="Center" Orientation="Horizontal">
+            <StackPanel.Style>
+                <Style TargetType="StackPanel">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding SelectedDownloads.Count, Converter={x:Static Converters:CountToBooleanConverter.Default}}"
+                                     Value="False">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </StackPanel.Style>
+
+            <Button Content="Toggle Pause" Width="75" Margin="5"
+                    Caliburn:Message.Attach="TogglePause"/>
+            <Button Content="Kill" Width="75" Margin="5"
+                    Caliburn:Message.Attach="Kill"/>
+        </StackPanel>
+
+        <ListBox ItemsSource="{Binding Downloads, Mode=OneTime}"
+                 SelectionMode="Extended"
+                 VirtualizingPanel.IsVirtualizing="False">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel>
-                        <CheckBox IsChecked="{Binding IsSelected, RelativeSource={RelativeSource FindAncestor, AncestorType=ListBoxItem}}"
+                        <CheckBox IsChecked="{Binding IsSelected}"
                                   Margin="5, 0"/>
                         <ContentControl Caliburn:View.Model="{Binding Mode=OneTime}"/>
                     </StackPanel>
@@ -25,6 +46,8 @@
 
             <ListBox.ItemContainerStyle>
                 <Style TargetType="ListBoxItem" BasedOn="{StaticResource {x:Type ListBoxItem}}">
+                    <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}"/>
+
                     <Setter Property="SnapsToDevicePixels" Value="True"/>
                     <Setter Property="OverridesDefaultStyle" Value="True"/>
 

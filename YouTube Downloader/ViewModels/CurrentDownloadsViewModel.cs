@@ -30,6 +30,8 @@
 
         public IObservableCollection<IDownloadViewModel> Downloads { get; } = new BindableCollection<IDownloadViewModel>();
 
+        public IObservableCollection<IDownloadViewModel> SelectedDownloads { get; } = new BindableCollection<IDownloadViewModel>();
+
         public void Handle(IEnumerable<IVideoViewModel> message)
         {
             IDownloadViewModel[] newDownloads = message.Select(_downloadFactory.MakeDownloadViewModel).ToArray();
@@ -41,22 +43,53 @@
                     download.DownloadCompleted -= DownloadViewModelDownloadCompleted;
                     download.PropertyChanged -= DownloadPropertyChanged;
 
-                    Task.Delay(3_000).ContinueWith(task => Downloads.Remove(download));
+                    Task.Delay(3_000).ContinueWith(task =>
+                    {
+                        Downloads.Remove(download);
+                        SelectedDownloads.Remove(download);
+                    });
                 }
 
                 download.DownloadCompleted += DownloadViewModelDownloadCompleted;
-            }
 
-            void DownloadPropertyChanged(object sender, PropertyChangedEventArgs e)
-            {
-                Downloads.Refresh();
-            }
+                void DownloadPropertyChanged(object sender, PropertyChangedEventArgs e)
+                {
+                    switch (e.PropertyName)
+                    {
+                        case nameof(IDownloadViewModel.DownloadState):
+                            Downloads.Refresh();
+                            break;
 
-            newDownloads.Apply(download => download.PropertyChanged += DownloadPropertyChanged);
+                        case nameof(IDownloadViewModel.IsSelected):
+                            {
+                                if (download.IsSelected)
+                                {
+                                    SelectedDownloads.Add(download);
+                                    return;
+                                }
+
+                                SelectedDownloads.Remove(download);
+
+                                break;
+                            }
+                    }
+                }
+
+                download.PropertyChanged += DownloadPropertyChanged;
+            }
 
             Downloads.AddRange(newDownloads);
-
             _downloadService.QueueDownloads(newDownloads);
+        }
+
+        public void TogglePause()
+        {
+            SelectedDownloads.Apply(download => download.Download.TogglePause());
+        }
+
+        public void Kill()
+        {
+            SelectedDownloads.Apply(download => download.Download.Kill());
         }
     }
 }

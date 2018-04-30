@@ -10,8 +10,6 @@
 			 d:DataContext="{d:DesignInstance ViewModels:DownloadViewModel}">
     <StackPanel Margin="5">
         <ContentControl Caliburn:View.Model="{Binding VideoViewModel, Mode=OneTime}"/>
-        
-        <Button Content="Toggle Pause" Caliburn:Message.Attach="TogglePause"/>
 
         <DockPanel HorizontalAlignment="Center" Margin="5">
             <Image Width="25" Margin="5, 0">

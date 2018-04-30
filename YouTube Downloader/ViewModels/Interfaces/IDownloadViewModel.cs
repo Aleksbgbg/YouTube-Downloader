@@ -13,6 +13,8 @@
 
         DownloadProgress DownloadProgress { get; set; }
 
+        bool IsSelected { get; set; }
+
         Download Download { get; set; }
 
         void Initialise(IVideoViewModel videoViewModel);

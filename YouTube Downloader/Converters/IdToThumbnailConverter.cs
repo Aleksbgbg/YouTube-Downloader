@@ -13,7 +13,6 @@
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            throw ThrowHelper.NotSupported();
             return $"https://img.youtube.com/vi/{(string)value}/hqdefault.jpg";
         }
 

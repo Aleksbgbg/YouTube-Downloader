@@ -24,7 +24,7 @@
                 _downloadState = value;
                 NotifyOfPropertyChange(() => DownloadState);
 
-                if (_downloadState == DownloadState.Completed)
+                if (_downloadState == DownloadState.Completed || _downloadState == DownloadState.Exited)
                 {
                     DownloadCompleted?.Invoke(this, EventArgs.Empty);
                 }

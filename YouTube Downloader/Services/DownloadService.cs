@@ -62,6 +62,8 @@
             void DownloadCompleted(object sender, EventArgs e)
             {
                 DetachDownload();
+
+                downloadViewModel.DownloadState = DownloadState.Completed;
             }
 
             void DownloadPaused(object sender, EventArgs e)
@@ -79,6 +81,8 @@
             void DownloadKilled(object sender, EventArgs e)
             {
                 DetachDownload();
+
+                downloadViewModel.DownloadState = DownloadState.Exited;
             }
 
             void DetachDownload()
@@ -89,8 +93,6 @@
                 download.Killed -= DownloadKilled;
 
                 _currentDownloads.Remove(download);
-
-                downloadViewModel.DownloadState = DownloadState.Completed;
             }
 
             download.Completed += DownloadCompleted;

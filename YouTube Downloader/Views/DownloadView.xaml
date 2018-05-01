@@ -59,6 +59,10 @@
                             <DataTrigger Binding="{Binding DownloadState}" Value="Completed">
                                 <Setter Property="Source" Value="{StaticResource Completed}"/>
                             </DataTrigger>
+
+                            <DataTrigger Binding="{Binding DownloadState}" Value="Exited">
+                                <Setter Property="Source" Value="{StaticResource Delete}"/>
+                            </DataTrigger>
                         </Style.Triggers>
                     </Style>
                 </Image.Style>

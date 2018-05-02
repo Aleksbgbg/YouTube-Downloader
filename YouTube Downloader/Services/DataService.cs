@@ -20,7 +20,13 @@
 
         public T[] Load<T>(string dataName)
         {
-            return JsonConvert.DeserializeObject<T[]>(File.ReadAllText(_appDataService.GetFile($"Data/{dataName}.json")));
+            string dataFile = _appDataService.GetFile($"Data/{dataName}.json");
+
+            string fileData = File.ReadAllText(dataFile);
+
+            File.WriteAllText(dataFile, "[]"); // Prevent duplicate loading of file if not cleared correctly
+
+            return JsonConvert.DeserializeObject<T[]>(fileData);
         }
 
         public void Save<T>(IEnumerable<T> data, string dataName)

@@ -10,6 +10,7 @@
     using Caliburn.Micro;
 
     using YouTube.Downloader.Factories.Interfaces;
+    using YouTube.Downloader.Models;
     using YouTube.Downloader.Services.Interfaces;
     using YouTube.Downloader.ViewModels.Interfaces;
 
@@ -19,11 +20,13 @@
 
         private readonly IDownloadFactory _downloadFactory;
 
-        public CurrentDownloadsViewModel(IEventAggregator eventAggregator, IDownloadService downloadService, IDownloadFactory downloadFactory)
+        public CurrentDownloadsViewModel(IEventAggregator eventAggregator, IDownloadFactory downloadFactory, IVideoFactory videoFactory, IDataService dataService, IDownloadService downloadService)
         {
             eventAggregator.Subscribe(this);
             _downloadService = downloadService;
             _downloadFactory = downloadFactory;
+
+            AddDownloads(dataService.Load<YouTubeVideo>("Downloads").Select(videoFactory.MakeVideoViewModel));
 
             ((ListCollectionView)CollectionViewSource.GetDefaultView(Downloads)).CustomSort = Comparer<IDownloadViewModel>.Create((first, second) => -first.DownloadState.CompareTo(second.DownloadState));
         }
@@ -34,7 +37,22 @@
 
         public void Handle(IEnumerable<IVideoViewModel> message)
         {
-            IDownloadViewModel[] newDownloads = message.Select(_downloadFactory.MakeDownloadViewModel).ToArray();
+            AddDownloads(message);
+        }
+
+        public void TogglePause()
+        {
+            SelectedDownloads.Apply(download => download.Download.TogglePause());
+        }
+
+        public void Kill()
+        {
+            SelectedDownloads.Apply(download => download.Download.Kill());
+        }
+
+        private void AddDownloads(IEnumerable<IVideoViewModel> videos)
+        {
+            IDownloadViewModel[] newDownloads = videos.Select(_downloadFactory.MakeDownloadViewModel).ToArray();
 
             foreach (IDownloadViewModel download in newDownloads)
             {
@@ -61,17 +79,17 @@
                             break;
 
                         case nameof(IDownloadViewModel.IsSelected):
+                        {
+                            if (download.IsSelected)
                             {
-                                if (download.IsSelected)
-                                {
-                                    SelectedDownloads.Add(download);
-                                    return;
-                                }
-
-                                SelectedDownloads.Remove(download);
-
-                                break;
+                                SelectedDownloads.Add(download);
+                                return;
                             }
+
+                            SelectedDownloads.Remove(download);
+
+                            break;
+                        }
                     }
                 }
 
@@ -80,16 +98,6 @@
 
             Downloads.AddRange(newDownloads);
             _downloadService.QueueDownloads(newDownloads);
-        }
-
-        public void TogglePause()
-        {
-            SelectedDownloads.Apply(download => download.Download.TogglePause());
-        }
-
-        public void Kill()
-        {
-            SelectedDownloads.Apply(download => download.Download.Kill());
         }
     }
 }

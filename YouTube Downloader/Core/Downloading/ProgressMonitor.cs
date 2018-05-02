@@ -6,7 +6,9 @@
     using System.Text.RegularExpressions;
     using System.Threading.Tasks;
 
+#if DEBUG
     using YouTube.Downloader.Core.Debug;
+#endif // DEBUG
     using YouTube.Downloader.EventArgs;
 
     internal class ProgressMonitor

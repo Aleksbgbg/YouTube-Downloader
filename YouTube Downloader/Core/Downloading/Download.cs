@@ -11,6 +11,8 @@
 
         internal Download(YouTubeVideo video, Settings settings)
         {
+            YouTubeVideo = video;
+
             _processArguments = $"-o {settings.DownloadPath}/%(title)s.%(ext)s" + " " +
                                 $"-f {(settings.DownloadType == DownloadType.Audio ? "bestaudio" : "bestvideo+bestaudio")}" + " " +
                                 $"\"{video.Id}\"";
@@ -27,6 +29,8 @@
         public bool IsPaused { get; private set; }
 
         public bool IsExited { get; private set; }
+
+        public YouTubeVideo YouTubeVideo { get; }
 
         private Process _process;
         public Process Process

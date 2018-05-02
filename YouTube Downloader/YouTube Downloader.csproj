@@ -146,7 +146,9 @@
     <Compile Include="Models\DownloadProgress.cs" />
     <Compile Include="Models\DownloadType.cs" />
     <Compile Include="Services\AppDataService.cs" />
+    <Compile Include="Services\DataService.cs" />
     <Compile Include="Services\Interfaces\IAppDataService.cs" />
+    <Compile Include="Services\Interfaces\IDataService.cs" />
     <Compile Include="Services\Interfaces\ISettingsService.cs" />
     <Compile Include="Services\SettingsService.cs" />
     <Compile Include="Models\DownloadState.cs" />

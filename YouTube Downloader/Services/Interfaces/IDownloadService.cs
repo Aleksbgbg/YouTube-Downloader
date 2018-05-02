@@ -8,6 +8,6 @@
     {
         void QueueDownloads(IEnumerable<IDownloadViewModel> downloads);
 
-        void TerminateAllDownloads();
+        void SaveAndTerminateDownloads();
     }
 }

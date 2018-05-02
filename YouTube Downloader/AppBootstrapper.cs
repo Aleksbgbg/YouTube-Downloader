@@ -80,7 +80,7 @@
 
         protected override void OnExit(object sender, System.EventArgs e)
         {
-            IoC.Get<IDownloadService>().TerminateAllDownloads();
+            IoC.Get<IDownloadService>().SaveAndTerminateDownloads();
         }
     }
 }

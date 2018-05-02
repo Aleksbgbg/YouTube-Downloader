@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     using Caliburn.Micro;
 
@@ -21,9 +22,12 @@
 
         private readonly ISettingsService _settingsService;
 
-        public DownloadService(ISettingsService settingsService)
+        private readonly IDataService _dataService;
+
+        public DownloadService(ISettingsService settingsService, IDataService dataService)
         {
             _settingsService = settingsService;
+            _dataService = dataService;
         }
 
         public void QueueDownloads(IEnumerable<IDownloadViewModel> downloads)
@@ -39,9 +43,13 @@
             }
         }
 
-        public void TerminateAllDownloads()
+        public void SaveAndTerminateDownloads()
         {
-            _currentDownloads.ToArray().Apply(download => download.Kill());
+            Download[] downloads = _currentDownloads.ToArray();
+
+            _dataService.Save(_downloadQueue.Select(downloadViewModel => downloadViewModel.VideoViewModel.Video).Concat(downloads.Select(download => download.YouTubeVideo)), "Downloads");
+
+            downloads.Apply(download => download.Kill());
         }
 
         private void DownloadNext()
@@ -93,6 +101,8 @@
                 download.Killed -= DownloadKilled;
 
                 _currentDownloads.Remove(download);
+
+                DownloadNext();
             }
 
             download.Completed += DownloadCompleted;
@@ -100,9 +110,9 @@
             download.Resumed += DownloadResumed;
             download.Killed += DownloadKilled;
 
-            download.Start();
-
             _currentDownloads.Add(download);
+
+            download.Start();
 
             DownloadProgress downloadProgress = new DownloadProgress();
             downloadViewModel.DownloadProgress = downloadProgress;

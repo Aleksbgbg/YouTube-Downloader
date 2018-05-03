@@ -8,6 +8,7 @@
 
     using YouTube.Downloader.Core.Downloading;
     using YouTube.Downloader.EventArgs;
+    using YouTube.Downloader.Factories.Interfaces;
     using YouTube.Downloader.Models;
     using YouTube.Downloader.Services.Interfaces;
     using YouTube.Downloader.ViewModels.Interfaces;
@@ -20,13 +21,13 @@
 
         private readonly List<Download> _currentDownloads = new List<Download>();
 
-        private readonly ISettingsService _settingsService;
+        private readonly IDownloadFactory _downloadFactory;
 
         private readonly IDataService _dataService;
 
-        public DownloadService(ISettingsService settingsService, IDataService dataService)
+        public DownloadService(IDownloadFactory downloadFactory, IDataService dataService)
         {
-            _settingsService = settingsService;
+            _downloadFactory = downloadFactory;
             _dataService = dataService;
         }
 
@@ -62,7 +63,7 @@
             IDownloadViewModel downloadViewModel = _downloadQueue.Dequeue();
             downloadViewModel.DownloadState = DownloadState.Downloading;
 
-            Download download = new Download(downloadViewModel.VideoViewModel.Video, _settingsService.Settings);
+            Download download = _downloadFactory.MakeDownload(downloadViewModel.VideoViewModel.Video);
             downloadViewModel.Download = download;
 
             ProgressMonitor progressMonitor = new ProgressMonitor(download.Process);

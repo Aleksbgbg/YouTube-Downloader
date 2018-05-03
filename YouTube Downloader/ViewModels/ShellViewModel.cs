@@ -6,14 +6,15 @@
 
     using YouTube.Downloader.ViewModels.Interfaces;
 
-    internal sealed class ShellViewModel : Conductor<IViewModelBase>.Collection.OneActive, IShellViewModel
+    internal sealed class ShellViewModel : Conductor<IViewModelBase>, IShellViewModel
     {
+        private readonly ISettingsViewModel _settingsViewModel;
+
         public ShellViewModel(IMainViewModel mainViewModel, ISettingsViewModel settingsViewModel)
         {
             DisplayName = "YouTube Downloader";
 
-            Items.Add(mainViewModel);
-            Items.Add(settingsViewModel);
+            _settingsViewModel = settingsViewModel;
 
             settingsViewModel.Closed += (sender, e) => ChangeActiveItem(mainViewModel, false);
 
@@ -27,7 +28,7 @@
 
         public void OpenSettings()
         {
-            ChangeActiveItem(Items[1], false);
+            ChangeActiveItem(_settingsViewModel, false);
         }
     }
 }

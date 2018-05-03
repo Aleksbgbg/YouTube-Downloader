@@ -28,28 +28,10 @@
 
         public void Load(IEnumerable<YouTubeVideo> videos)
         {
-            void VideoPropertyChanged(object sender, PropertyChangedEventArgs e)
-            {
-                if (e.PropertyName != nameof(IMatchedVideoViewModel.IsSelected)) return;
-
-                IMatchedVideoViewModel video = (IMatchedVideoViewModel)sender;
-
-                if (video.IsSelected)
-                {
-                    SelectedVideos.Add(video);
-                }
-                else
-                {
-                    SelectedVideos.Remove(video);
-                }
-            }
-
-            Videos.Apply(video => video.PropertyChanged -= VideoPropertyChanged);
             SelectedVideos.Clear();
             Videos.Clear();
 
             Videos.AddRange(videos.Select(_videoFactory.MakeMatchedVideoViewModel));
-            Videos.Apply(video => video.PropertyChanged += VideoPropertyChanged);
         }
 
         public void DownloadSelected()

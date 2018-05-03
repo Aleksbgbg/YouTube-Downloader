@@ -72,24 +72,9 @@
 
                 void DownloadPropertyChanged(object sender, PropertyChangedEventArgs e)
                 {
-                    switch (e.PropertyName)
+                    if (e.PropertyName == nameof(IDownloadViewModel.DownloadState))
                     {
-                        case nameof(IDownloadViewModel.DownloadState):
-                            Downloads.Refresh();
-                            break;
-
-                        case nameof(IDownloadViewModel.IsSelected):
-                        {
-                            if (download.IsSelected)
-                            {
-                                SelectedDownloads.Add(download);
-                                return;
-                            }
-
-                            SelectedDownloads.Remove(download);
-
-                            break;
-                        }
+                        Downloads.Refresh();
                     }
                 }
 

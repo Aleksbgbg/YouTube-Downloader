@@ -6,6 +6,7 @@
              xmlns:Caliburn="http://www.caliburnproject.org"
              xmlns:Converters="clr-namespace:YouTube.Downloader.Converters"
              xmlns:ViewModels="clr-namespace:YouTube.Downloader.ViewModels"
+             xmlns:Helpers="clr-namespace:YouTube.Downloader.Helpers"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance ViewModels:CurrentDownloadsViewModel}">
     <DockPanel>
@@ -34,11 +35,11 @@
         <ListBox BorderThickness="0"
                  ItemsSource="{Binding Downloads, Mode=OneTime}"
                  SelectionMode="Extended"
-                 VirtualizingPanel.IsVirtualizing="False">
+                 Helpers:SelectedItemsHelper.SelectedItems="{Binding SelectedDownloads, Mode=OneTime}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel>
-                        <CheckBox IsChecked="{Binding IsSelected}"
+                        <CheckBox IsChecked="{Binding IsSelected, RelativeSource={RelativeSource FindAncestor, AncestorType=ListBoxItem}}"
                                   Margin="5, 0"/>
                         <ContentControl Caliburn:View.Model="{Binding Mode=OneTime}"/>
                     </StackPanel>
@@ -47,8 +48,6 @@
 
             <ListBox.ItemContainerStyle>
                 <Style TargetType="ListBoxItem" BasedOn="{StaticResource {x:Type ListBoxItem}}">
-                    <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}"/>
-
                     <Setter Property="SnapsToDevicePixels" Value="True"/>
                     <Setter Property="OverridesDefaultStyle" Value="True"/>
 

@@ -5,5 +5,7 @@
     internal interface ICurrentDownloadsViewModel : IViewModelBase
     {
         IObservableCollection<IDownloadViewModel> Downloads { get; }
+
+        IObservableCollection<IDownloadViewModel> SelectedDownloads { get; }
     }
 }

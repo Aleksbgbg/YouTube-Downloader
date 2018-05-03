@@ -4,6 +4,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:Caliburn="http://www.caliburnproject.org"
+             xmlns:Helpers="clr-namespace:YouTube.Downloader.Helpers"
              xmlns:ViewModels="clr-namespace:YouTube.Downloader.ViewModels"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance ViewModels:MatchedVideosViewModel}">
@@ -25,19 +26,12 @@
         <ListBox BorderThickness="0"
                  ItemsSource="{Binding Videos, Mode=OneTime}"
                  SelectionMode="Extended"
-                 VirtualizingPanel.IsVirtualizing="False">
+                 Helpers:SelectedItemsHelper.SelectedItems="{Binding SelectedVideos, Mode=OneTime}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <ContentControl Caliburn:View.Model="{Binding Mode=OneTime}"/>
                 </DataTemplate>
             </ListBox.ItemTemplate>
-
-            <ListBox.ItemContainerStyle>
-                <Style TargetType="ListBoxItem"
-                       BasedOn="{StaticResource {x:Type ListBoxItem}}">
-                    <Setter Property="IsSelected" Value="{Binding IsSelected}"/>
-                </Style>
-            </ListBox.ItemContainerStyle>
         </ListBox>
     </DockPanel>
 </UserControl>

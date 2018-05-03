@@ -20,7 +20,7 @@
 
         public T[] Load<T>(string dataName)
         {
-            string dataFile = _appDataService.GetFile($"Data/{dataName}.json");
+            string dataFile = _appDataService.GetFile($"Data/{dataName}.json", "[]");
 
             string fileData = File.ReadAllText(dataFile);
 

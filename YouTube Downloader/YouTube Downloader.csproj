@@ -143,6 +143,7 @@
     <Compile Include="Core\Downloading\Download.cs" />
     <Compile Include="Core\EnumDescriptionConverter.cs" />
     <Compile Include="Core\Downloading\ProgressMonitor.cs" />
+    <Compile Include="Helpers\SelectedItemsHelper.cs" />
     <Compile Include="Models\DownloadProgress.cs" />
     <Compile Include="Models\DownloadType.cs" />
     <Compile Include="Services\AppDataService.cs" />
@@ -316,9 +317,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Helpers\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="FodyWeavers.xml" />
   </ItemGroup>

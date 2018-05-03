@@ -16,8 +16,6 @@
         public DataService(IAppDataService appDataService)
         {
             _appDataService = appDataService;
-
-            _appDataService.GetFolder("Data");
         }
 
         public T[] Load<T>(string dataName)

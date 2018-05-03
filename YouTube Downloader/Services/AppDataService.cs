@@ -37,6 +37,13 @@
 
             if (!File.Exists(filePath))
             {
+                string directory = Path.GetDirectoryName(filePath);
+
+                if (!Directory.Exists(directory))
+                {
+                    Directory.CreateDirectory(directory);
+                }
+
                 File.WriteAllText(filePath, defaultContents);
             }
 

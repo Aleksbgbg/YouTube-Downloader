@@ -9,6 +9,8 @@
 
     internal class DataService : IDataService
     {
+        private const string EmptyData = "[]";
+
         private readonly IAppDataService _appDataService;
 
         public DataService(IAppDataService appDataService)
@@ -20,11 +22,14 @@
 
         public T[] Load<T>(string dataName)
         {
-            string dataFile = _appDataService.GetFile($"Data/{dataName}.json", "[]");
+            string dataFile = _appDataService.GetFile($"Data/{dataName}.json", EmptyData);
 
             string fileData = File.ReadAllText(dataFile);
 
-            File.WriteAllText(dataFile, "[]"); // Prevent duplicate loading of file if not cleared correctly
+            if (fileData != EmptyData)
+            {
+                File.WriteAllText(dataFile, EmptyData); // Prevent duplicate loading of file if not cleared correctly
+            }
 
             return JsonConvert.DeserializeObject<T[]>(fileData);
         }

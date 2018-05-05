@@ -56,9 +56,10 @@
 
             foreach (IDownloadViewModel download in newDownloads)
             {
-                void DownloadViewModelDownloadCompleted(object sender, EventArgs e)
+                void DownloadCompleted(object sender, EventArgs e)
                 {
-                    download.DownloadCompleted -= DownloadViewModelDownloadCompleted;
+                    download.Download.Completed -= DownloadCompleted;
+                    download.Download.Killed -= DownloadCompleted;
                     download.PropertyChanged -= DownloadPropertyChanged;
 
                     Task.Delay(3_000).ContinueWith(task =>
@@ -68,7 +69,8 @@
                     });
                 }
 
-                download.DownloadCompleted += DownloadViewModelDownloadCompleted;
+                download.Download.Completed += DownloadCompleted;
+                download.Download.Killed += DownloadCompleted;
 
                 void DownloadPropertyChanged(object sender, PropertyChangedEventArgs e)
                 {

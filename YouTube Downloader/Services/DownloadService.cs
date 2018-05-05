@@ -63,8 +63,7 @@
             IDownloadViewModel downloadViewModel = _downloadQueue.Dequeue();
             downloadViewModel.DownloadState = DownloadState.Downloading;
 
-            Download download = _downloadFactory.MakeDownload(downloadViewModel.VideoViewModel.Video);
-            downloadViewModel.Download = download;
+            Download download = downloadViewModel.Download;
 
             ProgressMonitor progressMonitor = new ProgressMonitor(download.Process);
 

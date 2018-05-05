@@ -1,16 +1,14 @@
 ﻿namespace YouTube.Downloader.ViewModels
 {
-    using System;
-
     using YouTube.Downloader.Core.Downloading;
     using YouTube.Downloader.Models;
     using YouTube.Downloader.ViewModels.Interfaces;
 
     internal class DownloadViewModel : ViewModelBase, IDownloadViewModel
     {
-        public event EventHandler DownloadCompleted;
-
         public IVideoViewModel VideoViewModel { get; private set; }
+
+        public Download Download { get; private set; }
 
         private DownloadState _downloadState = DownloadState.Queued;
         public DownloadState DownloadState
@@ -23,11 +21,6 @@
 
                 _downloadState = value;
                 NotifyOfPropertyChange(() => DownloadState);
-
-                if (_downloadState == DownloadState.Completed || _downloadState == DownloadState.Exited)
-                {
-                    DownloadCompleted?.Invoke(this, EventArgs.Empty);
-                }
             }
         }
 
@@ -45,11 +38,10 @@
             }
         }
 
-        public Download Download { get; set; }
-
-        public void Initialise(IVideoViewModel videoViewModel)
+        public void Initialise(IVideoViewModel videoViewModel, Download download)
         {
             VideoViewModel = videoViewModel;
+            Download = download;
         }
     }
 }

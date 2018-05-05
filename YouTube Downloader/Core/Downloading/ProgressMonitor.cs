@@ -52,6 +52,19 @@
             RunMonitoringThread();
         }
 
+        internal void MonitorDownload(EventHandler<ProgressUpdatedEventArgs> eventHandler)
+        {
+            ProgressUpdated += eventHandler;
+
+            void ProgressMonitorFinishedMonitoring(object sender, EventArgs e)
+            {
+                FinishedMonitoring -= ProgressMonitorFinishedMonitoring;
+                ProgressUpdated -= eventHandler;
+            }
+
+            FinishedMonitoring += ProgressMonitorFinishedMonitoring;
+        }
+
         private void RunMonitoringThread()
         {
             Task.Run(() =>

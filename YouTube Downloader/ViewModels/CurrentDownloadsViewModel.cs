@@ -27,9 +27,11 @@
             _downloadService = downloadService;
             _downloadFactory = downloadFactory;
 
-            AddDownloads(dataService.Load<YouTubeVideo>("Downloads").Select(videoFactory.MakeVideoViewModel));
+            AddDownloads(dataService.LoadAndWipe<IEnumerable<YouTubeVideo>>("Downloads", "[]").Select(videoFactory.MakeVideoViewModel));
 
             ((ListCollectionView)CollectionViewSource.GetDefaultView(Downloads)).CustomSort = Comparer<IDownloadViewModel>.Create((first, second) => -first.DownloadStatus.DownloadState.CompareTo(second.DownloadStatus.DownloadState));
+
+            SelectedDownloads.CollectionChanged += (sender, e) => RecomputeActionGuards();
         }
 
         public IObservableCollection<IDownloadViewModel> Downloads { get; } = new BindableCollection<IDownloadViewModel>();
@@ -41,10 +43,44 @@
             AddDownloads(message);
         }
 
+        private bool _canPause;
+        public bool CanPause
+        {
+            get => _canPause;
+
+            set
+            {
+                if (_canPause == value) return;
+
+                _canPause = value;
+                NotifyOfPropertyChange(() => CanPause);
+                NotifyOfPropertyChange(() => CanTogglePause);
+            }
+        }
+
+        private bool _canResume;
+        public bool CanResume
+        {
+            get => _canResume;
+
+            set
+            {
+                if (_canResume == value) return;
+
+                _canResume = value;
+                NotifyOfPropertyChange(() => CanResume);
+                NotifyOfPropertyChange(() => CanTogglePause);
+            }
+        }
+
+        public bool CanTogglePause => CanPause || CanResume;
+
         public void TogglePause()
         {
             SelectedDownloads.Apply(download => download.Download.TogglePause());
         }
+
+        public bool CanKill => SelectedDownloads.All(downloadViewModel => downloadViewModel.Download.CanKill);
 
         public void Kill()
         {
@@ -73,10 +109,10 @@
 
                 void DownloadStatusPropertyChanged(object sender, PropertyChangedEventArgs e)
                 {
-                    if (e.PropertyName == nameof(DownloadStatus.DownloadState))
-                    {
-                        Downloads.Refresh();
-                    }
+                    if (e.PropertyName != nameof(DownloadStatus.DownloadState)) return;
+
+                    Downloads.Refresh();
+                    RecomputeActionGuards();
                 }
 
                 downloadViewModel.DownloadStatus.PropertyChanged += DownloadStatusPropertyChanged;
@@ -84,6 +120,14 @@
 
             Downloads.AddRange(downloads);
             _downloadService.QueueDownloads(downloads.Select(downloadViewModel => downloadViewModel.Download));
+        }
+
+        private void RecomputeActionGuards()
+        {
+            CanPause = SelectedDownloads.All(downloadViewModel => downloadViewModel.Download.CanPause);
+            CanResume = !CanPause && SelectedDownloads.All(downloadViewModel => downloadViewModel.Download.CanResume);
+
+            NotifyOfPropertyChange(() => CanKill);
         }
     }
 }

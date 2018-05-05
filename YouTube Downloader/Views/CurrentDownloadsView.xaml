@@ -26,8 +26,14 @@
                 </Style>
             </StackPanel.Style>
 
-            <Button Content="Toggle Pause" Width="75" Margin="5"
-                    Caliburn:Message.Attach="TogglePause"/>
+            <Button Width="75" Margin="5" Caliburn:Message.Attach="TogglePause">
+                <Button.Content>
+                    <MultiBinding Mode="OneWay" Converter="{x:Static Converters:TogglePauseTextConverter.Default}">
+                        <Binding Path="CanPause" Mode="OneWay"/>
+                        <Binding Path="CanResume" Mode="OneWay"/>
+                    </MultiBinding>
+                </Button.Content>
+            </Button>
             <Button Content="Kill" Width="75" Margin="5"
                     Caliburn:Message.Attach="Kill"/>
         </StackPanel>

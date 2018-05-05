@@ -4,6 +4,7 @@
     using System.Diagnostics;
 
     using YouTube.Downloader.Models;
+    using YouTube.Downloader.Models.Download;
 
     internal class Download
     {

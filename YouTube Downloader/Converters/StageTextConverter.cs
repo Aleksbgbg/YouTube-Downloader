@@ -8,6 +8,7 @@
 
     using YouTube.Downloader.Core;
     using YouTube.Downloader.Models;
+    using YouTube.Downloader.Models.Download;
     using YouTube.Downloader.Services.Interfaces;
 
     [ValueConversion(typeof(int), typeof(string))]

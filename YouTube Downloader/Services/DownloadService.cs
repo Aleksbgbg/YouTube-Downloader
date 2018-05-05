@@ -10,6 +10,7 @@
     using YouTube.Downloader.EventArgs;
     using YouTube.Downloader.Factories.Interfaces;
     using YouTube.Downloader.Models;
+    using YouTube.Downloader.Models.Download;
     using YouTube.Downloader.Services.Interfaces;
     using YouTube.Downloader.ViewModels.Interfaces;
 

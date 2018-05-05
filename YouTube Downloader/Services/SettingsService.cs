@@ -5,6 +5,7 @@
     using Newtonsoft.Json;
 
     using YouTube.Downloader.Models;
+    using YouTube.Downloader.Models.Download;
     using YouTube.Downloader.Services.Interfaces;
     using YouTube.Downloader.Utilities.Interfaces;
 

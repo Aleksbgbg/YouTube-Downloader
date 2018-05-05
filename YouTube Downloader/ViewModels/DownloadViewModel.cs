@@ -2,6 +2,7 @@
 {
     using YouTube.Downloader.Core.Downloading;
     using YouTube.Downloader.Models;
+    using YouTube.Downloader.Models.Download;
     using YouTube.Downloader.ViewModels.Interfaces;
 
     internal class DownloadViewModel : ViewModelBase, IDownloadViewModel

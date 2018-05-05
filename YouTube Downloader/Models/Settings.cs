@@ -7,6 +7,7 @@
     using Newtonsoft.Json;
 
     using YouTube.Downloader.Controls;
+    using YouTube.Downloader.Models.Download;
 
     internal class Settings : PropertyChangedBase
     {

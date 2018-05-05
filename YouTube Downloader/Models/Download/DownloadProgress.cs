@@ -1,4 +1,4 @@
-﻿namespace YouTube.Downloader.Models
+﻿namespace YouTube.Downloader.Models.Download
 {
     using Caliburn.Micro;
 

@@ -72,14 +72,15 @@
                                                       VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
                                 </Border>
                                 <ControlTemplate.Triggers>
+                                    <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}"
+                                                 Value="True">
+                                        <Setter Property="Background" Value="#EBF5FB"/>
+                                        <Setter Property="BorderBrush" Value="#AED6F1"/>
+                                    </DataTrigger>
+
                                     <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource Self}}" Value="True">
                                         <Setter Property="Background" Value="#D6EAF8"/>
                                         <Setter Property="BorderBrush" Value="#85C1E9"/>
-                                    </DataTrigger>
-
-                                    <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="True">
-                                        <Setter Property="Background" Value="#EBF5FB"/>
-                                        <Setter Property="BorderBrush" Value="#AED6F1"/>
                                     </DataTrigger>
                                 </ControlTemplate.Triggers>
                             </ControlTemplate>

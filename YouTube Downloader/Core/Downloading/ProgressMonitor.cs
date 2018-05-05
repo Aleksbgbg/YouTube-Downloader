@@ -6,22 +6,13 @@
     using System.Text.RegularExpressions;
     using System.Threading.Tasks;
 
-#if DEBUG
-    using YouTube.Downloader.Core.Debug;
-#endif // DEBUG
     using YouTube.Downloader.EventArgs;
 
     internal class ProgressMonitor
     {
         private static readonly Regex ProgressReportRegex = new Regex(@"^\[download] (?<ProgressPercentage>[ 1][ 0-9][0-9]\.[0-9])% of .*?(?<TotalDownloadSize>[\d\.]+)?(?<TotalDownloadSizeUnits>.iB) at +(?:(?<DownloadSpeed>.+)(?<DownloadSpeedUnits>.iB)\/s|Unknown speed)");
 
-#if DEBUG
-        private readonly DebugLogger _debugLogger = new DebugLogger();
-#endif // DEBUG
-
-        private Process _process;
-
-        private bool _isPaused;
+        private readonly Process _process;
 
         private int _stage;
 
@@ -36,19 +27,6 @@
 
         internal void Run()
         {
-            RunMonitoringThread();
-        }
-
-        internal void Pause()
-        {
-            _isPaused = true;
-            _process = null;
-        }
-
-        internal void Resume(Process process)
-        {
-            _process = process;
-            _isPaused = false;
             RunMonitoringThread();
         }
 
@@ -71,18 +49,11 @@
             {
                 using (StreamReader progressReader = _process.StandardOutput)
                 {
-#if DEBUG
                     try
                     {
-#endif // DEBUG
-
                         while (!progressReader.EndOfStream)
                         {
                             string line = progressReader.ReadLine();
-
-#if DEBUG
-                            _debugLogger.Log(line);
-#endif // DEBUG
 
                             if (line == null) continue;
 
@@ -92,22 +63,11 @@
 
                             ReportProgress(match);
                         }
-#if DEBUG
                     }
                     finally
                     {
-                        if (!_isPaused)
-                        {
-                            _debugLogger.Exit();
-                        }
+                        FinishedMonitoring?.Invoke(this, EventArgs.Empty);
                     }
-#endif // DEBUG
-                }
-            }).ContinueWith(task =>
-            {
-                if (!_isPaused)
-                {
-                    FinishedMonitoring?.Invoke(this, EventArgs.Empty);
                 }
             });
         }

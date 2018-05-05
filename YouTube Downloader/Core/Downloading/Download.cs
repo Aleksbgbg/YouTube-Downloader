@@ -17,17 +17,25 @@
             YouTubeVideo = video;
             DownloadStatus = downloadStatus;
 
-            _processArguments = $"-o {settings.DownloadPath}/%(title)s.%(ext)s -f {(settings.DownloadType == DownloadType.Audio ? "bestaudio" : "bestvideo+bestaudio")} \"{video.Id}\"";
+            _processArguments = $"-o \"{settings.DownloadPath}\\%(title)s.%(ext)s\" -f {(settings.DownloadType == DownloadType.Audio ? "bestaudio" : "bestvideo+bestaudio")} -- \"{video.Id}\"";
         }
 
         internal event EventHandler Exited;
 
-        public YouTubeVideo YouTubeVideo { get; }
+        internal bool CanPause => !_isPaused && Process != null;
 
-        public DownloadStatus DownloadStatus { get; }
+        internal bool CanResume => _isPaused;
+
+        internal bool CanKill => DownloadStatus.DownloadState == DownloadState.Downloading ||
+                                 DownloadStatus.DownloadState == DownloadState.Paused ||
+                                 DownloadStatus.DownloadState == DownloadState.Queued;
+
+        internal YouTubeVideo YouTubeVideo { get; }
+
+        internal DownloadStatus DownloadStatus { get; }
 
         private Process _process;
-        public Process Process
+        internal Process Process
         {
             get => _process;
 
@@ -40,11 +48,12 @@
 
                     if (_isPaused) return;
 
+                    if (DownloadStatus.DownloadState != DownloadState.Exited)
+                    {
+                        DownloadStatus.DownloadState = DownloadState.Completed;
+                    }
+
                     Exited?.Invoke(this, EventArgs.Empty);
-
-                    if (DownloadStatus.DownloadState == DownloadState.Exited) return;
-
-                    DownloadStatus.DownloadState = DownloadState.Completed;
                 }
 
                 if (_process != null)

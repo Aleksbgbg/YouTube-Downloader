@@ -1,7 +1,6 @@
 ﻿namespace YouTube.Downloader.ViewModels
 {
     using YouTube.Downloader.Core.Downloading;
-    using YouTube.Downloader.Models;
     using YouTube.Downloader.Models.Download;
     using YouTube.Downloader.ViewModels.Interfaces;
 
@@ -11,33 +10,7 @@
 
         public Download Download { get; private set; }
 
-        private DownloadState _downloadState = DownloadState.Queued;
-        public DownloadState DownloadState
-        {
-            get => _downloadState;
-
-            set
-            {
-                if (_downloadState == value) return;
-
-                _downloadState = value;
-                NotifyOfPropertyChange(() => DownloadState);
-            }
-        }
-
-        private DownloadProgress _downloadProgress;
-        public DownloadProgress DownloadProgress
-        {
-            get => _downloadProgress;
-
-            set
-            {
-                if (_downloadProgress == value) return;
-
-                _downloadProgress = value;
-                NotifyOfPropertyChange(() => DownloadProgress);
-            }
-        }
+        public DownloadStatus DownloadStatus { get; } = new DownloadStatus();
 
         public void Initialise(IVideoViewModel videoViewModel, Download download)
         {

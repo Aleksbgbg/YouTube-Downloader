@@ -16,11 +16,11 @@
                 <Image.Style>
                     <Style TargetType="Image" BasedOn="{StaticResource {x:Type Image}}">
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding DownloadState}" Value="Queued">
+                            <DataTrigger Binding="{Binding DownloadStatus.DownloadState}" Value="Queued">
                                 <Setter Property="Source" Value="{StaticResource Waiting}"/>
                             </DataTrigger>
 
-                            <DataTrigger Binding="{Binding DownloadState}" Value="Downloading">
+                            <DataTrigger Binding="{Binding DownloadStatus.DownloadState}" Value="Downloading">
                                 <DataTrigger.EnterActions>
                                     <BeginStoryboard x:Name="SpinnerStoryboard">
                                         <Storyboard RepeatBehavior="Forever">
@@ -52,15 +52,15 @@
                                 </DataTrigger.ExitActions>
                             </DataTrigger>
 
-                            <DataTrigger Binding="{Binding DownloadState}" Value="Paused">
+                            <DataTrigger Binding="{Binding DownloadStatus.DownloadState}" Value="Paused">
                                 <Setter Property="Source" Value="{StaticResource Pause}"/>
                             </DataTrigger>
 
-                            <DataTrigger Binding="{Binding DownloadState}" Value="Completed">
+                            <DataTrigger Binding="{Binding DownloadStatus.DownloadState}" Value="Completed">
                                 <Setter Property="Source" Value="{StaticResource Completed}"/>
                             </DataTrigger>
 
-                            <DataTrigger Binding="{Binding DownloadState}" Value="Exited">
+                            <DataTrigger Binding="{Binding DownloadStatus.DownloadState}" Value="Exited">
                                 <Setter Property="Source" Value="{StaticResource Delete}"/>
                             </DataTrigger>
                         </Style.Triggers>
@@ -72,16 +72,16 @@
                 <ContentControl.Style>
                     <Style TargetType="ContentControl" BasedOn="{StaticResource {x:Type ContentControl}}">
                         <Style.Resources>
-                            <DataTemplate x:Key="DownloadProgress">
+                            <DataTemplate x:Key="DownloadStatus.DownloadProgress">
                                 <StackPanel>
                                     <TextBlock Foreground="DarkGray" HorizontalAlignment="Center">
-                                        <Run Text="{Binding DownloadProgress.SizeDownloaded, Mode=OneWay, Converter={x:Static Converters:AppropriateDataSizeConverter.Default}}"/>
+                                        <Run Text="{Binding DownloadStatus.DownloadProgress.SizeDownloaded, Mode=OneWay, Converter={x:Static Converters:AppropriateDataSizeConverter.Default}}"/>
                                         of
-                                        <Run Text="{Binding DownloadProgress.TotalDownloadSize, Mode=OneWay, Converter={x:Static Converters:AppropriateDataSizeConverter.Default}}"/>
-                                        (<Run Text="{Binding DownloadProgress.ProgressPercentage, Mode=OneWay, StringFormat=N2}"/>%)
+                                        <Run Text="{Binding DownloadStatus.DownloadProgress.TotalDownloadSize, Mode=OneWay, Converter={x:Static Converters:AppropriateDataSizeConverter.Default}}"/>
+                                        (<Run Text="{Binding DownloadStatus.DownloadProgress.ProgressPercentage, Mode=OneWay, StringFormat=N2}"/>%)
                                     </TextBlock>
 
-                                    <ProgressBar Value="{Binding DownloadProgress.ProgressPercentage}" Maximum="100"
+                                    <ProgressBar Value="{Binding DownloadStatus.DownloadProgress.ProgressPercentage}" Maximum="100"
                                                  Height="5" Width="250" Foreground="DodgerBlue"/>
                                 </StackPanel>
                             </DataTemplate>
@@ -89,34 +89,34 @@
 
                         <Setter Property="Content">
                             <Setter.Value>
-                                <TextBlock Text="{Binding DownloadState}"/>
+                                <TextBlock Text="{Binding DownloadStatus.DownloadState}"/>
                             </Setter.Value>
                         </Setter>
 
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding DownloadState}" Value="Downloading">
+                            <DataTrigger Binding="{Binding DownloadStatus.DownloadState}" Value="Downloading">
                                 <Setter Property="Content">
                                     <Setter.Value>
                                         <StackPanel HorizontalAlignment="Center" Margin="5">
                                             <ContentControl Content="{Binding Mode=OneTime}"
-                                                            ContentTemplate="{StaticResource DownloadProgress}"/>
+                                                            ContentTemplate="{StaticResource DownloadStatus.DownloadProgress}"/>
 
                                             <TextBlock HorizontalAlignment="Center">
-                                                Downloading at <Run Text="{Binding DownloadProgress.DownloadSpeed, Mode=OneWay, Converter={x:Static Converters:AppropriateDataSizeConverter.Default}}"/>/s
+                                                Downloading at <Run Text="{Binding DownloadStatus.DownloadProgress.DownloadSpeed, Mode=OneWay, Converter={x:Static Converters:AppropriateDataSizeConverter.Default}}"/>/s
                                             </TextBlock>
 
-                                            <TextBlock Text="{Binding DownloadProgress.Stage, Converter={x:Static Converters:StageTextConverter.Default}}"
+                                            <TextBlock Text="{Binding DownloadStatus.DownloadProgress.Stage, Converter={x:Static Converters:StageTextConverter.Default}}"
                                                        HorizontalAlignment="Center"/>
                                         </StackPanel>
                                     </Setter.Value>
                                 </Setter>
                             </DataTrigger>
                             
-                            <DataTrigger Binding="{Binding DownloadState}" Value="Paused">
+                            <DataTrigger Binding="{Binding DownloadStatus.DownloadState}" Value="Paused">
                                 <Setter Property="Content">
                                     <Setter.Value>
                                         <StackPanel HorizontalAlignment="Center" Margin="5">
-                                            <ContentControl Content="{Binding Mode=OneTime}" ContentTemplate="{StaticResource DownloadProgress}"/>
+                                            <ContentControl Content="{Binding Mode=OneTime}" ContentTemplate="{StaticResource DownloadStatus.DownloadProgress}"/>
                                             <TextBlock Text="Paused" HorizontalAlignment="Center"/>
                                         </StackPanel>
                                     </Setter.Value>

@@ -10,9 +10,10 @@
     {
         private readonly string _processArguments;
 
-        internal Download(YouTubeVideo video, Settings settings)
+        internal Download(YouTubeVideo video, DownloadStatus downloadStatus, Settings settings)
         {
             YouTubeVideo = video;
+            DownloadStatus = downloadStatus;
 
             _processArguments = $"-o {settings.DownloadPath}/%(title)s.%(ext)s" + " " +
                                 $"-f {(settings.DownloadType == DownloadType.Audio ? "bestaudio" : "bestvideo+bestaudio")}" + " " +
@@ -32,6 +33,8 @@
         public bool IsExited { get; private set; }
 
         public YouTubeVideo YouTubeVideo { get; }
+
+        public DownloadStatus DownloadStatus { get; }
 
         private Process _process;
         public Process Process
@@ -53,6 +56,8 @@
                     _process.Exited -= ProcessExited;
 
                     IsExited = true;
+
+                    DownloadStatus.DownloadState = DownloadState.Completed;
 
                     if (_process != null)
                     {
@@ -76,18 +81,39 @@
 
         internal void Start()
         {
+            ProgressMonitor progressMonitor = new ProgressMonitor(Process);
+
+            progressMonitor.MonitorDownload((sender, e) =>
+            {
+                DownloadStatus.DownloadProgress.Stage = e.Stage;
+
+                if (e.DownloadSpeed.HasValue)
+                {
+                    DownloadStatus.DownloadProgress.DownloadSpeed = e.DownloadSpeed.Value;
+                }
+
+                DownloadStatus.DownloadProgress.ProgressPercentage = e.DownloadPercentage;
+                DownloadStatus.DownloadProgress.TotalDownloadSize = e.TotalDownloadSize;
+            });
+
             Process.Start();
+
+            progressMonitor.Run();
+
+            DownloadStatus.DownloadState = DownloadState.Downloading;
         }
 
         internal void Pause()
         {
             if (IsPaused)
             {
-                throw new InvalidOperationException("Cannot pause a paused download.");
+                throw new InvalidOperationException("Cannot pause a paused ");
             }
 
             KillProcess(Paused);
             IsPaused = true;
+
+            DownloadStatus.DownloadState = DownloadState.Paused;
         }
 
         internal void Resume()
@@ -103,6 +129,8 @@
             IsPaused = false;
 
             Resumed?.Invoke(this, EventArgs.Empty);
+
+            DownloadStatus.DownloadState = DownloadState.Downloading;
         }
 
         internal void TogglePause()
@@ -119,6 +147,7 @@
         internal void Kill()
         {
             KillProcess(Killed);
+            DownloadStatus.DownloadState = DownloadState.Exited;
         }
 
         private void KillProcess(EventHandler invokeEvent)

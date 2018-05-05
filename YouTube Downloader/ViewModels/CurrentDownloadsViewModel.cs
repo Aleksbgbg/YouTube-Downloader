@@ -11,6 +11,7 @@
 
     using YouTube.Downloader.Factories.Interfaces;
     using YouTube.Downloader.Models;
+    using YouTube.Downloader.Models.Download;
     using YouTube.Downloader.Services.Interfaces;
     using YouTube.Downloader.ViewModels.Interfaces;
 
@@ -28,7 +29,7 @@
 
             AddDownloads(dataService.Load<YouTubeVideo>("Downloads").Select(videoFactory.MakeVideoViewModel));
 
-            ((ListCollectionView)CollectionViewSource.GetDefaultView(Downloads)).CustomSort = Comparer<IDownloadViewModel>.Create((first, second) => -first.DownloadState.CompareTo(second.DownloadState));
+            ((ListCollectionView)CollectionViewSource.GetDefaultView(Downloads)).CustomSort = Comparer<IDownloadViewModel>.Create((first, second) => -first.DownloadStatus.DownloadState.CompareTo(second.DownloadStatus.DownloadState));
         }
 
         public IObservableCollection<IDownloadViewModel> Downloads { get; } = new BindableCollection<IDownloadViewModel>();
@@ -60,7 +61,7 @@
                 {
                     download.Download.Completed -= DownloadCompleted;
                     download.Download.Killed -= DownloadCompleted;
-                    download.PropertyChanged -= DownloadPropertyChanged;
+                    download.DownloadStatus.PropertyChanged -= DownloadStatusPropertyChanged;
 
                     Task.Delay(3_000).ContinueWith(task =>
                     {
@@ -72,19 +73,19 @@
                 download.Download.Completed += DownloadCompleted;
                 download.Download.Killed += DownloadCompleted;
 
-                void DownloadPropertyChanged(object sender, PropertyChangedEventArgs e)
+                void DownloadStatusPropertyChanged(object sender, PropertyChangedEventArgs e)
                 {
-                    if (e.PropertyName == nameof(IDownloadViewModel.DownloadState))
+                    if (e.PropertyName == nameof(DownloadStatus.DownloadState))
                     {
                         Downloads.Refresh();
                     }
                 }
 
-                download.PropertyChanged += DownloadPropertyChanged;
+                download.DownloadStatus.PropertyChanged += DownloadStatusPropertyChanged;
             }
 
             Downloads.AddRange(newDownloads);
-            _downloadService.QueueDownloads(newDownloads);
+            _downloadService.QueueDownloads(newDownloads.Select(download => download.Download));
         }
     }
 }

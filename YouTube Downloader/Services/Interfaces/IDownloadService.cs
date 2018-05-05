@@ -2,11 +2,11 @@
 {
     using System.Collections.Generic;
 
-    using YouTube.Downloader.ViewModels.Interfaces;
+    using YouTube.Downloader.Core.Downloading;
 
     internal interface IDownloadService
     {
-        void QueueDownloads(IEnumerable<IDownloadViewModel> downloads);
+        void QueueDownloads(IEnumerable<Download> downloads);
 
         void SaveAndTerminateDownloads();
     }

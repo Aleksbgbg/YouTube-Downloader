@@ -105,6 +105,8 @@
 
         internal void Kill()
         {
+            DownloadStatus.DownloadState = DownloadState.Exited;
+
             if (Process == null)
             {
                 Exited?.Invoke(this, EventArgs.Empty);
@@ -113,8 +115,6 @@
             {
                 Process.Kill();
             }
-
-            DownloadStatus.DownloadState = DownloadState.Exited;
         }
 
         internal void TogglePause()

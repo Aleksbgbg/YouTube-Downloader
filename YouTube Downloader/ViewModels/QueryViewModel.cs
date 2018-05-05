@@ -81,7 +81,7 @@
                                                                         .Split('\n')
                                                                         .Where(line => !string.IsNullOrWhiteSpace(line))
                                                                         .Select(query => query.Trim())
-                                                                        .Select(query => _youTubeApiService.QueryVideos(query)))
+                                                                        .Select(_youTubeApiService.QueryVideos))
                                                                 .AsResult();
 
             yield return tasks;

@@ -53,23 +53,23 @@
 
         private void AddDownloads(IEnumerable<IVideoViewModel> videos)
         {
-            IDownloadViewModel[] newDownloads = videos.Select(_downloadFactory.MakeDownloadViewModel).ToArray();
+            IDownloadViewModel[] downloads = videos.Select(_downloadFactory.MakeDownloadViewModel).ToArray();
 
-            foreach (IDownloadViewModel download in newDownloads)
+            foreach (IDownloadViewModel downloadViewModel in downloads)
             {
                 void DownloadCompleted(object sender, EventArgs e)
                 {
-                    download.Download.Exited -= DownloadCompleted;
-                    download.DownloadStatus.PropertyChanged -= DownloadStatusPropertyChanged;
+                    downloadViewModel.Download.Exited -= DownloadCompleted;
+                    downloadViewModel.DownloadStatus.PropertyChanged -= DownloadStatusPropertyChanged;
 
-                    Task.Delay(3_000).ContinueWith(task =>
+                    Task.Delay(3_000).ContinueWith(_ =>
                     {
-                        Downloads.Remove(download);
-                        SelectedDownloads.Remove(download);
+                        Downloads.Remove(downloadViewModel);
+                        SelectedDownloads.Remove(downloadViewModel);
                     });
                 }
 
-                download.Download.Exited += DownloadCompleted;
+                downloadViewModel.Download.Exited += DownloadCompleted;
 
                 void DownloadStatusPropertyChanged(object sender, PropertyChangedEventArgs e)
                 {
@@ -79,11 +79,11 @@
                     }
                 }
 
-                download.DownloadStatus.PropertyChanged += DownloadStatusPropertyChanged;
+                downloadViewModel.DownloadStatus.PropertyChanged += DownloadStatusPropertyChanged;
             }
 
-            Downloads.AddRange(newDownloads);
-            _downloadService.QueueDownloads(newDownloads.Select(download => download.Download));
+            Downloads.AddRange(downloads);
+            _downloadService.QueueDownloads(downloads.Select(downloadViewModel => downloadViewModel.Download));
         }
     }
 }

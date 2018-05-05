@@ -145,6 +145,7 @@
     <Compile Include="Core\Downloading\ProgressMonitor.cs" />
     <Compile Include="Helpers\SelectedItemsHelper.cs" />
     <Compile Include="Models\Download\DownloadProgress.cs" />
+    <Compile Include="Models\Download\DownloadStatus.cs" />
     <Compile Include="Models\Download\DownloadType.cs" />
     <Compile Include="Services\AppDataService.cs" />
     <Compile Include="Services\DataService.cs" />

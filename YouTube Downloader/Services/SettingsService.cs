@@ -11,26 +11,24 @@
 
     internal class SettingsService : ISettingsService
     {
-        private readonly string _settingsFile;
+        private readonly IDataService _dataService;
 
-        public SettingsService(IAppDataService appDataService, IFileSystemUtility fileSystemUtility)
+        public SettingsService(IDataService dataService, IFileSystemUtility fileSystemUtility)
         {
-            string settingsFolder = appDataService.GetFolder("Settings");
+            _dataService = dataService;
 
-            _settingsFile = appDataService.GetFile(Path.Combine(settingsFolder, "Settings.json"), JsonConvert.SerializeObject(new Settings
+            Settings = dataService.Load<Settings>("Settings", JsonConvert.SerializeObject(new Settings
             {
                     DownloadPath = Path.Combine(fileSystemUtility.DownloadsFolderPath, "YouTube Downloader"),
                     DownloadType = DownloadType.AudioVideo
             }));
-
-            Settings = JsonConvert.DeserializeObject<Settings>(File.ReadAllText(_settingsFile));
         }
 
         public Settings Settings { get; }
 
         public void Save()
         {
-            File.WriteAllText(_settingsFile, JsonConvert.SerializeObject(Settings));
+            _dataService.Save(Settings, "Settings");
         }
     }
 }

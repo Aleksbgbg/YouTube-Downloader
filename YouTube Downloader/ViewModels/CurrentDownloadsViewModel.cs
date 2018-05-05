@@ -59,8 +59,7 @@
             {
                 void DownloadCompleted(object sender, EventArgs e)
                 {
-                    download.Download.Completed -= DownloadCompleted;
-                    download.Download.Killed -= DownloadCompleted;
+                    download.Download.Exited -= DownloadCompleted;
                     download.DownloadStatus.PropertyChanged -= DownloadStatusPropertyChanged;
 
                     Task.Delay(3_000).ContinueWith(task =>
@@ -70,8 +69,7 @@
                     });
                 }
 
-                download.Download.Completed += DownloadCompleted;
-                download.Download.Killed += DownloadCompleted;
+                download.Download.Exited += DownloadCompleted;
 
                 void DownloadStatusPropertyChanged(object sender, PropertyChangedEventArgs e)
                 {

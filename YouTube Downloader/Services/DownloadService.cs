@@ -55,15 +55,13 @@
 
             void DetachDownload(object sender, EventArgs e)
             {
-                download.Completed -= DetachDownload;
-                download.Killed -= DetachDownload;
+                download.Exited -= DetachDownload;
 
                 _currentDownloads.Remove(download);
                 DownloadNext();
             }
 
-            download.Completed += DetachDownload;
-            download.Killed += DetachDownload;
+            download.Exited += DetachDownload;
 
             download.Start();
         }

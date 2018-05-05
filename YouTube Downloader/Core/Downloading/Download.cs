@@ -10,27 +10,17 @@
     {
         private readonly string _processArguments;
 
+        private bool _isPaused;
+
         internal Download(YouTubeVideo video, DownloadStatus downloadStatus, Settings settings)
         {
             YouTubeVideo = video;
             DownloadStatus = downloadStatus;
 
-            _processArguments = $"-o {settings.DownloadPath}/%(title)s.%(ext)s" + " " +
-                                $"-f {(settings.DownloadType == DownloadType.Audio ? "bestaudio" : "bestvideo+bestaudio")}" + " " +
-                                $"\"{video.Id}\"";
+            _processArguments = $"-o {settings.DownloadPath}/%(title)s.%(ext)s -f {(settings.DownloadType == DownloadType.Audio ? "bestaudio" : "bestvideo+bestaudio")} \"{video.Id}\"";
         }
 
-        internal event EventHandler Completed;
-
-        internal event EventHandler Paused;
-
-        internal event EventHandler Resumed;
-
-        internal event EventHandler Killed;
-
-        public bool IsPaused { get; private set; }
-
-        public bool IsExited { get; private set; }
+        internal event EventHandler Exited;
 
         public YouTubeVideo YouTubeVideo { get; }
 
@@ -39,30 +29,22 @@
         private Process _process;
         public Process Process
         {
-            get
-            {
-                if (_process == null)
-                {
-                    GenerateProcess();
-                }
-
-                return _process;
-            }
+            get => _process;
 
             private set
             {
                 void ProcessExited(object sender, EventArgs e)
                 {
-                    _process.Exited -= ProcessExited;
+                    Process.Exited -= ProcessExited;
+                    Process = null;
 
-                    IsExited = true;
+                    if (_isPaused) return;
+
+                    Exited?.Invoke(this, EventArgs.Empty);
+
+                    if (DownloadStatus.DownloadState == DownloadState.Exited) return;
 
                     DownloadStatus.DownloadState = DownloadState.Completed;
-
-                    if (_process != null)
-                    {
-                        Completed?.Invoke(this, EventArgs.Empty);
-                    }
                 }
 
                 if (_process != null)
@@ -81,8 +63,77 @@
 
         internal void Start()
         {
-            ProgressMonitor progressMonitor = new ProgressMonitor(Process);
+            GenerateAndStartProcess();
+            DownloadStatus.DownloadState = DownloadState.Downloading;
+        }
 
+        internal void Pause()
+        {
+            if (_isPaused)
+            {
+                throw new InvalidOperationException("Cannot pause a paused download.");
+            }
+
+            Process.Kill();
+            _isPaused = true;
+
+            DownloadStatus.DownloadState = DownloadState.Paused;
+        }
+
+        internal void Resume()
+        {
+            if (!_isPaused)
+            {
+                throw new InvalidOperationException("Cannot resume a download in progress.");
+            }
+
+            GenerateAndStartProcess();
+
+            _isPaused = false;
+
+            DownloadStatus.DownloadState = DownloadState.Downloading;
+        }
+
+        internal void Kill()
+        {
+            if (Process == null)
+            {
+                Exited?.Invoke(this, EventArgs.Empty);
+            }
+            else
+            {
+                Process.Kill();
+            }
+
+            DownloadStatus.DownloadState = DownloadState.Exited;
+        }
+
+        internal void TogglePause()
+        {
+            if (_isPaused)
+            {
+                Resume();
+                return;
+            }
+
+            Pause();
+        }
+
+        private void GenerateAndStartProcess()
+        {
+            Process = new Process
+            {
+                EnableRaisingEvents = true,
+                StartInfo = new ProcessStartInfo("Resources/youtube-dl.exe", _processArguments)
+                {
+                    CreateNoWindow = true,
+                    UseShellExecute = false,
+                    RedirectStandardOutput = true
+                }
+            };
+            Process.Start();
+
+            ProgressMonitor progressMonitor = new ProgressMonitor(Process);
             progressMonitor.MonitorDownload((sender, e) =>
             {
                 DownloadStatus.DownloadProgress.Stage = e.Stage;
@@ -95,85 +146,7 @@
                 DownloadStatus.DownloadProgress.ProgressPercentage = e.DownloadPercentage;
                 DownloadStatus.DownloadProgress.TotalDownloadSize = e.TotalDownloadSize;
             });
-
-            Process.Start();
-
             progressMonitor.Run();
-
-            DownloadStatus.DownloadState = DownloadState.Downloading;
-        }
-
-        internal void Pause()
-        {
-            if (IsPaused)
-            {
-                throw new InvalidOperationException("Cannot pause a paused ");
-            }
-
-            KillProcess(Paused);
-            IsPaused = true;
-
-            DownloadStatus.DownloadState = DownloadState.Paused;
-        }
-
-        internal void Resume()
-        {
-            if (!IsPaused)
-            {
-                throw new InvalidOperationException("Cannot resume a download in progress.");
-            }
-
-            GenerateProcess();
-            Process.Start();
-
-            IsPaused = false;
-
-            Resumed?.Invoke(this, EventArgs.Empty);
-
-            DownloadStatus.DownloadState = DownloadState.Downloading;
-        }
-
-        internal void TogglePause()
-        {
-            if (IsPaused)
-            {
-                Resume();
-                return;
-            }
-
-            Pause();
-        }
-
-        internal void Kill()
-        {
-            KillProcess(Killed);
-            DownloadStatus.DownloadState = DownloadState.Exited;
-        }
-
-        private void KillProcess(EventHandler invokeEvent)
-        {
-            if (!IsExited && !IsPaused)
-            {
-                Process.Kill();
-            }
-
-            Process = null;
-
-            invokeEvent?.Invoke(this, EventArgs.Empty);
-        }
-
-        private void GenerateProcess()
-        {
-            Process = new Process
-            {
-                EnableRaisingEvents = true,
-                StartInfo = new ProcessStartInfo("Resources/youtube-dl.exe", _processArguments)
-                {
-                    CreateNoWindow = true,
-                    UseShellExecute = false,
-                    RedirectStandardOutput = true
-                }
-            };
         }
     }
 }

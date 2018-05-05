@@ -2,13 +2,11 @@
 {
     using System;
 
-    using Caliburn.Micro;
-
     using Google.Apis.YouTube.v3.Data;
 
     using Newtonsoft.Json;
 
-    internal class YouTubeVideo : PropertyChangedBase
+    internal class YouTubeVideo
     {
         internal YouTubeVideo(Video video, ulong? views) : this(video.Id, video.Snippet.Title, video.Snippet.ChannelTitle, video.Snippet.PublishedAt, views)
         {

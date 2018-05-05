@@ -38,7 +38,7 @@
         {
             Download[] downloads = _currentDownloads.ToArray();
 
-            _dataService.Save(_downloadQueue.Select(download => download.YouTubeVideo).Concat(downloads.Select(download => download.YouTubeVideo)), "Downloads");
+            _dataService.Save(downloads.Concat(_downloadQueue).Select(download => download.YouTubeVideo), "Downloads");
 
             downloads.Apply(download => download.Kill());
         }

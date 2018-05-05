@@ -18,18 +18,6 @@
             }
         }
 
-        private DownloadProgress _downloadProgress = new DownloadProgress();
-        public DownloadProgress DownloadProgress
-        {
-            get => _downloadProgress;
-
-            set
-            {
-                if (_downloadProgress == value) return;
-
-                _downloadProgress = value;
-                NotifyOfPropertyChange(() => DownloadProgress);
-            }
-        }
+        public DownloadProgress DownloadProgress { get; } = new DownloadProgress();
     }
 }

@@ -9,7 +9,7 @@
 			 mc:Ignorable="d"
 			 d:DataContext="{d:DesignInstance ViewModels:DownloadViewModel}">
     <StackPanel Margin="5">
-        <ContentControl Caliburn:View.Model="{Binding VideoViewModel, Mode=OneTime}" Width="500"/>
+        <ContentControl Caliburn:View.Model="{Binding VideoViewModel, Mode=OneTime}" Width="400"/>
 
         <DockPanel HorizontalAlignment="Center" Margin="5">
             <Image Width="25" Margin="5, 0">

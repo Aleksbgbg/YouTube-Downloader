@@ -2,9 +2,9 @@
 {
     using System;
     using System.Collections;
+    using System.Collections.Specialized;
     using System.Windows;
     using System.Windows.Controls;
-    using System.Windows.Controls.Primitives;
 
     internal static class SelectedItemsHelper
     {
@@ -25,26 +25,75 @@
 
         private static void SelectedItemsProperty_Changed(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
         {
-            if (!(dependencyObject is Selector selector))
+            IList listSelectedItems = (IList)e.NewValue;
+
+            if (!(listSelectedItems is INotifyCollectionChanged observableCollection))
             {
-                throw new InvalidOperationException($"Cannot assign {nameof(SelectedItemsProperty)} to non-{nameof(Selector)} object.");
+                throw new ArgumentOutOfRangeException(nameof(e.NewValue), e.NewValue, $"Collection must be of {nameof(INotifyCollectionChanged)} type.");
             }
 
-            IList selectedItems = (IList)e.NewValue;
-            selector.SelectionChanged += SelectorSelectionChanged;
-
-            void SelectorSelectionChanged(object sender, SelectionChangedEventArgs args)
+            if (!(dependencyObject is ListBox listBox))
             {
-                foreach (object item in args.AddedItems)
-                {
-                    selectedItems.Add(item);
-                }
+                throw new InvalidOperationException($"Cannot assign {nameof(SelectedItemsProperty)} to non-{nameof(ListBox)} object.");
+            }
 
-                foreach (object item in args.RemovedItems)
+            IList listBoxSelectedItems = listBox.SelectedItems;
+
+            void Add(IEnumerable items, IList list)
+            {
+                foreach (object item in items)
                 {
-                    selectedItems.Remove(item);
+                    list.Add(item);
                 }
             }
+
+            void Remove(IEnumerable items, IList list)
+            {
+                foreach (object item in items)
+                {
+                    list.Remove(item);
+                }
+            }
+
+            listBox.SelectionChanged += (sender, args) =>
+            {
+                Add(args.AddedItems, listSelectedItems);
+                Remove(args.RemovedItems, listSelectedItems);
+            };
+
+            observableCollection.CollectionChanged += (sender, args) =>
+            {
+                void AddNew()
+                {
+                    Add(args.NewItems, listBoxSelectedItems);
+                }
+
+                void RemoveOld()
+                {
+                    Remove(args.OldItems, listBoxSelectedItems);
+                }
+
+                switch (args.Action)
+                {
+                    case NotifyCollectionChangedAction.Add:
+                        AddNew();
+                        break;
+
+                    case NotifyCollectionChangedAction.Remove:
+                        RemoveOld();
+                        break;
+
+                    case NotifyCollectionChangedAction.Replace:
+                    case NotifyCollectionChangedAction.Move:
+                        RemoveOld();
+                        AddNew();
+                        break;
+
+                    case NotifyCollectionChangedAction.Reset:
+                        listBoxSelectedItems.Clear();
+                        break;
+                }
+            };
         }
     }
 }

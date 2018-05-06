@@ -28,7 +28,7 @@
         {
             downloads.Apply(_downloadQueue.Enqueue);
 
-            for (int downloadsStarted = _currentDownloads.Count; downloadsStarted < MaxConcurrentDownloads && _downloadQueue.Count > 0; ++downloadsStarted)
+            while (_currentDownloads.Count < MaxConcurrentDownloads && _downloadQueue.Count > 0)
             {
                 DownloadNext();
             }
@@ -45,25 +45,36 @@
 
         private void DownloadNext()
         {
-            if (_downloadQueue.Count == 0)
+            while (true)
             {
-                return;
+                if (_downloadQueue.Count == 0)
+                {
+                    return;
+                }
+
+                Download download = _downloadQueue.Dequeue();
+
+                if (download.HasExited)
+                {
+                    continue;
+                }
+
+                _currentDownloads.Add(download);
+
+                void DetachDownload(object sender, EventArgs e)
+                {
+                    download.Exited -= DetachDownload;
+
+                    _currentDownloads.Remove(download);
+
+                    DownloadNext();
+                }
+
+                download.Exited += DetachDownload;
+
+                download.Start();
+                break;
             }
-
-            Download download = _downloadQueue.Dequeue();
-            _currentDownloads.Add(download);
-
-            void DetachDownload(object sender, EventArgs e)
-            {
-                download.Exited -= DetachDownload;
-
-                _currentDownloads.Remove(download);
-                DownloadNext();
-            }
-
-            download.Exited += DetachDownload;
-
-            download.Start();
         }
     }
 }

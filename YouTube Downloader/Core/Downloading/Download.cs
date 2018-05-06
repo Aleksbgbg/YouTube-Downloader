@@ -10,29 +10,31 @@
     {
         private readonly string _processArguments;
 
+        private readonly DownloadStatus _downloadStatus;
+
         private bool _isPaused;
 
         internal Download(YouTubeVideo video, DownloadStatus downloadStatus, Settings settings)
         {
             YouTubeVideo = video;
-            DownloadStatus = downloadStatus;
+            _downloadStatus = downloadStatus;
 
             _processArguments = $"-o \"{settings.DownloadPath}\\%(title)s.%(ext)s\" -f {(settings.DownloadType == DownloadType.Audio ? "bestaudio" : "bestvideo+bestaudio")} -- \"{video.Id}\"";
         }
 
         internal event EventHandler Exited;
 
+        internal bool HasExited => _downloadStatus.DownloadState == DownloadState.Exited;
+
         internal bool CanPause => !_isPaused && Process != null;
 
         internal bool CanResume => _isPaused;
 
-        internal bool CanKill => DownloadStatus.DownloadState == DownloadState.Downloading ||
-                                 DownloadStatus.DownloadState == DownloadState.Paused ||
-                                 DownloadStatus.DownloadState == DownloadState.Queued;
+        internal bool CanKill => _downloadStatus.DownloadState == DownloadState.Downloading ||
+                                 _downloadStatus.DownloadState == DownloadState.Paused ||
+                                 _downloadStatus.DownloadState == DownloadState.Queued;
 
         internal YouTubeVideo YouTubeVideo { get; }
-
-        internal DownloadStatus DownloadStatus { get; }
 
         private Process _process;
         internal Process Process
@@ -48,12 +50,12 @@
 
                     if (_isPaused) return;
 
-                    if (DownloadStatus.DownloadState != DownloadState.Exited)
+                    if (_downloadStatus.DownloadState != DownloadState.Exited)
                     {
-                        DownloadStatus.DownloadState = DownloadState.Completed;
+                        _downloadStatus.DownloadState = DownloadState.Completed;
                     }
 
-                    Exited?.Invoke(this, EventArgs.Empty);
+                    OnExited();
                 }
 
                 if (_process != null)
@@ -73,7 +75,7 @@
         internal void Start()
         {
             GenerateAndStartProcess();
-            DownloadStatus.DownloadState = DownloadState.Downloading;
+            _downloadStatus.DownloadState = DownloadState.Downloading;
         }
 
         internal void Pause()
@@ -86,7 +88,7 @@
             Process.Kill();
             _isPaused = true;
 
-            DownloadStatus.DownloadState = DownloadState.Paused;
+            _downloadStatus.DownloadState = DownloadState.Paused;
         }
 
         internal void Resume()
@@ -100,20 +102,27 @@
 
             _isPaused = false;
 
-            DownloadStatus.DownloadState = DownloadState.Downloading;
+            _downloadStatus.DownloadState = DownloadState.Downloading;
         }
 
         internal void Kill()
         {
-            DownloadStatus.DownloadState = DownloadState.Exited;
+            _downloadStatus.DownloadState = DownloadState.Exited;
 
             if (Process == null)
             {
-                Exited?.Invoke(this, EventArgs.Empty);
+                OnExited();
             }
             else
             {
-                Process.Kill();
+                try
+                {
+                    Process.Kill();
+                }
+                catch (InvalidOperationException)
+                {
+                    OnExited();
+                }
             }
         }
 
@@ -145,17 +154,22 @@
             ProgressMonitor progressMonitor = new ProgressMonitor(Process);
             progressMonitor.MonitorDownload((sender, e) =>
             {
-                DownloadStatus.DownloadProgress.Stage = e.Stage;
+                _downloadStatus.DownloadProgress.Stage = e.Stage;
 
                 if (e.DownloadSpeed.HasValue)
                 {
-                    DownloadStatus.DownloadProgress.DownloadSpeed = e.DownloadSpeed.Value;
+                    _downloadStatus.DownloadProgress.DownloadSpeed = e.DownloadSpeed.Value;
                 }
 
-                DownloadStatus.DownloadProgress.ProgressPercentage = e.DownloadPercentage;
-                DownloadStatus.DownloadProgress.TotalDownloadSize = e.TotalDownloadSize;
+                _downloadStatus.DownloadProgress.ProgressPercentage = e.DownloadPercentage;
+                _downloadStatus.DownloadProgress.TotalDownloadSize = e.TotalDownloadSize;
             });
             progressMonitor.Run();
+        }
+
+        private void OnExited()
+        {
+            Exited?.Invoke(this, EventArgs.Empty);
         }
     }
 }

@@ -100,8 +100,8 @@
 
                     Task.Delay(3_000).ContinueWith(_ =>
                     {
-                        Downloads.Remove(downloadViewModel);
                         SelectedDownloads.Remove(downloadViewModel);
+                        Downloads.Remove(downloadViewModel);
                     });
                 }
 

@@ -2,12 +2,15 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Windows;
 
     using Caliburn.Micro;
 
+    using YouTube.Downloader.Core.Downloading;
     using YouTube.Downloader.Factories;
     using YouTube.Downloader.Factories.Interfaces;
+    using YouTube.Downloader.Models;
     using YouTube.Downloader.Services;
     using YouTube.Downloader.Services.Interfaces;
     using YouTube.Downloader.Utilities;
@@ -75,12 +78,25 @@
 
         protected override void OnStartup(object sender, StartupEventArgs e)
         {
+            IDataService dataService = IoC.Get<IDataService>();
+
+            IoC.Get<IQueryViewModel>().Query = dataService.LoadAndWipe<string>("Query") ?? string.Empty;
+            IoC.Get<IMatchedVideosViewModel>().Load(dataService.LoadAndWipe<IEnumerable<YouTubeVideo>>("Matched Videos", "[]"));
+            IoC.Get<ICurrentDownloadsViewModel>().AddDownloads(dataService.LoadAndWipe<IEnumerable<YouTubeVideo>>("Downloads", "[]").Select(IoC.Get<IVideoFactory>().MakeVideoViewModel));
+
             DisplayRootViewFor<IShellViewModel>();
         }
 
         protected override void OnExit(object sender, System.EventArgs e)
         {
-            IoC.Get<IDownloadService>().SaveAndTerminateDownloads();
+            IDataService dataService = IoC.Get<IDataService>();
+
+            dataService.Save(IoC.Get<IQueryViewModel>().Query, "Query");
+            dataService.Save(IoC.Get<IMatchedVideosViewModel>().Videos.Select(matchedVideoViewModel => matchedVideoViewModel.VideoViewModel.Video), "Matched Videos");
+
+            Download[] downloads = IoC.Get<IDownloadService>().Downloads.ToArray();
+            dataService.Save(downloads.Select(download => download.YouTubeVideo), "Downloads");
+            downloads.Apply(download => download.Kill());
         }
     }
 }

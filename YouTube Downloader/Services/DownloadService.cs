@@ -24,6 +24,8 @@
             _dataService = dataService;
         }
 
+        public IEnumerable<Download> Downloads => _currentDownloads.Concat(_downloadQueue);
+
         public void QueueDownloads(IEnumerable<Download> downloads)
         {
             downloads.Apply(_downloadQueue.Enqueue);
@@ -32,15 +34,6 @@
             {
                 DownloadNext();
             }
-        }
-
-        public void SaveAndTerminateDownloads()
-        {
-            Download[] downloads = _currentDownloads.ToArray();
-
-            _dataService.Save(downloads.Concat(_downloadQueue).Select(download => download.YouTubeVideo), "Downloads");
-
-            downloads.Apply(download => download.Kill());
         }
 
         private void DownloadNext()

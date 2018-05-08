@@ -51,7 +51,7 @@
             }
         }
 
-        private string _query = string.Empty;
+        private string _query;
         public string Query
         {
             get => _query;

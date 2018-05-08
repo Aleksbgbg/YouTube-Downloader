@@ -4,14 +4,12 @@
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Linq;
-    using System.Threading.Tasks;
     using System.Windows.Data;
 
     using Caliburn.Micro;
 
     using YouTube.Downloader.Core;
     using YouTube.Downloader.Factories.Interfaces;
-    using YouTube.Downloader.Models;
     using YouTube.Downloader.Models.Download;
     using YouTube.Downloader.Services.Interfaces;
     using YouTube.Downloader.ViewModels.Interfaces;
@@ -28,8 +26,6 @@
             _downloadService = downloadService;
             _downloadFactory = downloadFactory;
 
-            AddDownloads(dataService.LoadAndWipe<IEnumerable<YouTubeVideo>>("Downloads", "[]").Select(videoFactory.MakeVideoViewModel));
-
             ((ListCollectionView)CollectionViewSource.GetDefaultView(Downloads)).CustomSort = Comparer<IDownloadViewModel>.Create((first, second) => -first.DownloadStatus.DownloadState.CompareTo(second.DownloadStatus.DownloadState));
 
             SelectedDownloads.CollectionChanged += (sender, e) => RecomputeActionGuards();
@@ -38,11 +34,6 @@
         public IObservableCollection<IDownloadViewModel> Downloads { get; } = new BindableCollection<IDownloadViewModel>();
 
         public IObservableCollection<IDownloadViewModel> SelectedDownloads { get; } = new BindableCollection<IDownloadViewModel>();
-
-        public void Handle(IEnumerable<IVideoViewModel> message)
-        {
-            AddDownloads(message);
-        }
 
         private bool _canPause;
         public bool CanPause
@@ -88,7 +79,12 @@
             SelectedDownloads.Apply(download => download.Download.Kill());
         }
 
-        private void AddDownloads(IEnumerable<IVideoViewModel> videos)
+        public void Handle(IEnumerable<IVideoViewModel> message)
+        {
+            AddDownloads(message);
+        }
+
+        public void AddDownloads(IEnumerable<IVideoViewModel> videos)
         {
             IDownloadViewModel[] downloads = videos.Select(_downloadFactory.MakeDownloadViewModel).ToArray();
 

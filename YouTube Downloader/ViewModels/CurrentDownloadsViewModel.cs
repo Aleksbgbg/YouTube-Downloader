@@ -9,6 +9,7 @@
 
     using Caliburn.Micro;
 
+    using YouTube.Downloader.Core;
     using YouTube.Downloader.Factories.Interfaces;
     using YouTube.Downloader.Models;
     using YouTube.Downloader.Models.Download;
@@ -98,17 +99,10 @@
                     downloadViewModel.Download.Exited -= DownloadCompleted;
                     downloadViewModel.DownloadStatus.PropertyChanged -= DownloadStatusPropertyChanged;
 
-                    Task.Delay(3_000).ContinueWith(_ =>
+                    DelayedCallbackHelper.SetTimeout(3_000, () =>
                     {
-                        lock (SelectedDownloads)
-                        {
-                            SelectedDownloads.Remove(downloadViewModel);
-                        }
-
-                        lock (Downloads)
-                        {
-                            Downloads.Remove(downloadViewModel);
-                        }
+                        SelectedDownloads.Remove(downloadViewModel);
+                        Downloads.Remove(downloadViewModel);
                     });
                 }
 

@@ -6,6 +6,6 @@
 
         T LoadAndWipe<T>(string dataName, string emptyData = "");
 
-        void Save<T>(T data, string dataName);
+        void Save<T>(string dataName, T data);
     }
 }

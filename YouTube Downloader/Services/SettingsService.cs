@@ -28,7 +28,7 @@
 
         public void Save()
         {
-            _dataService.Save(Settings, "Settings");
+            _dataService.Save("Settings", Settings);
         }
     }
 }

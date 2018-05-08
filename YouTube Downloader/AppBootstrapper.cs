@@ -91,11 +91,11 @@
         {
             IDataService dataService = IoC.Get<IDataService>();
 
-            dataService.Save(IoC.Get<IQueryViewModel>().Query, "Query");
-            dataService.Save(IoC.Get<IMatchedVideosViewModel>().Videos.Select(matchedVideoViewModel => matchedVideoViewModel.VideoViewModel.Video), "Matched Videos");
+            dataService.Save("Query", IoC.Get<IQueryViewModel>().Query);
+            dataService.Save("Matched Videos", IoC.Get<IMatchedVideosViewModel>().Videos.Select(matchedVideoViewModel => matchedVideoViewModel.VideoViewModel.Video));
 
             Download[] downloads = IoC.Get<IDownloadService>().Downloads.ToArray();
-            dataService.Save(downloads.Select(download => download.YouTubeVideo), "Downloads");
+            dataService.Save("Downloads", downloads.Select(download => download.YouTubeVideo));
             downloads.Apply(download => download.Kill());
         }
     }

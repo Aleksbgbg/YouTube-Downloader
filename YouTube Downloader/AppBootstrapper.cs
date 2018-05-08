@@ -68,7 +68,7 @@
 
         protected override object GetInstance(Type service, string key)
         {
-            return _container.GetInstance(service, key);
+            return _container.GetInstance(service, key) ?? throw new InvalidOperationException("Service is not registered.");
         }
 
         protected override IEnumerable<object> GetAllInstances(Type serviceType)

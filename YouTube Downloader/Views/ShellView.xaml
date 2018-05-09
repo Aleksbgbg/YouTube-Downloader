@@ -4,19 +4,23 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:Caliburn="http://www.caliburnproject.org"
+        xmlns:Helpers="clr-namespace:YouTube.Downloader.Helpers"
         xmlns:ViewModels="clr-namespace:YouTube.Downloader.ViewModels"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance ViewModels:ShellViewModel}"
         WindowStartupLocation="CenterScreen">
     <DockPanel>
         <Menu DockPanel.Dock="Top">
-            <MenuItem Header="File">
-                <MenuItem Header="Exit"
+            <MenuItem Header="_File">
+                <MenuItem Header="_Exit"
+                          InputGestureText="Alt+F4"
+                          Helpers:ImageContentHelper.Image="{StaticResource Delete}"
                           Caliburn:Message.Attach="Exit"/>
             </MenuItem>
 
-            <MenuItem Header="Settings">
-                <MenuItem Header="Open Settings"
+            <MenuItem Header="_Settings">
+                <MenuItem Header="_Open Settings"
+                          Helpers:ImageContentHelper.Image="{StaticResource Settings}"
                           Caliburn:Message.Attach="OpenSettings"/>
             </MenuItem>
         </Menu>

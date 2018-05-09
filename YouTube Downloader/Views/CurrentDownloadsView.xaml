@@ -26,16 +26,49 @@
                 </Style>
             </StackPanel.Style>
 
-            <Button Width="75" Margin="5" Caliburn:Message.Attach="TogglePause">
+            <Button Width="125" Margin="5" Caliburn:Message.Attach="TogglePause">
                 <Button.Content>
-                    <MultiBinding Mode="OneWay" Converter="{x:Static Converters:TogglePauseTextConverter.Default}">
-                        <Binding Path="CanPause" Mode="OneWay"/>
-                        <Binding Path="CanResume" Mode="OneWay"/>
-                    </MultiBinding>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Width="20">
+                            <Image.Style>
+                                <Style TargetType="Image" BasedOn="{StaticResource {x:Type Image}}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding CanPause}" Value="True">
+                                            <Setter Property="Source" Value="{StaticResource Pause}"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding CanResume}" Value="True">
+                                            <Setter Property="Source" Value="{StaticResource Play}"/>
+                                        </DataTrigger>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding CanPause}" Value="False"/>
+                                                <Condition Binding="{Binding CanResume}" Value="False"/>
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Source" Value="{StaticResource NoEntry}"/>
+                                        </MultiDataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Image.Style>
+                        </Image>
+                        <TextBlock Margin="5, 0">
+                            <TextBlock.Text>
+                                <MultiBinding Mode="OneWay"
+                                              Converter="{x:Static Converters:TogglePauseTextConverter.Default}">
+                                    <Binding Path="CanPause" Mode="OneWay"/>
+                                    <Binding Path="CanResume" Mode="OneWay"/>
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
+                    </StackPanel>
                 </Button.Content>
             </Button>
-            <Button Content="Kill" Width="75" Margin="5"
-                    Caliburn:Message.Attach="Kill"/>
+            <Button Width="125" Margin="5"
+                    Caliburn:Message.Attach="Kill">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="{StaticResource Delete}" Width="20"/>
+                    <TextBlock Text="Kill" Margin="5, 0"/>
+                </StackPanel>
+            </Button>
         </StackPanel>
 
         <ListBox BorderThickness="0"

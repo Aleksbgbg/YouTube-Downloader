@@ -78,8 +78,6 @@
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel>
-                        <CheckBox IsChecked="{Binding IsSelected, RelativeSource={RelativeSource FindAncestor, AncestorType=ListBoxItem}}"
-                                  Margin="5, 0"/>
                         <ContentControl Caliburn:View.Model="{Binding Mode=OneTime}"/>
                     </StackPanel>
                 </DataTemplate>

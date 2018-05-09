@@ -28,7 +28,7 @@
 
         internal bool CanPause => !_isPaused && Process != null;
 
-        internal bool CanResume => _isPaused;
+        internal bool CanResume => _isPaused && _downloadStatus.DownloadState == DownloadState.Paused;
 
         internal bool CanKill => _downloadStatus.DownloadState == DownloadState.Downloading ||
                                  _downloadStatus.DownloadState == DownloadState.Paused ||
@@ -107,13 +107,7 @@
 
         internal void Kill()
         {
-            _downloadStatus.DownloadState = DownloadState.Exited;
-
-            if (Process == null)
-            {
-                OnExited();
-            }
-            else
+            if (Process != null)
             {
                 try
                 {
@@ -121,9 +115,13 @@
                 }
                 catch (InvalidOperationException)
                 {
-                    OnExited();
                 }
+
+                Process = null;
             }
+
+            _downloadStatus.DownloadState = DownloadState.Exited;
+            OnExited();
         }
 
         internal void TogglePause()

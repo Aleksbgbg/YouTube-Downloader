@@ -80,7 +80,7 @@
 
         internal void Pause()
         {
-            if (_isPaused)
+            if (!CanPause)
             {
                 throw new InvalidOperationException("Cannot pause a paused download.");
             }
@@ -93,7 +93,7 @@
 
         internal void Resume()
         {
-            if (!_isPaused)
+            if (!CanResume)
             {
                 throw new InvalidOperationException("Cannot resume a download in progress.");
             }

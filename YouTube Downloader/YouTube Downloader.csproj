@@ -134,7 +134,6 @@
     <Compile Include="Converters\CountToBooleanConverter.cs" />
     <Compile Include="Converters\IdToThumbnailConverter.cs" />
     <Compile Include="Converters\StageTextConverter.cs" />
-    <Compile Include="Converters\TogglePauseTextConverter.cs" />
     <Compile Include="Core\DelayedCallbackHelper.cs" />
     <Compile Include="Core\ThrowHelper.cs" />
     <Compile Include="EventArgs\ProgressUpdatedEventArgs.cs" />

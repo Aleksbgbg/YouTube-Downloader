@@ -71,18 +71,10 @@
             </Button>
         </StackPanel>
 
-        <ListBox BorderThickness="0"
-                 ItemsSource="{Binding Downloads, Mode=OneTime}"
+        <ListBox x:Name="Downloads"
+                 BorderThickness="0"
                  SelectionMode="Extended"
                  Helpers:SelectedItemsHelper.SelectedItems="{Binding SelectedDownloads, Mode=OneTime}">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel>
-                        <ContentControl Caliburn:View.Model="{Binding Mode=OneTime}"/>
-                    </StackPanel>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-
             <ListBox.ItemContainerStyle>
                 <Style TargetType="ListBoxItem" BasedOn="{StaticResource {x:Type ListBoxItem}}">
                     <Setter Property="SnapsToDevicePixels" Value="True"/>

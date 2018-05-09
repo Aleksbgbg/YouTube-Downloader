@@ -23,15 +23,9 @@
             </TextBlock>
         </StatusBar>
 
-        <ListBox BorderThickness="0"
-                 ItemsSource="{Binding Videos, Mode=OneTime}"
+        <ListBox x:Name="Videos"
+                 BorderThickness="0"
                  SelectionMode="Extended"
-                 Helpers:SelectedItemsHelper.SelectedItems="{Binding SelectedVideos, Mode=OneTime}">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <ContentControl Caliburn:View.Model="{Binding Mode=OneTime}"/>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
+                 Helpers:SelectedItemsHelper.SelectedItems="{Binding SelectedVideos, Mode=OneTime}"/>
     </DockPanel>
 </UserControl>

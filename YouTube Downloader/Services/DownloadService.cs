@@ -7,6 +7,7 @@
     using Caliburn.Micro;
 
     using YouTube.Downloader.Core.Downloading;
+    using YouTube.Downloader.EventArgs;
     using YouTube.Downloader.Services.Interfaces;
 
     internal class DownloadService : IDownloadService
@@ -54,16 +55,16 @@
 
                 _currentDownloads.Add(download);
 
-                void DetachDownload(object sender, EventArgs e)
+                void DetachDownload(object sender, DownloadFinishedEventArgs e)
                 {
-                    download.Exited -= DetachDownload;
+                    download.Finished -= DetachDownload;
 
                     _currentDownloads.Remove(download);
 
                     DownloadNext();
                 }
 
-                download.Exited += DetachDownload;
+                download.Finished += DetachDownload;
 
                 download.Start();
                 break;

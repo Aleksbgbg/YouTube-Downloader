@@ -9,6 +9,7 @@
     using Caliburn.Micro;
 
     using YouTube.Downloader.Core;
+    using YouTube.Downloader.EventArgs;
     using YouTube.Downloader.Factories.Interfaces;
     using YouTube.Downloader.Models.Download;
     using YouTube.Downloader.Services.Interfaces;
@@ -90,9 +91,9 @@
 
             foreach (IDownloadViewModel downloadViewModel in downloads)
             {
-                void DownloadCompleted(object sender, EventArgs e)
+                void DownloadCompleted(object sender, DownloadFinishedEventArgs e)
                 {
-                    downloadViewModel.Download.Exited -= DownloadCompleted;
+                    downloadViewModel.Download.Finished -= DownloadCompleted;
                     downloadViewModel.DownloadStatus.PropertyChanged -= DownloadStatusPropertyChanged;
 
                     DelayedCallbackHelper.SetTimeout(3_000, () =>
@@ -102,7 +103,7 @@
                     });
                 }
 
-                downloadViewModel.Download.Exited += DownloadCompleted;
+                downloadViewModel.Download.Finished += DownloadCompleted;
 
                 void DownloadStatusPropertyChanged(object sender, PropertyChangedEventArgs e)
                 {

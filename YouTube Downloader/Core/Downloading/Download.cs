@@ -1,8 +1,8 @@
 ﻿namespace YouTube.Downloader.Core.Downloading
 {
     using System;
-    using System.Diagnostics;
 
+    using YouTube.Downloader.EventArgs;
     using YouTube.Downloader.Models;
     using YouTube.Downloader.Models.Download;
 
@@ -12,121 +12,186 @@
 
         private readonly DownloadStatus _downloadStatus;
 
-        private bool _isPaused;
-
-        internal Download(YouTubeVideo video, DownloadStatus downloadStatus, Settings settings)
+        internal Download(DownloadStatus downloadStatus, Settings settings, YouTubeVideo youTubeVideo)
         {
-            YouTubeVideo = video;
             _downloadStatus = downloadStatus;
-
-            _processArguments = $"-o \"{settings.DownloadPath}\\%(title)s.%(ext)s\" -f {(settings.DownloadType == DownloadType.Audio ? "bestaudio" : "bestvideo+bestaudio")} -- \"{video.Id}\"";
+            _processArguments = $"-o \"{settings.DownloadPath}\\%(title)s.%(ext)s\" -f {(settings.DownloadType == DownloadType.Audio ? "bestaudio" : "bestvideo+bestaudio")} -- \"{youTubeVideo.Id}\"";
+            YouTubeVideo = youTubeVideo;
         }
 
-        internal event EventHandler Exited;
-
-        internal bool HasExited => _downloadStatus.DownloadState == DownloadState.Exited;
-
-        internal bool CanPause => !_isPaused && Process != null;
-
-        internal bool CanResume => _isPaused && _downloadStatus.DownloadState == DownloadState.Paused;
-
-        internal bool CanKill => _downloadStatus.DownloadState == DownloadState.Downloading ||
-                                 _downloadStatus.DownloadState == DownloadState.Paused ||
-                                 _downloadStatus.DownloadState == DownloadState.Queued;
+        internal event EventHandler<DownloadFinishedEventArgs> Finished;
 
         internal YouTubeVideo YouTubeVideo { get; }
 
-        private Process _process;
-        internal Process Process
+        internal bool CanPause => HasStarted && !HasExited && !IsPaused;
+
+        internal bool CanResume => HasStarted && !HasExited && IsPaused;
+
+        internal bool CanKill => !HasExited;
+
+        private bool _hasStarted;
+        internal bool HasStarted
         {
-            get => _process;
+            get => _hasStarted;
 
             private set
             {
-                void ProcessExited(object sender, EventArgs e)
+                _hasStarted = value;
+                UpdateDownloadState();
+            }
+        }
+
+        private bool _isPaused;
+        internal bool IsPaused
+        {
+            get => _isPaused;
+
+            private set
+            {
+                _isPaused = value;
+                UpdateDownloadState();
+            }
+        }
+
+        private bool _hasExited;
+        internal bool HasExited
+        {
+            get => _hasExited;
+
+            private set
+            {
+                _hasExited = value;
+                UpdateDownloadState();
+
+                if (_hasExited)
                 {
-                    Process.Exited -= ProcessExited;
-                    Process = null;
+                    Finished?.Invoke(this, new DownloadFinishedEventArgs(DidComplete));
+                }
+            }
+        }
 
-                    if (_isPaused) return;
+        private bool _didComplete;
+        internal bool DidComplete
+        {
+            get => _didComplete;
 
-                    if (_downloadStatus.DownloadState != DownloadState.Exited)
+            private set
+            {
+                _didComplete = value;
+                UpdateDownloadState();
+            }
+        }
+
+        private DownloadProcess _downloadProcess;
+        private DownloadProcess DownloadProcess
+        {
+            get => _downloadProcess;
+
+            set
+            {
+                void DownloadProcessExited(object sender, EventArgs e)
+                {
+                    _downloadProcess.Exited -= DownloadProcessExited;
+
+                    if (IsPaused || HasExited)
                     {
-                        _downloadStatus.DownloadState = DownloadState.Completed;
+                        return;
                     }
 
-                    OnExited();
+                    DidComplete = true;
+                    HasExited = true;
                 }
 
-                if (_process != null)
+                if (_downloadProcess != null)
                 {
-                    _process.Exited -= ProcessExited;
+                    _downloadProcess.Exited -= DownloadProcessExited;
                 }
 
-                _process = value;
+                _downloadProcess = value;
 
-                if (_process != null)
+                if (_downloadProcess != null)
                 {
-                    _process.Exited += ProcessExited;
+                    _downloadProcess.Exited += DownloadProcessExited;
+
+                    _downloadProcess.ProgressMonitor.MonitorDownload((sender, e) =>
+                    {
+                        _downloadStatus.DownloadProgress.Stage = e.Stage;
+
+                        if (e.DownloadSpeed.HasValue)
+                        {
+                            _downloadStatus.DownloadProgress.DownloadSpeed = e.DownloadSpeed.Value;
+                        }
+
+                        _downloadStatus.DownloadProgress.ProgressPercentage = e.DownloadPercentage;
+                        _downloadStatus.DownloadProgress.TotalDownloadSize = e.TotalDownloadSize;
+                    });
                 }
             }
         }
 
         internal void Start()
         {
-            GenerateAndStartProcess();
-            _downloadStatus.DownloadState = DownloadState.Downloading;
-        }
-
-        internal void Pause()
-        {
-            if (!CanPause)
+            if (HasStarted)
             {
-                throw new InvalidOperationException("Cannot pause a paused download.");
+                throw new InvalidOperationException("Cannot start an already started download.");
             }
 
-            Process.Kill();
-            _isPaused = true;
-
-            _downloadStatus.DownloadState = DownloadState.Paused;
-        }
-
-        internal void Resume()
-        {
-            if (!CanResume)
-            {
-                throw new InvalidOperationException("Cannot resume a download in progress.");
-            }
-
+            HasStarted = true;
             GenerateAndStartProcess();
-
-            _isPaused = false;
-
-            _downloadStatus.DownloadState = DownloadState.Downloading;
         }
 
         internal void Kill()
         {
-            if (Process != null)
+            if (!HasStarted || IsPaused)
             {
-                try
-                {
-                    Process.Kill();
-                }
-                catch (InvalidOperationException)
-                {
-                }
-
-                Process = null;
+                HasExited = true;
+                return;
             }
 
-            _downloadStatus.DownloadState = DownloadState.Exited;
-            OnExited();
+            if (HasExited)
+            {
+                throw new InvalidOperationException("Cannot kill a download which has already been killed.");
+            }
+
+            HasExited = true;
+            KillProcess();
+        }
+
+        internal void Pause()
+        {
+            if (!HasStarted)
+            {
+                throw new InvalidOperationException("Cannot pause a download which has not been started.");
+            }
+
+            if (HasExited)
+            {
+                throw new InvalidOperationException("Cannot pause a download which has already been killed.");
+            }
+
+            if (IsPaused)
+            {
+                throw new InvalidOperationException("Cannot pause a paused download.");
+            }
+
+            IsPaused = true;
+            KillProcess();
+        }
+
+        internal void Resume()
+        {
+            if (!IsPaused)
+            {
+                throw new InvalidOperationException("Cannot resume a download which has not been paused.");
+            }
+
+            IsPaused = false;
+            GenerateAndStartProcess();
         }
 
         internal void TogglePause()
         {
-            if (_isPaused)
+            if (IsPaused)
             {
                 Resume();
                 return;
@@ -137,37 +202,34 @@
 
         private void GenerateAndStartProcess()
         {
-            Process = new Process
-            {
-                EnableRaisingEvents = true,
-                StartInfo = new ProcessStartInfo("Resources/youtube-dl.exe", _processArguments)
-                {
-                    CreateNoWindow = true,
-                    UseShellExecute = false,
-                    RedirectStandardOutput = true
-                }
-            };
-            Process.Start();
-
-            ProgressMonitor progressMonitor = new ProgressMonitor(Process);
-            progressMonitor.MonitorDownload((sender, e) =>
-            {
-                _downloadStatus.DownloadProgress.Stage = e.Stage;
-
-                if (e.DownloadSpeed.HasValue)
-                {
-                    _downloadStatus.DownloadProgress.DownloadSpeed = e.DownloadSpeed.Value;
-                }
-
-                _downloadStatus.DownloadProgress.ProgressPercentage = e.DownloadPercentage;
-                _downloadStatus.DownloadProgress.TotalDownloadSize = e.TotalDownloadSize;
-            });
-            progressMonitor.Run();
+            DownloadProcess = new DownloadProcess(_processArguments);
+            DownloadProcess.Start();
         }
 
-        private void OnExited()
+        private void KillProcess()
         {
-            Exited?.Invoke(this, EventArgs.Empty);
+            DownloadProcess.Kill();
+            DownloadProcess = null;
+        }
+
+        private void UpdateDownloadState()
+        {
+            if (HasExited)
+            {
+                _downloadStatus.DownloadState = DidComplete ? DownloadState.Completed : DownloadState.Exited;
+            }
+            else if (IsPaused)
+            {
+                _downloadStatus.DownloadState = DownloadState.Paused;
+            }
+            else if (HasStarted)
+            {
+                _downloadStatus.DownloadState = DownloadState.Downloading;
+            }
+            else
+            {
+                _downloadStatus.DownloadState = DownloadState.Queued;
+            }
         }
     }
 }

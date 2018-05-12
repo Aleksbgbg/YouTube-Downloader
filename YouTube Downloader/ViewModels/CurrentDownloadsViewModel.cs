@@ -70,7 +70,16 @@
 
         public void TogglePause()
         {
-            SelectedDownloads.Apply(download => download.Download.TogglePause());
+            if (CanPause)
+            {
+                SelectedDownloads.Apply(downloadViewModel => downloadViewModel.Download.Pause());
+                return;
+            }
+
+            if (CanResume)
+            {
+                _downloadService.ResumeDownloads(SelectedDownloads.Select(downloadViewModel => downloadViewModel.Download));
+            }
         }
 
         public bool CanKill => SelectedDownloads.All(downloadViewModel => downloadViewModel.Download.CanKill);

@@ -12,6 +12,8 @@
 
         private readonly DownloadStatus _downloadStatus;
 
+        private bool _isRequeued;
+
         internal Download(DownloadStatus downloadStatus, Settings settings, YouTubeVideo youTubeVideo)
         {
             _downloadStatus = downloadStatus;
@@ -21,11 +23,15 @@
 
         internal event EventHandler<DownloadFinishedEventArgs> Finished;
 
+        internal event EventHandler Paused;
+
+        internal event EventHandler Resumed;
+
         internal YouTubeVideo YouTubeVideo { get; }
 
         internal bool CanPause => HasStarted && !HasExited && !IsPaused;
 
-        internal bool CanResume => HasStarted && !HasExited && IsPaused;
+        internal bool CanResume => HasStarted && !HasExited && IsPaused && !_isRequeued;
 
         internal bool CanKill => !HasExited;
 
@@ -109,23 +115,25 @@
 
                 _downloadProcess = value;
 
-                if (_downloadProcess != null)
+                if (_downloadProcess == null)
                 {
-                    _downloadProcess.Exited += DownloadProcessExited;
-
-                    _downloadProcess.ProgressMonitor.MonitorDownload((sender, e) =>
-                    {
-                        _downloadStatus.DownloadProgress.Stage = e.Stage;
-
-                        if (e.DownloadSpeed.HasValue)
-                        {
-                            _downloadStatus.DownloadProgress.DownloadSpeed = e.DownloadSpeed.Value;
-                        }
-
-                        _downloadStatus.DownloadProgress.ProgressPercentage = e.DownloadPercentage;
-                        _downloadStatus.DownloadProgress.TotalDownloadSize = e.TotalDownloadSize;
-                    });
+                    return;
                 }
+
+                _downloadProcess.Exited += DownloadProcessExited;
+
+                _downloadProcess.ProgressMonitor.MonitorDownload((sender, e) =>
+                {
+                    _downloadStatus.DownloadProgress.Stage = e.Stage;
+
+                    if (e.DownloadSpeed.HasValue)
+                    {
+                        _downloadStatus.DownloadProgress.DownloadSpeed = e.DownloadSpeed.Value;
+                    }
+
+                    _downloadStatus.DownloadProgress.ProgressPercentage = e.DownloadPercentage;
+                    _downloadStatus.DownloadProgress.TotalDownloadSize = e.TotalDownloadSize;
+                });
             }
         }
 
@@ -176,6 +184,7 @@
 
             IsPaused = true;
             KillProcess();
+            Paused?.Invoke(this, EventArgs.Empty);
         }
 
         internal void Resume()
@@ -185,19 +194,16 @@
                 throw new InvalidOperationException("Cannot resume a download which has not been paused.");
             }
 
+            _isRequeued = false;
             IsPaused = false;
             GenerateAndStartProcess();
+            Resumed?.Invoke(this, EventArgs.Empty);
         }
 
-        internal void TogglePause()
+        internal void OnRequeued()
         {
-            if (IsPaused)
-            {
-                Resume();
-                return;
-            }
-
-            Pause();
+            _downloadStatus.DownloadState = DownloadState.Queued;
+            _isRequeued = true;
         }
 
         private void GenerateAndStartProcess()

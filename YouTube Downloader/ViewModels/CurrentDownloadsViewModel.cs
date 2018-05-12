@@ -82,11 +82,11 @@
             }
         }
 
-        public bool CanKill => SelectedDownloads.All(downloadViewModel => downloadViewModel.Download.CanKill);
+        public bool CanKill => SelectedDownloads.Any(downloadViewModel => downloadViewModel.Download.CanKill);
 
         public void Kill()
         {
-            SelectedDownloads.Apply(download => download.Download.Kill());
+            SelectedDownloads.Select(downloadViewModel => downloadViewModel.Download).Where(download => download.CanKill).Apply(download => download.Kill());
         }
 
         public void Handle(IEnumerable<IVideoViewModel> message)

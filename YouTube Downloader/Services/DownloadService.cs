@@ -4,8 +4,6 @@
     using System.Collections.Generic;
     using System.Linq;
 
-    using Caliburn.Micro;
-
     using YouTube.Downloader.Core.Downloading;
     using YouTube.Downloader.EventArgs;
     using YouTube.Downloader.Services.Interfaces;
@@ -14,26 +12,31 @@
     {
         private const int MaxConcurrentDownloads = 3;
 
-        private readonly Queue<Download> _downloadQueue = new Queue<Download>();
+        private readonly LinkedList<Download> _downloadQueue = new LinkedList<Download>();
 
         private readonly List<Download> _currentDownloads = new List<Download>();
-
-        private readonly IDataService _dataService;
-
-        public DownloadService(IDataService dataService)
-        {
-            _dataService = dataService;
-        }
 
         public IEnumerable<Download> Downloads => _currentDownloads.Concat(_downloadQueue);
 
         public void QueueDownloads(IEnumerable<Download> downloads)
         {
-            downloads.Apply(_downloadQueue.Enqueue);
+            foreach (Download download in downloads)
+            {
+                _downloadQueue.AddLast(download);
+            }
 
             while (_currentDownloads.Count < MaxConcurrentDownloads && _downloadQueue.Count > 0)
             {
                 DownloadNext();
+            }
+        }
+
+        public void ResumeDownloads(IEnumerable<Download> downloads)
+        {
+            foreach (Download download in downloads)
+            {
+                _downloadQueue.AddFirst(download);
+                download.OnRequeued();
             }
         }
 
@@ -46,7 +49,8 @@
                     return;
                 }
 
-                Download download = _downloadQueue.Dequeue();
+                Download download = _downloadQueue.First.Value;
+                _downloadQueue.RemoveFirst();
 
                 if (download.HasExited)
                 {
@@ -55,18 +59,37 @@
 
                 _currentDownloads.Add(download);
 
-                void DetachDownload(object sender, DownloadFinishedEventArgs e)
+                void DownloadFinished(object sender, DownloadFinishedEventArgs e)
                 {
-                    download.Finished -= DetachDownload;
+                    download.Finished -= DownloadFinished;
 
                     _currentDownloads.Remove(download);
 
                     DownloadNext();
                 }
 
-                download.Finished += DetachDownload;
+                void DownloadPaused(object sender, EventArgs e)
+                {
+                    _currentDownloads.Remove(download);
 
-                download.Start();
+                    download.Finished -= DownloadFinished;
+                    download.Paused -= DownloadPaused;
+
+                    DownloadNext();
+                }
+
+                download.Finished += DownloadFinished;
+                download.Paused += DownloadPaused;
+
+                if (download.IsPaused)
+                {
+                    download.Resume();
+                }
+                else
+                {
+                    download.Start();
+                }
+
                 break;
             }
         }

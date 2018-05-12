@@ -3,8 +3,8 @@
     internal enum DownloadState
     {
         Queued,
-        Downloading,
         Paused,
+        Downloading,
         Completed,
         Exited
     }

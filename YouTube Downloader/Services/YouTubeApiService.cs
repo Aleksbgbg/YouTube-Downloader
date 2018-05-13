@@ -22,6 +22,8 @@
 
     internal sealed class YouTubeApiService : IYouTubeApiService
     {
+        private const int MaxQueryResults = 50;
+
         private readonly YouTubeService _youTubeApiService;
 
         private readonly HttpClient _httpClient = new HttpClient();
@@ -103,7 +105,7 @@
         {
             SearchResource.ListRequest searchRequest = _youTubeApiService.Search.List("snippet");
             searchRequest.Q = query;
-            searchRequest.MaxResults = 50;
+            searchRequest.MaxResults = MaxQueryResults;
 
             SearchListResponse searchResponse = await searchRequest.ExecuteAsync();
 
@@ -120,7 +122,7 @@
             {
                 PlaylistItemsResource.ListRequest playlistRequest = _youTubeApiService.PlaylistItems.List("snippet");
                 playlistRequest.PlaylistId = playlistId;
-                playlistRequest.MaxResults = 50;
+                playlistRequest.MaxResults = MaxQueryResults;
                 playlistRequest.PageToken = pageToken;
 
                 PlaylistItemListResponse playlistResponse = await playlistRequest.ExecuteAsync();

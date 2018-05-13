@@ -8,9 +8,11 @@
              mc:Ignorable="d"
 			 d:DataContext="{d:DesignInstance ViewModels:RequeryViewModel}">
     <DockPanel>
-        <TextBox Text="{Binding Query}"/>
-        <Button Content="Search" Caliburn:Message.Attach="Search"/>
-        
-        <ListBox x:Name="Results"/>
+        <DockPanel DockPanel.Dock="Top">
+            <Button DockPanel.Dock="Right" Content="Search" Width="75" Margin="5" Caliburn:Message.Attach="Search(query)"/>
+            <TextBox x:Name="Query" Margin="5"/>
+        </DockPanel>
+
+        <ListBox x:Name="Results" BorderThickness="0"/>
     </DockPanel>
 </UserControl>

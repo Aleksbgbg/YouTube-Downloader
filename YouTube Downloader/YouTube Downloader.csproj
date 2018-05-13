@@ -167,8 +167,10 @@
     <Compile Include="ViewModels\Interfaces\ICurrentDownloadsViewModel.cs" />
     <Compile Include="ViewModels\Interfaces\IDownloadViewModel.cs" />
     <Compile Include="ViewModels\Interfaces\IMatchedVideoViewModel.cs" />
+    <Compile Include="ViewModels\Interfaces\IRequeryViewModel.cs" />
     <Compile Include="ViewModels\Interfaces\ISettingsViewModel.cs" />
     <Compile Include="ViewModels\MatchedVideoViewModel.cs" />
+    <Compile Include="ViewModels\RequeryViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="Views\CurrentDownloadsView.xaml.cs">
       <DependentUpon>CurrentDownloadsView.xaml</DependentUpon>
@@ -181,6 +183,9 @@
     </Compile>
     <Compile Include="Views\MatchedVideoView.xaml.cs">
       <DependentUpon>MatchedVideoView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\RequeryView.xaml.cs">
+      <DependentUpon>RequeryView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SettingsView.xaml.cs">
       <DependentUpon>SettingsView.xaml</DependentUpon>
@@ -212,6 +217,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\QueryView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\RequeryView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

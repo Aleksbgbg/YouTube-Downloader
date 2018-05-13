@@ -107,14 +107,7 @@
 
             SearchListResponse searchResponse = await searchRequest.ExecuteAsync();
 
-            List<YouTubeVideo> matchedVideos = new List<YouTubeVideo>();
-
-            foreach (SearchResult video in searchResponse.Items.Where(video => video.Id.Kind.Contains("video")))
-            {
-                matchedVideos.Add(await GetVideo(video.Id.VideoId));
-            }
-
-            return matchedVideos;
+            return await GetVideos(searchResponse.Items.Where(video => video.Id.Kind.Contains("video")).Select(video => video.Id.VideoId));
         }
 
         private async Task<IEnumerable<YouTubeVideo>> GetPlaylistVideos(string playlistId)
@@ -134,13 +127,15 @@
 
                 pageToken = playlistResponse.NextPageToken;
 
-                foreach (PlaylistItem playlistItem in playlistResponse.Items)
-                {
-                    videos.Add(await GetVideo(playlistItem.Snippet.ResourceId.VideoId));
-                }
+                videos.AddRange(await GetVideos(playlistResponse.Items.Select(playlistItem => playlistItem.Snippet.ResourceId.VideoId)));
             } while (pageToken != null);
 
             return videos;
+        }
+
+        private async Task<IEnumerable<YouTubeVideo>> GetVideos(IEnumerable<string> videoIds)
+        {
+            return await Task.WhenAll(videoIds.Select(GetVideo));
         }
 
         private async Task<YouTubeVideo> GetVideo(string id)

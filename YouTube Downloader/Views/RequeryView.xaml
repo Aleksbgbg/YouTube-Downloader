@@ -9,7 +9,8 @@
 			 d:DataContext="{d:DesignInstance ViewModels:RequeryViewModel}">
     <DockPanel>
         <DockPanel DockPanel.Dock="Top">
-            <Button DockPanel.Dock="Right" Content="Search" Width="75" Margin="5" Caliburn:Message.Attach="Search(query)"/>
+            <Button DockPanel.Dock="Right" Content="Search" Width="75" Margin="5"
+                    Caliburn:Message.Attach="Search(query)"/>
             <TextBox x:Name="Query" Margin="5"/>
         </DockPanel>
 

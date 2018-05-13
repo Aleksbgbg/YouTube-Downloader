@@ -1,11 +1,13 @@
 ﻿namespace YouTube.Downloader.ViewModels.Interfaces
 {
+    using System.Collections.Generic;
+
     using Caliburn.Micro;
 
     internal interface IRequeryViewModel : IViewModelBase
     {
         IObservableCollection<IMatchedVideoViewModel> Results { get; }
 
-        void Search(string query);
+        IEnumerable<IResult> Search(string query);
     }
 }

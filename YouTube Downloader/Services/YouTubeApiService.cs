@@ -99,6 +99,24 @@
             return Enumerable.Empty<YouTubeVideo>();
         }
 
+        public async Task<IEnumerable<YouTubeVideo>> QueryManyVideos(string query)
+        {
+            SearchResource.ListRequest searchRequest = _youTubeApiService.Search.List("snippet");
+            searchRequest.Q = query;
+            searchRequest.MaxResults = 50;
+
+            SearchListResponse searchResponse = await searchRequest.ExecuteAsync();
+
+            List<YouTubeVideo> matchedVideos = new List<YouTubeVideo>();
+
+            foreach (SearchResult video in searchResponse.Items.Where(video => video.Id.Kind.Contains("video")))
+            {
+                matchedVideos.Add(await GetVideo(video.Id.VideoId));
+            }
+
+            return matchedVideos;
+        }
+
         private async Task<IEnumerable<YouTubeVideo>> GetPlaylistVideos(string playlistId)
         {
             List<YouTubeVideo> videos = new List<YouTubeVideo>();

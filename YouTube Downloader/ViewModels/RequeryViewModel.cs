@@ -8,18 +8,9 @@
     {
         public IObservableCollection<IMatchedVideoViewModel> Results { get; } = new BindableCollection<IMatchedVideoViewModel>();
 
-        private string _query;
-        public string Query
+        public void Search(string query)
         {
-            get => _query;
-
-            set
-            {
-                if (_query == value) return;
-
-                _query = value;
-                NotifyOfPropertyChange(() => Query);
-            }
+            Results.Clear();
         }
     }
 }

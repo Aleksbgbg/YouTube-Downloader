@@ -6,6 +6,6 @@
     {
         IObservableCollection<IMatchedVideoViewModel> Results { get; }
 
-        string Query { get; set; }
+        void Search(string query);
     }
 }

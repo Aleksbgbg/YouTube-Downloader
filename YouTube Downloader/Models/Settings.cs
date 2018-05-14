@@ -13,6 +13,7 @@
     {
         private string _downloadPath;
         [DisplayName("Download Path")]
+        [Category("Download")]
         [Description("Path where downloaded videos are saved.")]
         [Editor(typeof(DownloadPathControl), typeof(DownloadPathControl))]
         [JsonProperty("DownloadPath")]
@@ -31,6 +32,7 @@
 
         private DownloadType _downloadType;
         [DisplayName("Download Type")]
+        [Category("Download")]
         [Description("Choose whether to download just audio, or audio and video.")]
         [JsonProperty("DownloadType")]
         public DownloadType DownloadType
@@ -48,6 +50,7 @@
 
         private OutputFormat _outputFormat;
         [DisplayName("Output Format")]
+        [Category("Output")]
         [Description("Select the output container for downloaded videos.")]
         [JsonProperty("OutputFormat")]
         public OutputFormat OutputFormat

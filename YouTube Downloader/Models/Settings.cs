@@ -45,5 +45,31 @@
                 NotifyOfPropertyChange(() => DownloadType);
             }
         }
+
+        private OutputFormat _outputFormat;
+        [DisplayName("Output Format")]
+        [Description("Select the output container for downloaded videos.")]
+        [JsonProperty("OutputFormat")]
+        public OutputFormat OutputFormat
+        {
+            get => _outputFormat;
+
+            set
+            {
+                if (_outputFormat == value) return;
+
+                _outputFormat = value;
+                NotifyOfPropertyChange(() => OutputFormat);
+
+                if (_outputFormat == OutputFormat.Mp3)
+                {
+                    DownloadType = DownloadType.Audio;
+                }
+                else if (_outputFormat == OutputFormat.Mp4)
+                {
+                    DownloadType = DownloadType.AudioVideo;
+                }
+            }
+        }
     }
 }

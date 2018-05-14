@@ -21,6 +21,7 @@
             <WpfToolkit:PropertyGrid.PropertyDefinitions>
                 <WpfToolkit:PropertyDefinition TargetProperties="DownloadPath"/>
                 <WpfToolkit:PropertyDefinition TargetProperties="DownloadType"/>
+                <WpfToolkit:PropertyDefinition TargetProperties="OutputFormat"/>
             </WpfToolkit:PropertyGrid.PropertyDefinitions>
         </WpfToolkit:PropertyGrid>
     </DockPanel>

@@ -7,10 +7,10 @@
     [TypeConverter(typeof(EnumDescriptionConverter))]
     internal enum OutputFormat
     {
-        [Description("MP3")]
-        Mp3,
+        Auto,
         [Description("MP4")]
         Mp4,
-        Auto
+        [Description("MP3")]
+        Mp3
     }
 }

@@ -1,6 +1,8 @@
 ﻿namespace YouTube.Downloader.Core.Downloading
 {
     using System;
+    using System.Diagnostics;
+    using System.IO;
 
     using YouTube.Downloader.EventArgs;
     using YouTube.Downloader.Models;
@@ -16,9 +18,61 @@
 
         internal Download(DownloadStatus downloadStatus, Settings settings, YouTubeVideo youTubeVideo)
         {
+            string GetFormat()
+            {
+                switch (settings.OutputFormat)
+                {
+                    case OutputFormat.Auto:
+                        switch (settings.DownloadType)
+                        {
+                            case DownloadType.AudioVideo:
+                                return "bestvideo+bestaudio";
+
+                            case DownloadType.Audio:
+                                return "bestaudio";
+
+                            default:
+                                throw new InvalidOperationException("Download started with invalid settings.");
+                        }
+
+                    case OutputFormat.Mp4:
+                        return "mp4/bestvideo+bestaudio";
+
+                    case OutputFormat.Mp3:
+                        return "mp3/bestaudio";
+
+                    default:
+                        throw new InvalidOperationException("Download started with invalid settings.");
+                }
+            }
+
             _downloadStatus = downloadStatus;
-            _processArguments = $"-o \"{settings.DownloadPath}\\%(title)s.%(ext)s\" -f {(settings.DownloadType == DownloadType.Audio ? "bestaudio" : "bestvideo+bestaudio")} -- \"{youTubeVideo.Id}\"";
+            _processArguments = $"-o \"{settings.DownloadPath}\\%(title)s.%(ext)s\" -f {GetFormat()} -- \"{youTubeVideo.Id}\"";
             YouTubeVideo = youTubeVideo;
+
+            Finished += (sender, e) =>
+            {
+                if (!e.DidComplete || settings.OutputFormat == OutputFormat.Auto)
+                {
+                    return;
+                }
+
+                string destination = (string)DownloadProcess.ProcessMonitor.ParameterMonitorings["Destination"].Value;
+
+                if (destination == null)
+                {
+                    return;
+                }
+
+                FileInfo destinationInfo = new FileInfo(destination);
+
+                string expectedExtension = settings.OutputFormat == OutputFormat.Mp4 ? ".mp4" : ".mp3";
+
+                if (destinationInfo.Extension != expectedExtension)
+                {
+                    Process.Start("Resources\\ffmpeg.exe", $"-i \"{destinationInfo.FullName}\" \"{Path.ChangeExtension(destinationInfo.FullName, expectedExtension)}\"");
+                }
+            };
         }
 
         internal event EventHandler<DownloadFinishedEventArgs> Finished;
@@ -122,18 +176,31 @@
 
                 _downloadProcess.Exited += DownloadProcessExited;
 
-                _downloadProcess.ProgressMonitor.MonitorDownload((sender, e) =>
-                {
-                    _downloadStatus.DownloadProgress.Stage = e.Stage;
+                ParameterMonitoring progressMonitoring = _downloadProcess.ProcessMonitor.ParameterMonitorings["Progress"];
 
-                    if (e.DownloadSpeed.HasValue)
+                _downloadProcess.ProcessMonitor.Finished += ProcessMonitorFinished;
+                progressMonitoring.ValueUpdated += ProgressUpdated;
+
+                void ProcessMonitorFinished(object sender, EventArgs e)
+                {
+                    _downloadProcess.ProcessMonitor.Finished -= ProcessMonitorFinished;
+                    progressMonitoring.ValueUpdated -= ProgressUpdated;
+                }
+
+                void ProgressUpdated(object sender, ParameterUpdatedEventArgs e)
+                {
+                    Progress progress = (Progress)e.NewValue;
+
+                    _downloadStatus.DownloadProgress.Stage = progress.Stage;
+
+                    if (progress.DownloadSpeed.HasValue)
                     {
-                        _downloadStatus.DownloadProgress.DownloadSpeed = e.DownloadSpeed.Value;
+                        _downloadStatus.DownloadProgress.DownloadSpeed = progress.DownloadSpeed.Value;
                     }
 
-                    _downloadStatus.DownloadProgress.ProgressPercentage = e.DownloadPercentage;
-                    _downloadStatus.DownloadProgress.TotalDownloadSize = e.TotalDownloadSize;
-                });
+                    _downloadStatus.DownloadProgress.ProgressPercentage = progress.DownloadPercentage;
+                    _downloadStatus.DownloadProgress.TotalDownloadSize = progress.TotalDownloadSize;
+                }
             }
         }
 

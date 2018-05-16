@@ -5,6 +5,7 @@
         Queued,
         Paused,
         Downloading,
+        Converting,
         Completed,
         Exited
     }

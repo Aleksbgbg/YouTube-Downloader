@@ -56,6 +56,10 @@
                                 <Setter Property="Source" Value="{StaticResource Pause}"/>
                             </DataTrigger>
 
+                            <DataTrigger Binding="{Binding DownloadStatus.DownloadState}" Value="Converting">
+                                <Setter Property="Source" Value="{StaticResource Converting}"/>
+                            </DataTrigger>
+
                             <DataTrigger Binding="{Binding DownloadStatus.DownloadState}" Value="Completed">
                                 <Setter Property="Source" Value="{StaticResource Completed}"/>
                             </DataTrigger>
@@ -108,6 +112,14 @@
                                             <TextBlock Text="{Binding DownloadStatus.DownloadProgress.Stage, Converter={x:Static Converters:StageTextConverter.Default}}"
                                                        HorizontalAlignment="Center"/>
                                         </StackPanel>
+                                    </Setter.Value>
+                                </Setter>
+                            </DataTrigger>
+
+                            <DataTrigger Binding="{Binding DownloadStatus.DownloadState}" Value="Converting">
+                                <Setter Property="Content">
+                                    <Setter.Value>
+                                        <TextBlock Text="Converting..."/>
                                     </Setter.Value>
                                 </Setter>
                             </DataTrigger>

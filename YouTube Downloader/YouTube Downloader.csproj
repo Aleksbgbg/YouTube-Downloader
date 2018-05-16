@@ -135,7 +135,7 @@
     <Compile Include="Converters\IdToThumbnailConverter.cs" />
     <Compile Include="Converters\StageTextConverter.cs" />
     <Compile Include="Core\DelayedCallbackHelper.cs" />
-    <Compile Include="Core\Downloading\DownloadProcess.cs" />
+    <Compile Include="Core\Downloading\MonitoredProcess.cs" />
     <Compile Include="Core\Downloading\ParameterMonitoring.cs" />
     <Compile Include="Core\Downloading\Progress.cs" />
     <Compile Include="Core\ThrowHelper.cs" />

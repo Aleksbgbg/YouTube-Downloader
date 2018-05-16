@@ -11,19 +11,22 @@
     {
         private readonly Process _process;
 
-        internal ProcessMonitor(Process process, IEnumerable<ParameterMonitoring> parameterMonitorings)
+        internal ProcessMonitor(Process process)
         {
             _process = process;
-
-            foreach (ParameterMonitoring parameterMonitoring in parameterMonitorings)
-            {
-                ParameterMonitorings[parameterMonitoring.Name] = parameterMonitoring;
-            }
         }
 
         internal event EventHandler Finished;
 
         internal Dictionary<string, ParameterMonitoring> ParameterMonitorings { get; } = new Dictionary<string, ParameterMonitoring>();
+
+        internal void AddParameterMonitoring(ParameterMonitoring parameterMonitoring)
+        {
+            lock (ParameterMonitorings)
+            {
+                ParameterMonitorings[parameterMonitoring.Name] = parameterMonitoring;
+            }
+        }
 
         internal void Run()
         {
@@ -44,13 +47,16 @@
 
                             if (line == null) continue;
 
-                            foreach (ParameterMonitoring parameterMonitoring in ParameterMonitorings.Values)
+                            lock (ParameterMonitorings)
                             {
-                                Match regexMatch = parameterMonitoring.Regex.Match(line);
-
-                                if (regexMatch.Success)
+                                foreach (ParameterMonitoring parameterMonitoring in ParameterMonitorings.Values)
                                 {
-                                    parameterMonitoring.Update(regexMatch);
+                                    Match regexMatch = parameterMonitoring.Regex.Match(line);
+
+                                    if (regexMatch.Success)
+                                    {
+                                        parameterMonitoring.Update(regexMatch);
+                                    }
                                 }
                             }
                         }

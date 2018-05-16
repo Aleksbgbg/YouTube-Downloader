@@ -200,6 +200,8 @@
 
             void DownloadProcessExited(object sender, EventArgs e)
             {
+                string path = null;
+
                 _monitoredProcess.Exited -= DownloadProcessExited;
 
                 if (IsPaused || HasExited)
@@ -224,9 +226,13 @@
                     {
                         _monitoredProcess = new MonitoredProcess("ffmpeg", $"-i \"{destinationInfo.FullName}\" \"{Path.ChangeExtension(destinationInfo.FullName, expectedExtension)}\"");
 
+                        path = destinationInfo.FullName;
+
                         void ConversionProcessExited(object _, EventArgs args)
                         {
                             _monitoredProcess.Exited -= ConversionProcessExited;
+
+                            File.Delete(path);
 
                             DidComplete = true;
                             HasExited = true;

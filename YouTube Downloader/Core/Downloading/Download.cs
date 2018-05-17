@@ -259,7 +259,7 @@
 
                 foreach (ParameterMonitoring parameterMonitoring in new ParameterMonitoring[]
                 {
-                        new ParameterMonitoring("Progress", new Regex(@"^\[download] (?<ProgressPercentage>[ 1][ 0-9][0-9]\.[0-9])% of .*?(?<TotalDownloadSize>[\d\.]+)?(?<TotalDownloadSizeUnits>.iB) at +(?:(?<DownloadSpeed>.+)(?<DownloadSpeedUnits>.iB)\/s|Unknown speed)"), match =>
+                        new ParameterMonitoring("Progress", ProgressMonitoringRegexes.ProgressRegex, match =>
                         {
                             long GetBytes(double size, string units)
                             {
@@ -309,7 +309,7 @@
 
                             return new Progress(totalDownloadSize, progressPercentage, GetDownloadSpeed(), stage);
                         }),
-                        new ParameterMonitoring("Destination", new Regex(@"^\[download] Destination: (?<Filename>.+)$"), match => match.Groups["Filename"].Value)
+                        new ParameterMonitoring("Destination", ProgressMonitoringRegexes.DestinationRegex, match => match.Groups["Filename"].Value)
                 })
                 {
                     _monitoredProcess.ProcessMonitor.AddParameterMonitoring(parameterMonitoring);

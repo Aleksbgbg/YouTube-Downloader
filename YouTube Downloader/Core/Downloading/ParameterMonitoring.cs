@@ -7,9 +7,9 @@
 
     internal class ParameterMonitoring
     {
-        private readonly Func<Match, object> _matchProcessor;
+        private readonly Func<object, Match, object> _matchProcessor;
 
-        internal ParameterMonitoring(string name, Regex regex, Func<Match, object> matchProcessor)
+        internal ParameterMonitoring(string name, Regex regex, Func<object, Match, object> matchProcessor)
         {
             Name = name;
             Regex = regex;
@@ -36,7 +36,7 @@
 
         internal void Update(Match match)
         {
-            Value = _matchProcessor(match);
+            Value = _matchProcessor(Value, match);
         }
     }
 }

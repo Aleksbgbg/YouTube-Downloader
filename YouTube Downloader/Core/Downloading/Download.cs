@@ -253,67 +253,64 @@
 
             _monitoredProcess.Exited += DownloadProcessExited;
 
+            foreach (ParameterMonitoring parameterMonitoring in new ParameterMonitoring[]
             {
-                int stage = 0;
-                double lastProgress = 0;
-
-                foreach (ParameterMonitoring parameterMonitoring in new ParameterMonitoring[]
-                {
-                        new ParameterMonitoring("Progress", ProgressMonitoringRegexes.ProgressRegex, match =>
+                    new ParameterMonitoring("Progress", ProgressMonitoringRegexes.ProgressRegex, (currentValue, match) =>
+                    {
+                        long GetBytes(double size, string units)
                         {
-                            long GetBytes(double size, string units)
+                            int GetMultiplier()
                             {
-                                int GetMultiplier()
+                                switch (units)
                                 {
-                                    switch (units)
-                                    {
-                                        case "KiB":
-                                            return 1024;
+                                    case "KiB":
+                                        return 1024;
 
-                                        case "MiB":
-                                            return 1024 * 1024;
+                                    case "MiB":
+                                        return 1024 * 1024;
 
-                                        case "GiB":
-                                            return 1024 * 1024 * 1024;
+                                    case "GiB":
+                                        return 1024 * 1024 * 1024;
 
-                                        default:
-                                            throw new InvalidOperationException("Invalid units for multiplier.");
-                                    }
+                                    default:
+                                        throw new InvalidOperationException("Invalid units for multiplier.");
                                 }
-
-                                return (long)(size * GetMultiplier());
                             }
 
-                            long? GetDownloadSpeed()
+                            return (long)(size * GetMultiplier());
+                        }
+
+                        long? GetDownloadSpeed()
+                        {
+                            string downloadSpeed = match.Groups["DownloadSpeed"].Value;
+
+                            if (downloadSpeed == string.Empty)
                             {
-                                string downloadSpeed = match.Groups["DownloadSpeed"].Value;
-
-                                if (downloadSpeed == string.Empty)
-                                {
-                                    return null;
-                                }
-
-                                return GetBytes(double.Parse(downloadSpeed), match.Groups["DownloadSpeedUnits"].Value);
+                                return null;
                             }
 
-                            long totalDownloadSize = GetBytes(double.Parse(match.Groups["TotalDownloadSize"].Value), match.Groups["TotalDownloadSizeUnits"].Value);
+                            return GetBytes(double.Parse(downloadSpeed), match.Groups["DownloadSpeedUnits"].Value);
+                        }
 
-                            double progressPercentage = double.Parse(match.Groups["ProgressPercentage"].Value);
+                        long totalDownloadSize = GetBytes(double.Parse(match.Groups["TotalDownloadSize"].Value), match.Groups["TotalDownloadSizeUnits"].Value);
 
-                            if (stage == 0 || progressPercentage >= 100 && lastProgress < 100)
-                            {
-                                ++stage;
-                            }
+                        double progressPercentage = double.Parse(match.Groups["ProgressPercentage"].Value);
 
-                            lastProgress = progressPercentage;
+                        Progress previousProgress = (Progress)currentValue ?? new Progress(0, 0, 0, 0);
 
-                            return new Progress(totalDownloadSize, progressPercentage, GetDownloadSpeed(), stage);
-                        }),
-                        new ParameterMonitoring("Destination", ProgressMonitoringRegexes.DestinationRegex, match => match.Groups["Filename"].Value)
-                })
-                {
-                    _monitoredProcess.ProcessMonitor.AddParameterMonitoring(parameterMonitoring);
-                }
+                        int stage = previousProgress.Stage;
+
+                        if (stage == 0 || progressPercentage >= 100 && previousProgress.DownloadPercentage < 100)
+                        {
+                            ++stage;
+                        }
+
+                        return new Progress(totalDownloadSize, progressPercentage, GetDownloadSpeed(), stage);
+                    }),
+                    new ParameterMonitoring("Destination", ProgressMonitoringRegexes.DestinationRegex, (_, match) => match.Groups["Filename"].Value)
+            })
+            {
+                _monitoredProcess.ProcessMonitor.AddParameterMonitoring(parameterMonitoring);
             }
 
             ParameterMonitoring progressMonitoring = _monitoredProcess.ProcessMonitor.ParameterMonitorings["Progress"];

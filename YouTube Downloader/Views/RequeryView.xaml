@@ -10,8 +10,8 @@
     <DockPanel>
         <DockPanel DockPanel.Dock="Top">
             <Button DockPanel.Dock="Right" Content="Search" Width="75" Margin="5"
-                    Caliburn:Message.Attach="Search(query)"/>
-            <TextBox x:Name="Query" Margin="5"/>
+                    Caliburn:Message.Attach="Search"/>
+            <TextBox Text="{Binding Query}" Margin="5"/>
         </DockPanel>
 
         <ListBox x:Name="Results" BorderThickness="0"/>

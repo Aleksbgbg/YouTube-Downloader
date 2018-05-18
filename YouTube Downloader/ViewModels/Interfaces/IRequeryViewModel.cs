@@ -8,6 +8,10 @@
     {
         IObservableCollection<IMatchedVideoViewModel> Results { get; }
 
-        IEnumerable<IResult> Search(string query);
+        string Query { get; set; }
+
+        IEnumerable<IResult> Search();
+
+        void Initialise(IVideoViewModel requeryTarget);
     }
 }

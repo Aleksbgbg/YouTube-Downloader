@@ -8,24 +8,23 @@
 			 mc:Ignorable="d"
 			 d:DataContext="{d:DesignInstance ViewModels:VideoViewModel}">
     <DockPanel MaxWidth="500">
-        <Image
-            Source="{Binding Video.Id, Mode=OneTime,
+        <Image Source="{Binding Video.Id, Mode=OneWay,
                 Converter={x:Static Converters:IdToThumbnailConverter.Default}}"
-            Width="100" Margin="0, 0, 5, 0"/>
+               Width="100" Margin="0, 0, 5, 0"/>
 
         <StackPanel VerticalAlignment="Center">
-            <TextBlock Text="{Binding Video.Title, Mode=OneTime}" FontSize="16"
+            <TextBlock Text="{Binding Video.Title, Mode=OneWay}" FontSize="16"
                        FontWeight="DemiBold"/>
 
-            <TextBlock Text="{Binding Video.Channel, Mode=OneTime}" 
+            <TextBlock Text="{Binding Video.Channel, Mode=OneWay}" 
                        Foreground="#9E9E9E"/>
 
             <TextBlock Foreground="#9E9E9E">
                 <Run
-                    Text="{Binding Video.DateUploaded, Mode=OneTime,
+                    Text="{Binding Video.DateUploaded, Mode=OneWay,
                             StringFormat={}{0:dd/MM/yyyy}}"/>
                 •
-                <Run Text="{Binding Video.Views, Mode=OneTime,
+                <Run Text="{Binding Video.Views, Mode=OneWay,
                             StringFormat=N0}"/>
             </TextBlock>
         </StackPanel>

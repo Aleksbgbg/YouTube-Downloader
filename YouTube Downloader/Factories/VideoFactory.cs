@@ -11,7 +11,7 @@
         public IVideoViewModel MakeVideoViewModel(YouTubeVideo video)
         {
             IVideoViewModel videoViewModel = IoC.Get<IVideoViewModel>();
-            videoViewModel.Initialise(video);
+            videoViewModel.Video = video;
 
             return videoViewModel;
         }

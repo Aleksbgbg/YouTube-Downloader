@@ -6,7 +6,8 @@
              xmlns:Caliburn="http://www.caliburnproject.org"
              xmlns:ViewModels="clr-namespace:YouTube.Downloader.ViewModels"
              mc:Ignorable="d"
-			 d:DataContext="{d:DesignInstance ViewModels:RequeryViewModel}">
+			 d:DataContext="{d:DesignInstance ViewModels:RequeryViewModel}"
+             Width="600" Height="800">
     <DockPanel>
         <ContentControl DockPanel.Dock="Top" Caliburn:View.Model="{Binding NewVideo, Mode=OneWay}" Margin="5"/>
 

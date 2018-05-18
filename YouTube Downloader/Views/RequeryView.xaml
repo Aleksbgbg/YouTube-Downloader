@@ -13,7 +13,10 @@
                     Caliburn:Message.Attach="Search"/>
             <TextBox Text="{Binding Query}" Margin="5"/>
         </DockPanel>
+        
+        <Button DockPanel.Dock="Bottom" Content="Apply" HorizontalAlignment="Right" Width="75" Margin="5"
+                Caliburn:Message.Attach="Apply"/>
 
-        <ListBox x:Name="Results" BorderThickness="0"/>
+        <ListBox x:Name="Results" BorderThickness="0" SelectedItem="{Binding SelectedMatch}"/>
     </DockPanel>
 </UserControl>

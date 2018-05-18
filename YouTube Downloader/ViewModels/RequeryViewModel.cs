@@ -44,6 +44,30 @@
             }
         }
 
+        private IMatchedVideoViewModel _selectedMatch;
+        public IMatchedVideoViewModel SelectedMatch
+        {
+            get => _selectedMatch;
+
+            set
+            {
+                if (_selectedMatch == value) return;
+
+                _selectedMatch = value;
+                NotifyOfPropertyChange(() => SelectedMatch);
+
+                NotifyOfPropertyChange(() => CanApply);
+            }
+        }
+
+        public bool CanApply => SelectedMatch != null;
+
+        public void Apply()
+        {
+            _requeryTarget.Video = SelectedMatch.VideoViewModel.Video;
+            TryClose();
+        }
+
         public IEnumerable<IResult> Search()
         {
             Results.Clear();

@@ -20,10 +20,10 @@
 
         public RequeryViewModel(IVideoFactory videoFactory, IYouTubeApiService youTubeApiService)
         {
-            DisplayName = "Requery Video";
-
             _videoFactory = videoFactory;
             _youTubeApiService = youTubeApiService;
+
+            Query = string.Empty;
         }
 
         public IObservableCollection<IMatchedVideoViewModel> Results { get; } = new BindableCollection<IMatchedVideoViewModel>();
@@ -40,7 +40,7 @@
                 _query = value;
                 NotifyOfPropertyChange(() => Query);
 
-                DisplayName = Query;
+                DisplayName = _query == string.Empty ? "Requery Video" : Query;
             }
         }
 

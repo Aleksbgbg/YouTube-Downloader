@@ -57,6 +57,25 @@
                 NotifyOfPropertyChange(() => SelectedMatch);
 
                 NotifyOfPropertyChange(() => CanApply);
+
+                if (_selectedMatch != null)
+                {
+                    NewVideo = SelectedMatch.VideoViewModel;
+                }
+            }
+        }
+
+        private IVideoViewModel _newVideo;
+        public IVideoViewModel NewVideo
+        {
+            get => _newVideo;
+
+            private set
+            {
+                if (_newVideo == value) return;
+
+                _newVideo = value;
+                NotifyOfPropertyChange(() => NewVideo);
             }
         }
 
@@ -83,6 +102,8 @@
         {
             _requeryTarget = requeryTarget;
             Query = requeryTarget.Video.Title;
+
+            NewVideo = _videoFactory.MakeVideoViewModel(requeryTarget.Video);
 
             Coroutine.BeginExecute(Search().GetEnumerator());
         }

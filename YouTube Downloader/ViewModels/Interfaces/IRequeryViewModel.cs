@@ -6,6 +6,8 @@
 
     internal interface IRequeryViewModel : IViewModelBase
     {
+        IVideoViewModel NewVideo { get; }
+
         IObservableCollection<IMatchedVideoViewModel> Results { get; }
 
         string Query { get; set; }

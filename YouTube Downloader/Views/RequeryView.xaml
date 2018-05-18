@@ -8,6 +8,8 @@
              mc:Ignorable="d"
 			 d:DataContext="{d:DesignInstance ViewModels:RequeryViewModel}">
     <DockPanel>
+        <ContentControl DockPanel.Dock="Top" Caliburn:View.Model="{Binding NewVideo, Mode=OneWay}" Margin="5"/>
+
         <DockPanel DockPanel.Dock="Top">
             <Button DockPanel.Dock="Right" Content="Search" Width="75" Margin="5"
                     Caliburn:Message.Attach="Search"/>

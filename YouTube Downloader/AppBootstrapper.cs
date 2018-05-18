@@ -40,6 +40,7 @@
 
             _container.Singleton<IAppDataService, AppDataService>();
             _container.Singleton<IDataService, DataService>();
+            _container.Singleton<IDialogService, DialogService>();
             _container.Singleton<IDownloadService, DownloadService>();
             _container.Singleton<ISettingsService, SettingsService>();
             _container.Singleton<IYouTubeApiService, YouTubeApiService>();

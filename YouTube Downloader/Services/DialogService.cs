@@ -24,7 +24,11 @@
         public void ShowDialog<TViewModel>()
         {
             TViewModel viewModel = IoC.Get<TViewModel>();
+            ShowDialog(viewModel);
+        }
 
+        public void ShowDialog<TViewModel>(TViewModel viewModel)
+        {
             _windowManager.ShowDialog(viewModel, default, DefaultSettings);
         }
     }

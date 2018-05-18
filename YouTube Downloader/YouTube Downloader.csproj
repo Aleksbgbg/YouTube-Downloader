@@ -145,6 +145,8 @@
     <Compile Include="Core\Downloading\Download.cs" />
     <Compile Include="Core\EnumDescriptionConverter.cs" />
     <Compile Include="Core\Downloading\ProgressMonitor.cs" />
+    <Compile Include="Factories\Interfaces\IRequeryFactory.cs" />
+    <Compile Include="Factories\RequeryFactory.cs" />
     <Compile Include="Helpers\ImageContentHelper.cs" />
     <Compile Include="Helpers\SelectedItemsHelper.cs" />
     <Compile Include="Models\Download\DownloadProgress.cs" />

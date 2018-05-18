@@ -49,6 +49,7 @@
 
             // Register Factories
             _container.Singleton<IDownloadFactory, DownloadFactory>();
+            _container.Singleton<IRequeryFactory, RequeryFactory>();
             _container.Singleton<IVideoFactory, VideoFactory>();
 
             // Register ViewModels

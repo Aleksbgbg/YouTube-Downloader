@@ -32,7 +32,9 @@
                     <Setter Property="ContextMenu">
                         <Setter.Value>
                             <ContextMenu Caliburn:Action.TargetWithoutContext="{Binding Mode=OneTime}">
-                                <MenuItem Header="Exchange" Caliburn:Message.Attach="Exchange"/>
+                                <MenuItem Header="Exchange"
+                                          Helpers:ImageContentHelper.Image="{StaticResource Exchange}"
+                                          Caliburn:Message.Attach="Exchange"/>
                             </ContextMenu>
                         </Setter.Value>
                     </Setter>

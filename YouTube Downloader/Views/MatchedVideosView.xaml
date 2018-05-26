@@ -27,28 +27,17 @@
                  BorderThickness="0"
                  SelectionMode="Extended"
                  Helpers:SelectedItemsHelper.SelectedItems="{Binding SelectedVideos, Mode=OneTime}">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <DockPanel>
-                        <Button DockPanel.Dock="Bottom" Content="Exchange" HorizontalAlignment="Left" Width="100" Margin="0, 5"
-                                Caliburn:Message.Attach="Exchange">
-                            <Button.Style>
-                                <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
-                                    <Setter Property="Visibility" Value="Collapsed"/>
-
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource FindAncestor, AncestorType=ListBoxItem}}"
-                                                     Value="True">
-                                            <Setter Property="Visibility" Value="Visible"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Button.Style>
-                        </Button>
-                        <ContentControl Caliburn:View.Model="{Binding Mode=OneTime}"/>
-                    </DockPanel>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem" BasedOn="{StaticResource {x:Type ListBoxItem}}">
+                    <Setter Property="ContextMenu">
+                        <Setter.Value>
+                            <ContextMenu Caliburn:Action.TargetWithoutContext="{Binding Mode=OneTime}">
+                                <MenuItem Header="Exchange" Caliburn:Message.Attach="Exchange"/>
+                            </ContextMenu>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </ListBox.ItemContainerStyle>
         </ListBox>
     </DockPanel>
 </UserControl>

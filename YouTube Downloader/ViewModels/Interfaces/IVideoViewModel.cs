@@ -4,8 +4,6 @@
 
     internal interface IVideoViewModel : IViewModelBase
     {
-        YouTubeVideo Video { get; }
-
-        void Initialise(YouTubeVideo video);
+        YouTubeVideo Video { get; set; }
     }
 }

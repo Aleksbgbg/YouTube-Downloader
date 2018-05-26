@@ -5,11 +5,18 @@
 
     internal class VideoViewModel : ViewModelBase, IVideoViewModel
     {
-        public YouTubeVideo Video { get; private set; }
-
-        public void Initialise(YouTubeVideo video)
+        private YouTubeVideo _video;
+        public YouTubeVideo Video
         {
-            Video = video;
+            get => _video;
+
+            set
+            {
+                if (_video == value) return;
+
+                _video = value;
+                NotifyOfPropertyChange(() => Video);
+            }
         }
 
         public override object GetView(object context = default)

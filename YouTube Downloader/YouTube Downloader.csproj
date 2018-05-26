@@ -145,6 +145,8 @@
     <Compile Include="Core\Downloading\Download.cs" />
     <Compile Include="Core\EnumDescriptionConverter.cs" />
     <Compile Include="Core\Downloading\ProgressMonitor.cs" />
+    <Compile Include="Factories\Interfaces\IRequeryFactory.cs" />
+    <Compile Include="Factories\RequeryFactory.cs" />
     <Compile Include="Helpers\ImageContentHelper.cs" />
     <Compile Include="Helpers\SelectedItemsHelper.cs" />
     <Compile Include="Models\Download\DownloadProgress.cs" />
@@ -152,8 +154,10 @@
     <Compile Include="Models\Download\DownloadType.cs" />
     <Compile Include="Services\AppDataService.cs" />
     <Compile Include="Services\DataService.cs" />
+    <Compile Include="Services\DialogService.cs" />
     <Compile Include="Services\Interfaces\IAppDataService.cs" />
     <Compile Include="Services\Interfaces\IDataService.cs" />
+    <Compile Include="Services\Interfaces\IDialogService.cs" />
     <Compile Include="Services\Interfaces\ISettingsService.cs" />
     <Compile Include="Services\SettingsService.cs" />
     <Compile Include="Models\Download\DownloadState.cs" />
@@ -167,8 +171,10 @@
     <Compile Include="ViewModels\Interfaces\ICurrentDownloadsViewModel.cs" />
     <Compile Include="ViewModels\Interfaces\IDownloadViewModel.cs" />
     <Compile Include="ViewModels\Interfaces\IMatchedVideoViewModel.cs" />
+    <Compile Include="ViewModels\Interfaces\IRequeryViewModel.cs" />
     <Compile Include="ViewModels\Interfaces\ISettingsViewModel.cs" />
     <Compile Include="ViewModels\MatchedVideoViewModel.cs" />
+    <Compile Include="ViewModels\RequeryViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="Views\CurrentDownloadsView.xaml.cs">
       <DependentUpon>CurrentDownloadsView.xaml</DependentUpon>
@@ -181,6 +187,9 @@
     </Compile>
     <Compile Include="Views\MatchedVideoView.xaml.cs">
       <DependentUpon>MatchedVideoView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\RequeryView.xaml.cs">
+      <DependentUpon>RequeryView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SettingsView.xaml.cs">
       <DependentUpon>SettingsView.xaml</DependentUpon>
@@ -212,6 +221,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\QueryView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\RequeryView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -365,6 +378,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Settings.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Exchange.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Fody.3.0.3\build\Fody.targets" Condition="Exists('..\packages\Fody.3.0.3\build\Fody.targets')" />

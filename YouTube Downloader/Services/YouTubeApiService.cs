@@ -22,6 +22,8 @@
 
     internal sealed class YouTubeApiService : IYouTubeApiService
     {
+        private const int MaxQueryResults = 50;
+
         private readonly YouTubeService _youTubeApiService;
 
         private readonly HttpClient _httpClient = new HttpClient();
@@ -99,6 +101,17 @@
             return Enumerable.Empty<YouTubeVideo>();
         }
 
+        public async Task<IEnumerable<YouTubeVideo>> QueryManyVideos(string query)
+        {
+            SearchResource.ListRequest searchRequest = _youTubeApiService.Search.List("snippet");
+            searchRequest.Q = query;
+            searchRequest.MaxResults = MaxQueryResults;
+
+            SearchListResponse searchResponse = await searchRequest.ExecuteAsync();
+
+            return await GetVideos(searchResponse.Items.Where(video => video.Id.Kind.Contains("video")).Select(video => video.Id.VideoId));
+        }
+
         private async Task<IEnumerable<YouTubeVideo>> GetPlaylistVideos(string playlistId)
         {
             List<YouTubeVideo> videos = new List<YouTubeVideo>();
@@ -109,20 +122,22 @@
             {
                 PlaylistItemsResource.ListRequest playlistRequest = _youTubeApiService.PlaylistItems.List("snippet");
                 playlistRequest.PlaylistId = playlistId;
-                playlistRequest.MaxResults = 50;
+                playlistRequest.MaxResults = MaxQueryResults;
                 playlistRequest.PageToken = pageToken;
 
                 PlaylistItemListResponse playlistResponse = await playlistRequest.ExecuteAsync();
 
                 pageToken = playlistResponse.NextPageToken;
 
-                foreach (PlaylistItem playlistItem in playlistResponse.Items)
-                {
-                    videos.Add(await GetVideo(playlistItem.Snippet.ResourceId.VideoId));
-                }
+                videos.AddRange(await GetVideos(playlistResponse.Items.Select(playlistItem => playlistItem.Snippet.ResourceId.VideoId)));
             } while (pageToken != null);
 
             return videos;
+        }
+
+        private async Task<IEnumerable<YouTubeVideo>> GetVideos(IEnumerable<string> videoIds)
+        {
+            return await Task.WhenAll(videoIds.Select(GetVideo));
         }
 
         private async Task<YouTubeVideo> GetVideo(string id)

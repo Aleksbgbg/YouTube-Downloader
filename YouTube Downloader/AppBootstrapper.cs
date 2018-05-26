@@ -40,6 +40,7 @@
 
             _container.Singleton<IAppDataService, AppDataService>();
             _container.Singleton<IDataService, DataService>();
+            _container.Singleton<IDialogService, DialogService>();
             _container.Singleton<IDownloadService, DownloadService>();
             _container.Singleton<ISettingsService, SettingsService>();
             _container.Singleton<IYouTubeApiService, YouTubeApiService>();
@@ -48,6 +49,7 @@
 
             // Register Factories
             _container.Singleton<IDownloadFactory, DownloadFactory>();
+            _container.Singleton<IRequeryFactory, RequeryFactory>();
             _container.Singleton<IVideoFactory, VideoFactory>();
 
             // Register ViewModels
@@ -55,6 +57,7 @@
             _container.Singleton<IMainViewModel, MainViewModel>();
 
             _container.Singleton<IQueryViewModel, QueryViewModel>();
+            _container.Singleton<IRequeryViewModel, RequeryViewModel>();
             _container.Singleton<IMatchedVideosViewModel, MatchedVideosViewModel>();
             _container.PerRequest<IMatchedVideoViewModel, MatchedVideoViewModel>();
 

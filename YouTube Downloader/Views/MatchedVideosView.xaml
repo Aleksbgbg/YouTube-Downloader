@@ -26,6 +26,20 @@
         <ListBox x:Name="Videos"
                  BorderThickness="0"
                  SelectionMode="Extended"
-                 Helpers:SelectedItemsHelper.SelectedItems="{Binding SelectedVideos, Mode=OneTime}"/>
+                 Helpers:SelectedItemsHelper.SelectedItems="{Binding SelectedVideos, Mode=OneTime}">
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem" BasedOn="{StaticResource {x:Type ListBoxItem}}">
+                    <Setter Property="ContextMenu">
+                        <Setter.Value>
+                            <ContextMenu Caliburn:Action.TargetWithoutContext="{Binding Mode=OneTime}">
+                                <MenuItem Header="Exchange"
+                                          Helpers:ImageContentHelper.Image="{StaticResource Exchange}"
+                                          Caliburn:Message.Attach="Exchange"/>
+                            </ContextMenu>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </ListBox.ItemContainerStyle>
+        </ListBox>
     </DockPanel>
 </UserControl>

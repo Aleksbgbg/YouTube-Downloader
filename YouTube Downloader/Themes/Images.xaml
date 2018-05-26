@@ -3,6 +3,7 @@
 	<BitmapImage x:Key="Completed" UriSource="/Images/Completed.png"/>
 	<BitmapImage x:Key="Delete" UriSource="/Images/Delete.png"/>
 	<BitmapImage x:Key="DropDownArrow" UriSource="/Images/Drop Down Arrow.png"/>
+	<BitmapImage x:Key="Exchange" UriSource="/Images/Exchange.png"/>
 	<BitmapImage x:Key="NoEntry" UriSource="/Images/No Entry.png"/>
 	<BitmapImage x:Key="Pause" UriSource="/Images/Pause.png"/>
 	<BitmapImage x:Key="Play" UriSource="/Images/Play.png"/>

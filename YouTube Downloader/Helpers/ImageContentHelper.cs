@@ -23,7 +23,7 @@
             return (ImageSource)dependencyObject.GetValue(ImageProperty);
         }
 
-        internal static void SetImage(DependencyObject dependencyObject, BitmapImage value)
+        internal static void SetImage(DependencyObject dependencyObject, ImageSource value)
         {
             dependencyObject.SetValue(ImageProperty, value);
         }

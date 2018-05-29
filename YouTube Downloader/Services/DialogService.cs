@@ -11,8 +11,9 @@
     {
         private static readonly Dictionary<string, object> DefaultSettings = new Dictionary<string, object>
         {
-            ["WindowStartupLocation"] = WindowStartupLocation.CenterScreen,
-            ["ResizeMode"] = ResizeMode.NoResize
+            ["ResizeMode"] = ResizeMode.CanMinimize,
+            ["ShowInTaskbar"] = false,
+            ["WindowStartupLocation"] = WindowStartupLocation.CenterScreen
         };
 
         private readonly IWindowManager _windowManager;

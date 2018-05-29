@@ -2,7 +2,6 @@
 {
     using System;
     using System.IO;
-    using System.Text.RegularExpressions;
 
     using Caliburn.Micro;
 
@@ -18,8 +17,6 @@
         private readonly string _processArguments;
 
         private readonly DownloadStatus _downloadStatus;
-
-        private bool _isRequeued;
 
         private MonitoredProcess _monitoredProcess;
 
@@ -60,15 +57,7 @@
 
         internal event EventHandler<DownloadFinishedEventArgs> Finished;
 
-        internal event EventHandler Paused;
-
-        internal event EventHandler Resumed;
-
         internal YouTubeVideo YouTubeVideo { get; }
-
-        internal bool CanPause => HasStarted && !HasExited && !IsPaused;
-
-        internal bool CanResume => HasStarted && !HasExited && IsPaused && !_isRequeued;
 
         internal bool CanKill => !HasExited;
 
@@ -80,18 +69,6 @@
             private set
             {
                 _hasStarted = value;
-                UpdateDownloadState();
-            }
-        }
-
-        private bool _isPaused;
-        internal bool IsPaused
-        {
-            get => _isPaused;
-
-            private set
-            {
-                _isPaused = value;
                 UpdateDownloadState();
             }
         }
@@ -138,7 +115,7 @@
 
         internal void Kill()
         {
-            if (!HasStarted || IsPaused)
+            if (!HasStarted)
             {
                 HasExited = true;
                 return;
@@ -150,48 +127,9 @@
             }
 
             HasExited = true;
-            KillProcess();
-        }
 
-        internal void Pause()
-        {
-            if (!HasStarted)
-            {
-                throw new InvalidOperationException("Cannot pause a download which has not been started.");
-            }
-
-            if (HasExited)
-            {
-                throw new InvalidOperationException("Cannot pause a download which has already been killed.");
-            }
-
-            if (IsPaused)
-            {
-                throw new InvalidOperationException("Cannot pause a paused download.");
-            }
-
-            IsPaused = true;
-            KillProcess();
-            Paused?.Invoke(this, EventArgs.Empty);
-        }
-
-        internal void Resume()
-        {
-            if (!IsPaused)
-            {
-                throw new InvalidOperationException("Cannot resume a download which has not been paused.");
-            }
-
-            _isRequeued = false;
-            IsPaused = false;
-            GenerateAndStartProcess();
-            Resumed?.Invoke(this, EventArgs.Empty);
-        }
-
-        internal void OnRequeued()
-        {
-            _downloadStatus.DownloadState = DownloadState.Queued;
-            _isRequeued = true;
+            _monitoredProcess.Kill();
+            _monitoredProcess = null;
         }
 
         private void GenerateAndStartProcess()
@@ -204,7 +142,7 @@
 
                 _monitoredProcess.Exited -= DownloadProcessExited;
 
-                if (IsPaused || HasExited)
+                if (HasExited)
                 {
                     return;
                 }
@@ -342,21 +280,11 @@
             _monitoredProcess.Start();
         }
 
-        private void KillProcess()
-        {
-            _monitoredProcess.Kill();
-            _monitoredProcess = null;
-        }
-
         private void UpdateDownloadState()
         {
             if (HasExited)
             {
                 _downloadStatus.DownloadState = DidComplete ? DownloadState.Completed : DownloadState.Exited;
-            }
-            else if (IsPaused)
-            {
-                _downloadStatus.DownloadState = DownloadState.Paused;
             }
             else if (HasStarted)
             {

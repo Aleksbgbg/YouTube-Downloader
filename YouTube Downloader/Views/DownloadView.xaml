@@ -52,10 +52,6 @@
                                 </DataTrigger.ExitActions>
                             </DataTrigger>
 
-                            <DataTrigger Binding="{Binding DownloadStatus.DownloadState}" Value="Paused">
-                                <Setter Property="Source" Value="{StaticResource Pause}"/>
-                            </DataTrigger>
-
                             <DataTrigger Binding="{Binding DownloadStatus.DownloadState}" Value="Converting">
                                 <Setter Property="Source" Value="{StaticResource Converting}"/>
                             </DataTrigger>
@@ -75,22 +71,6 @@
             <ContentControl>
                 <ContentControl.Style>
                     <Style TargetType="ContentControl" BasedOn="{StaticResource {x:Type ContentControl}}">
-                        <Style.Resources>
-                            <DataTemplate x:Key="DownloadStatus.DownloadProgress">
-                                <StackPanel>
-                                    <TextBlock Foreground="DarkGray" HorizontalAlignment="Center">
-                                        <Run Text="{Binding DownloadStatus.DownloadProgress.SizeDownloaded, Mode=OneWay, Converter={x:Static Converters:AppropriateDataSizeConverter.Default}}"/>
-                                        of
-                                        <Run Text="{Binding DownloadStatus.DownloadProgress.TotalDownloadSize, Mode=OneWay, Converter={x:Static Converters:AppropriateDataSizeConverter.Default}}"/>
-                                        (<Run Text="{Binding DownloadStatus.DownloadProgress.ProgressPercentage, Mode=OneWay, StringFormat=N2}"/>%)
-                                    </TextBlock>
-
-                                    <ProgressBar Value="{Binding DownloadStatus.DownloadProgress.ProgressPercentage}" Maximum="100"
-                                                 Height="5" Width="250" Foreground="DodgerBlue"/>
-                                </StackPanel>
-                            </DataTemplate>
-                        </Style.Resources>
-
                         <Setter Property="Content">
                             <Setter.Value>
                                 <TextBlock Text="{Binding DownloadStatus.DownloadState}"/>
@@ -102,11 +82,23 @@
                                 <Setter Property="Content">
                                     <Setter.Value>
                                         <StackPanel HorizontalAlignment="Center" Margin="5">
-                                            <ContentControl Content="{Binding Mode=OneTime}"
-                                                            ContentTemplate="{StaticResource DownloadStatus.DownloadProgress}"/>
+                                            <StackPanel>
+                                                <TextBlock Foreground="DarkGray" HorizontalAlignment="Center">
+                                                    <Run Text="{Binding DownloadStatus.DownloadProgress.SizeDownloaded, Mode=OneWay,
+                                                        Converter={x:Static Converters:AppropriateDataSizeConverter.Default}}"/>
+                                                    of
+                                                    <Run Text="{Binding DownloadStatus.DownloadProgress.TotalDownloadSize, Mode=OneWay,
+                                                        Converter={x:Static Converters:AppropriateDataSizeConverter.Default}}"/>
+                                                    (<Run Text="{Binding DownloadStatus.DownloadProgress.ProgressPercentage, Mode=OneWay, StringFormat=N2}"/>%)
+                                                </TextBlock>
+
+                                                <ProgressBar Value="{Binding DownloadStatus.DownloadProgress.ProgressPercentage}"
+                                                             Maximum="100" Height="5" Width="250" Foreground="DodgerBlue"/>
+                                            </StackPanel>
 
                                             <TextBlock HorizontalAlignment="Center">
-                                                Downloading at <Run Text="{Binding DownloadStatus.DownloadProgress.DownloadSpeed, Mode=OneWay, Converter={x:Static Converters:AppropriateDataSizeConverter.Default}}"/>/s
+                                                Downloading at <Run Text="{Binding DownloadStatus.DownloadProgress.DownloadSpeed, Mode=OneWay,
+                                                    Converter={x:Static Converters:AppropriateDataSizeConverter.Default}}"/>/s
                                             </TextBlock>
 
                                             <TextBlock Text="{Binding DownloadStatus.DownloadProgress.Stage, Converter={x:Static Converters:StageTextConverter.Default}}"
@@ -120,17 +112,6 @@
                                 <Setter Property="Content">
                                     <Setter.Value>
                                         <TextBlock Text="Converting..."/>
-                                    </Setter.Value>
-                                </Setter>
-                            </DataTrigger>
-                            
-                            <DataTrigger Binding="{Binding DownloadStatus.DownloadState}" Value="Paused">
-                                <Setter Property="Content">
-                                    <Setter.Value>
-                                        <StackPanel HorizontalAlignment="Center" Margin="5">
-                                            <ContentControl Content="{Binding Mode=OneTime}" ContentTemplate="{StaticResource DownloadStatus.DownloadProgress}"/>
-                                            <TextBlock Text="Paused" HorizontalAlignment="Center"/>
-                                        </StackPanel>
                                     </Setter.Value>
                                 </Setter>
                             </DataTrigger>

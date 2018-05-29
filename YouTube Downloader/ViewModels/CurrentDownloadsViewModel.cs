@@ -36,52 +36,6 @@
 
         public IObservableCollection<IDownloadViewModel> SelectedDownloads { get; } = new BindableCollection<IDownloadViewModel>();
 
-        private bool _canPause;
-        public bool CanPause
-        {
-            get => _canPause;
-
-            set
-            {
-                if (_canPause == value) return;
-
-                _canPause = value;
-                NotifyOfPropertyChange(() => CanPause);
-                NotifyOfPropertyChange(() => CanTogglePause);
-            }
-        }
-
-        private bool _canResume;
-        public bool CanResume
-        {
-            get => _canResume;
-
-            set
-            {
-                if (_canResume == value) return;
-
-                _canResume = value;
-                NotifyOfPropertyChange(() => CanResume);
-                NotifyOfPropertyChange(() => CanTogglePause);
-            }
-        }
-
-        public bool CanTogglePause => CanPause || CanResume;
-
-        public void TogglePause()
-        {
-            if (CanPause)
-            {
-                SelectedDownloads.Apply(downloadViewModel => downloadViewModel.Download.Pause());
-                return;
-            }
-
-            if (CanResume)
-            {
-                _downloadService.ResumeDownloads(SelectedDownloads.Select(downloadViewModel => downloadViewModel.Download));
-            }
-        }
-
         public bool CanKill => SelectedDownloads.Any(downloadViewModel => downloadViewModel.Download.CanKill);
 
         public void Kill()
@@ -131,9 +85,6 @@
 
         private void RecomputeActionGuards()
         {
-            CanPause = SelectedDownloads.All(downloadViewModel => downloadViewModel.Download.CanPause);
-            CanResume = !CanPause && SelectedDownloads.All(downloadViewModel => downloadViewModel.Download.CanResume);
-
             NotifyOfPropertyChange(() => CanKill);
         }
     }

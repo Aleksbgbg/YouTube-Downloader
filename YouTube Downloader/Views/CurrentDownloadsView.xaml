@@ -26,29 +26,7 @@
                 </Style>
             </StackPanel.Style>
 
-            <Button Width="125" Margin="5" Caliburn:Message.Attach="TogglePause">
-                <Button.Style>
-                    <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding CanPause}" Value="True">
-                                <Setter Property="Helpers:ImageContentHelper.Image" Value="{StaticResource Pause}"/>
-                                <Setter Property="Helpers:ImageContentHelper.Content" Value="Pause"/>
-                            </DataTrigger>
-
-                            <DataTrigger Binding="{Binding CanResume}" Value="True">
-                                <Setter Property="Helpers:ImageContentHelper.Image" Value="{StaticResource Play}"/>
-                                <Setter Property="Helpers:ImageContentHelper.Content" Value="Resume"/>
-                            </DataTrigger>
-
-                            <Trigger Property="IsEnabled" Value="False">
-                                <Setter Property="Helpers:ImageContentHelper.Image" Value="{StaticResource NoEntry}"/>
-                                <Setter Property="Helpers:ImageContentHelper.Content" Value="Toggle Pause"/>
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </Button.Style>
-            </Button>
-            <Button Width="125" Margin="5"
+            <Button Width="75" Margin="5"
                     Caliburn:Message.Attach="Kill">
                 <StackPanel Orientation="Horizontal">
                     <Image Source="{StaticResource Delete}" Width="20"/>

@@ -77,12 +77,11 @@
         {
             IsLoading = true;
 
-            TaskResult<IEnumerable<YouTubeVideo>[]> tasks = Task.WhenAll(Query
-                                                                        .Split('\n')
-                                                                        .Where(line => !string.IsNullOrWhiteSpace(line))
-                                                                        .Select(query => query.Trim())
-                                                                        .Select(_youTubeApiService.QueryVideos))
-                                                                .AsResult();
+            TaskResult<IEnumerable<QueryResult>[]> tasks = _youTubeApiService.QueryVideos(Query.Split('\n')
+                                                            .Where(line => !string.IsNullOrWhiteSpace(line))
+                                                            .Select(query => query.Trim())
+                                                            .Select(query => new QueryResult(query))
+                                                            ).AsResult();
 
             yield return tasks;
 

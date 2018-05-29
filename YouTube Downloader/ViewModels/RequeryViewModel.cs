@@ -91,7 +91,7 @@
         {
             Results.Clear();
 
-            TaskResult<IEnumerable<YouTubeVideo>> queryResponse = _youTubeApiService.QueryManyVideos(Query).AsResult();
+            TaskResult<IEnumerable<QueryResult>> queryResponse = _youTubeApiService.QueryManyVideos(new QueryResult(Query)).AsResult();
 
             yield return queryResponse;
 

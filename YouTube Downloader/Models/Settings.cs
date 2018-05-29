@@ -1,5 +1,6 @@
 ﻿namespace YouTube.Downloader.Models
 {
+    using System;
     using System.ComponentModel;
 
     using Caliburn.Micro;
@@ -45,6 +46,12 @@
 
                 _downloadType = value;
                 NotifyOfPropertyChange(() => DownloadType);
+
+                if (OutputFormat == OutputFormat.Mp3 && _downloadType == DownloadType.AudioVideo ||
+                    OutputFormat == OutputFormat.Mp4 && _downloadType == DownloadType.Audio)
+                {
+                    OutputFormat = OutputFormat.Auto;
+                }
             }
         }
 

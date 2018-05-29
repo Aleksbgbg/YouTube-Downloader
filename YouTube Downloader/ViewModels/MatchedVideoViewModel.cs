@@ -1,5 +1,7 @@
 ﻿namespace YouTube.Downloader.ViewModels
 {
+    using System.Diagnostics;
+
     using YouTube.Downloader.Factories.Interfaces;
     using YouTube.Downloader.Models;
     using YouTube.Downloader.Services.Interfaces;
@@ -55,6 +57,11 @@
 
             requeryViewModel.Deactivated += RequeryViewModelDeactivated;
             _dialogService.ShowDialog(requeryViewModel);
+        }
+
+        public void OpenInYouTube()
+        {
+            Process.Start($"https://youtube.com/watch?v={QueryResult.MatchedVideo.Id}");
         }
     }
 }

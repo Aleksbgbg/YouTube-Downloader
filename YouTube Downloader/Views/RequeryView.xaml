@@ -29,6 +29,20 @@
 
         </StackPanel>
 
-        <ListBox x:Name="Results" BorderThickness="0" SelectedItem="{Binding SelectedMatch}"/>
+        <ListBox x:Name="Results" BorderThickness="0" SelectedItem="{Binding SelectedMatch}">
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem" BasedOn="{StaticResource {x:Type ListBoxItem}}">
+                    <Setter Property="ContextMenu">
+                        <Setter.Value>
+                            <ContextMenu Caliburn:Action.TargetWithoutContext="{Binding Mode=OneTime}">
+                                <MenuItem Header="Open in YouTube"
+                                          Helpers:ImageContentHelper.Image="{StaticResource PlayButton}"
+                                          Caliburn:Message.Attach="OpenInYouTube"/>
+                            </ContextMenu>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </ListBox.ItemContainerStyle>
+        </ListBox>
     </DockPanel>
 </UserControl>

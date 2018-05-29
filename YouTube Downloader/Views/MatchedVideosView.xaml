@@ -35,6 +35,10 @@
                                 <MenuItem Header="Exchange"
                                           Helpers:ImageContentHelper.Image="{StaticResource Exchange}"
                                           Caliburn:Message.Attach="Exchange"/>
+                                
+                                <MenuItem Header="Open in YouTube"
+                                          Helpers:ImageContentHelper.Image="{StaticResource PlayButton}"
+                                          Caliburn:Message.Attach="OpenInYouTube"/>
                             </ContextMenu>
                         </Setter.Value>
                     </Setter>

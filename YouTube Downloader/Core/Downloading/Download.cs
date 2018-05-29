@@ -8,7 +8,6 @@
     using YouTube.Downloader.EventArgs;
     using YouTube.Downloader.Models;
     using YouTube.Downloader.Models.Download;
-    using YouTube.Downloader.Services.Interfaces;
 
     internal class Download : MonitoredProcess
     {
@@ -69,14 +68,12 @@
                 new ParameterMonitoring("Destination", new Regex(@"^\[download] Destination: (?<Filename>.+)$"), (_, match) => match.Groups["Filename"].Value)
         };
 
-        private static readonly Settings Settings = IoC.Get<ISettingsService>().Settings;
-
         private readonly DownloadStatus _downloadStatus;
 
-        internal Download(DownloadStatus downloadStatus, YouTubeVideo youTubeVideo)
+        internal Download(DownloadStatus downloadStatus, YouTubeVideo youTubeVideo, Settings settings)
                 :
                 base("youtube-dl",
-                     $"-o \"{Settings.DownloadPath}\\%(title)s.%(ext)s\" -f {(Settings.DownloadType == DownloadType.AudioVideo ? "bestvideo + bestaudio" : "bestaudio")} -\"{youTubeVideo.Id}\"")
+                     $"-o \"{settings.DownloadPath}\\%(title)s.%(ext)s\" -f {(settings.DownloadType == DownloadType.AudioVideo ? "bestvideo + bestaudio" : "bestaudio")} -\"{youTubeVideo.Id}\"")
         {
             _downloadStatus = downloadStatus;
             YouTubeVideo = youTubeVideo;

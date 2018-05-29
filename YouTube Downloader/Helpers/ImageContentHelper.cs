@@ -108,17 +108,25 @@
 
             StackPanel buttonStackPanel = new StackPanel
             {
-                    Orientation = Orientation.Horizontal
+                Orientation = Orientation.Horizontal
             };
 
             buttonStackPanel.Children.Add(new Image
             {
-                    Height = 20
+                Height = 20
             });
-            buttonStackPanel.Children.Add(new TextBlock
+
+            TextBlock buttonTextBlock = new TextBlock
             {
-                    Margin = new Thickness(5, 0, 5, 0)
-            });
+                Margin = new Thickness(5, 0, 5, 0)
+            };
+
+            buttonStackPanel.Children.Add(buttonTextBlock);
+
+            if (button.Content is string buttonText)
+            {
+                buttonTextBlock.Text = buttonText;
+            }
 
             button.Content = buttonStackPanel;
 

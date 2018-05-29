@@ -7,6 +7,7 @@
 	<BitmapImage x:Key="NoEntry" UriSource="/Images/No Entry.png"/>
 	<BitmapImage x:Key="Pause" UriSource="/Images/Pause.png"/>
 	<BitmapImage x:Key="Play" UriSource="/Images/Play.png"/>
+	<BitmapImage x:Key="PlayButton" UriSource="/Images/Play Button.png"/>
 	<BitmapImage x:Key="Settings" UriSource="/Images/Settings.png"/>
 	<BitmapImage x:Key="SpinnerFrame1" UriSource="/Images/Spinner Frame 1.png"/>
 	<BitmapImage x:Key="SpinnerFrame2" UriSource="/Images/Spinner Frame 2.png"/>

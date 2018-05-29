@@ -4,10 +4,16 @@
 			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:Caliburn="http://www.caliburnproject.org"
+             xmlns:Converters="clr-namespace:YouTube.Downloader.Converters"
 			 xmlns:ViewModels="clr-namespace:YouTube.Downloader.ViewModels"
 			 mc:Ignorable="d"
 			 d:DataContext="{d:DesignInstance ViewModels:MatchedVideoViewModel}">
     <DockPanel>
+        <TextBlock DockPanel.Dock="Bottom" Text="{Binding QueryResult.PercentageMatch, StringFormat=P2}"
+                   Foreground="{Binding QueryResult.PercentageMatch,
+            Converter={x:Static Converters:PercentageMatchColourConverter.Default}}"
+                   FontWeight="DemiBold"/>
+
         <Rectangle Fill="DeepSkyBlue">
             <Rectangle.Style>
                 <Style TargetType="Rectangle">

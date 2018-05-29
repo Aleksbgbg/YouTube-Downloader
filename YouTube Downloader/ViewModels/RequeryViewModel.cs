@@ -87,6 +87,11 @@
             TryClose();
         }
 
+        public void Cancel()
+        {
+            TryClose();
+        }
+
         public IEnumerable<IResult> Search()
         {
             Results.Clear();

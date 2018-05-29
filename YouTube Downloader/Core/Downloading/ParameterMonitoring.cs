@@ -38,5 +38,10 @@
         {
             Value = _matchProcessor(Value, match);
         }
+
+        internal ParameterMonitoring GetCopy()
+        {
+            return new ParameterMonitoring(Name, Regex, _matchProcessor);
+        }
     }
 }

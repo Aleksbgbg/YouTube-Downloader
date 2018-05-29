@@ -1,6 +1,7 @@
 ﻿namespace YouTube.Downloader.Core.Downloading
 {
     using System;
+    using System.Linq;
     using System.Text.RegularExpressions;
 
     using Caliburn.Micro;
@@ -141,7 +142,7 @@
 
             Exited += DownloadProcessExited;
 
-            ParameterMonitorings.Apply(ProcessMonitor.AddParameterMonitoring);
+            ParameterMonitorings.Select(parameterMonitoring => parameterMonitoring.GetCopy()).Apply(ProcessMonitor.AddParameterMonitoring);
 
             ParameterMonitoring progressMonitoring = ProcessMonitor.ParameterMonitorings["Progress"];
 

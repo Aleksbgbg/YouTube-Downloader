@@ -61,7 +61,7 @@
                     NewVideo = SelectedMatch.VideoViewModel;
                 }
 
-                NotifyOfPropertyChange(() => CanApply);
+                NotifyOfPropertyChange(() => CanExchange);
             }
         }
 
@@ -79,9 +79,9 @@
             }
         }
 
-        public bool CanApply => !(SelectedMatch == null || NewVideo.Video.Id == _requeryTarget.Video.Id);
+        public bool CanExchange => !(SelectedMatch == null || NewVideo.Video.Id == _requeryTarget.Video.Id);
 
-        public void Apply()
+        public void Exchange()
         {
             _requeryTarget.Video = SelectedMatch.VideoViewModel.Video;
             TryClose();

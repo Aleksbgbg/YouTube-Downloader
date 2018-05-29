@@ -7,8 +7,6 @@
     {
         IVideoViewModel MakeVideoViewModel(YouTubeVideo video);
 
-        IMatchedVideoViewModel MakeMatchedVideoViewModel(YouTubeVideo video);
-
-        IMatchedVideoViewModel MakeMatchedVideoViewModel(IVideoViewModel videoViewModel);
+        IMatchedVideoViewModel MakeMatchedVideoViewModel(QueryResult queryResult);
     }
 }

@@ -12,7 +12,7 @@
 
         IObservableCollection<IMatchedVideoViewModel> SelectedVideos { get; }
 
-        void Load(IEnumerable<YouTubeVideo> videos);
+        void Load(IEnumerable<QueryResult> videos);
 
         void DownloadSelected();
     }

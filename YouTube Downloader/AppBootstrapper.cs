@@ -84,7 +84,7 @@
             IDataService dataService = IoC.Get<IDataService>();
 
             IoC.Get<IQueryViewModel>().Query = dataService.LoadAndWipe<string>("Query") ?? string.Empty;
-            IoC.Get<IMatchedVideosViewModel>().Load(dataService.LoadAndWipe<IEnumerable<YouTubeVideo>>("Matched Videos", "[]"));
+            IoC.Get<IMatchedVideosViewModel>().Load(dataService.LoadAndWipe<IEnumerable<QueryResult>>("Matched Videos", "[]"));
             IoC.Get<ICurrentDownloadsViewModel>().AddDownloads(dataService.LoadAndWipe<IEnumerable<YouTubeVideo>>("Downloads", "[]").Select(IoC.Get<IVideoFactory>().MakeVideoViewModel));
 
             DisplayRootViewFor<IShellViewModel>();
@@ -95,7 +95,7 @@
             IDataService dataService = IoC.Get<IDataService>();
 
             dataService.Save("Query", IoC.Get<IQueryViewModel>().Query);
-            dataService.Save("Matched Videos", IoC.Get<IMatchedVideosViewModel>().Videos.Select(matchedVideoViewModel => matchedVideoViewModel.VideoViewModel.Video));
+            dataService.Save("Matched Videos", IoC.Get<IMatchedVideosViewModel>().Videos.Select(matchedVideoViewModel => matchedVideoViewModel.QueryResult));
 
             Download[] downloads = IoC.Get<IDownloadService>().Downloads.ToArray();
             dataService.Save("Downloads", downloads.Select(download => download.YouTubeVideo));

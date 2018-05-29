@@ -25,7 +25,7 @@
 
         public IObservableCollection<IMatchedVideoViewModel> SelectedVideos { get; } = new BindableCollection<IMatchedVideoViewModel>();
 
-        public void Load(IEnumerable<YouTubeVideo> videos)
+        public void Load(IEnumerable<QueryResult> videos)
         {
             SelectedVideos.Clear();
             Videos.Clear();

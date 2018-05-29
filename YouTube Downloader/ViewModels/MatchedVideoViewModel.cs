@@ -1,6 +1,7 @@
 ﻿namespace YouTube.Downloader.ViewModels
 {
     using YouTube.Downloader.Factories.Interfaces;
+    using YouTube.Downloader.Models;
     using YouTube.Downloader.Services.Interfaces;
     using YouTube.Downloader.ViewModels.Interfaces;
 
@@ -32,9 +33,12 @@
 
         public IVideoViewModel VideoViewModel { get; private set; }
 
-        public void Initialise(IVideoViewModel videoViewModel)
+        public QueryResult QueryResult { get; private set; }
+
+        public void Initialise(IVideoViewModel videoViewModel, QueryResult queryResult)
         {
             VideoViewModel = videoViewModel;
+            QueryResult = queryResult;
         }
 
         public void Exchange()

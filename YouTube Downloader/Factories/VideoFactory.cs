@@ -16,15 +16,10 @@
             return videoViewModel;
         }
 
-        public IMatchedVideoViewModel MakeMatchedVideoViewModel(YouTubeVideo video)
-        {
-            return MakeMatchedVideoViewModel(MakeVideoViewModel(video));
-        }
-
-        public IMatchedVideoViewModel MakeMatchedVideoViewModel(IVideoViewModel videoViewModel)
+        public IMatchedVideoViewModel MakeMatchedVideoViewModel(QueryResult queryResult)
         {
             IMatchedVideoViewModel matchedVideoViewModel = IoC.Get<IMatchedVideoViewModel>();
-            matchedVideoViewModel.Initialise(videoViewModel);
+            matchedVideoViewModel.Initialise(MakeVideoViewModel(queryResult.MatchedVideo), queryResult);
 
             return matchedVideoViewModel;
         }

@@ -143,7 +143,7 @@
     <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="Factories\DownloadFactory.cs" />
     <Compile Include="Factories\Interfaces\IDownloadFactory.cs" />
-    <Compile Include="Core\Downloading\Download.cs" />
+    <Compile Include="Core\Downloading\DownloadProcess.cs" />
     <Compile Include="Core\EnumDescriptionConverter.cs" />
     <Compile Include="Core\Downloading\ProcessMonitor.cs" />
     <Compile Include="Helpers\ImageContentHelper.cs" />

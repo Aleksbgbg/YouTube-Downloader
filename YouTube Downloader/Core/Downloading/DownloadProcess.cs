@@ -9,7 +9,7 @@
     using YouTube.Downloader.Models;
     using YouTube.Downloader.Models.Download;
 
-    internal class Download : MonitoredProcess
+    internal class DownloadProcess : MonitoredProcess
     {
         private static readonly ParameterMonitoring[] ParameterMonitorings =
         {
@@ -70,7 +70,7 @@
 
         private readonly DownloadStatus _downloadStatus;
 
-        internal Download(DownloadStatus downloadStatus, YouTubeVideo youTubeVideo, Settings settings)
+        internal DownloadProcess(DownloadStatus downloadStatus, YouTubeVideo youTubeVideo, Settings settings)
                 :
                 base("youtube-dl",
                      $"-o \"{settings.DownloadPath}\\%(title)s.%(ext)s\" -f {(settings.DownloadType == DownloadType.AudioVideo ? "bestvideo + bestaudio" : "bestaudio")} -\"{youTubeVideo.Id}\"")

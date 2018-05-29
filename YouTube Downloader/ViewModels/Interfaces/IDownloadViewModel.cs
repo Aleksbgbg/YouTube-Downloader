@@ -7,10 +7,10 @@
     {
         IVideoViewModel VideoViewModel { get; }
 
-        Download Download { get; }
+        DownloadProcess DownloadProcess { get; }
 
         DownloadStatus DownloadStatus { get; }
 
-        void Initialise(IVideoViewModel videoViewModel, Download download);
+        void Initialise(IVideoViewModel videoViewModel, DownloadProcess downloadProcess);
     }
 }

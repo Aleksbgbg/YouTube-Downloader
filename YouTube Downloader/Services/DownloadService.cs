@@ -13,13 +13,13 @@
     {
         private const int MaxConcurrentDownloads = 3;
 
-        private readonly Queue<Download> _downloadQueue = new Queue<Download>();
+        private readonly Queue<DownloadProcess> _downloadQueue = new Queue<DownloadProcess>();
 
-        private readonly List<Download> _currentDownloads = new List<Download>();
+        private readonly List<DownloadProcess> _currentDownloads = new List<DownloadProcess>();
 
-        public IEnumerable<Download> Downloads => _currentDownloads.Concat(_downloadQueue);
+        public IEnumerable<DownloadProcess> Downloads => _currentDownloads.Concat(_downloadQueue);
 
-        public void QueueDownloads(IEnumerable<Download> downloads)
+        public void QueueDownloads(IEnumerable<DownloadProcess> downloads)
         {
             downloads.Apply(_downloadQueue.Enqueue);
 
@@ -38,27 +38,27 @@
                     return;
                 }
 
-                Download download = _downloadQueue.Dequeue();
+                DownloadProcess downloadProcess = _downloadQueue.Dequeue();
 
-                if (download.HasExited)
+                if (downloadProcess.HasExited)
                 {
                     continue;
                 }
 
-                _currentDownloads.Add(download);
+                _currentDownloads.Add(downloadProcess);
 
                 void DownloadFinished(object sender, EventArgs e)
                 {
-                    download.Exited -= DownloadFinished;
+                    downloadProcess.Exited -= DownloadFinished;
 
-                    _currentDownloads.Remove(download);
+                    _currentDownloads.Remove(downloadProcess);
 
                     DownloadNext();
                 }
 
-                download.Exited += DownloadFinished;
+                downloadProcess.Exited += DownloadFinished;
 
-                download.Start();
+                downloadProcess.Start();
 
                 break;
             }

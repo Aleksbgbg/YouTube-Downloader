@@ -20,7 +20,7 @@
         public IDownloadViewModel MakeDownloadViewModel(IVideoViewModel videoViewModel)
         {
             IDownloadViewModel downloadViewModel = IoC.Get<IDownloadViewModel>();
-            downloadViewModel.Initialise(videoViewModel, new Download(downloadViewModel.DownloadStatus, videoViewModel.Video, _settings));
+            downloadViewModel.Initialise(videoViewModel, new DownloadProcess(downloadViewModel.DownloadStatus, videoViewModel.Video, _settings));
 
             return downloadViewModel;
         }

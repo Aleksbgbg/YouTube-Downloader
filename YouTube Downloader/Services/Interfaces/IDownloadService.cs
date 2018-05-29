@@ -6,8 +6,8 @@
 
     internal interface IDownloadService
     {
-        IEnumerable<Download> Downloads { get; }
+        IEnumerable<DownloadProcess> Downloads { get; }
 
-        void QueueDownloads(IEnumerable<Download> downloads);
+        void QueueDownloads(IEnumerable<DownloadProcess> downloads);
     }
 }

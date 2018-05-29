@@ -95,9 +95,9 @@
             dataService.Save("Query", IoC.Get<IQueryViewModel>().Query);
             dataService.Save("Matched Videos", IoC.Get<IMatchedVideosViewModel>().Videos.Select(matchedVideoViewModel => matchedVideoViewModel.VideoViewModel.Video));
 
-            Download[] downloads = IoC.Get<IDownloadService>().Downloads.ToArray();
-            dataService.Save("Downloads", downloads.Select(download => download.YouTubeVideo));
-            downloads.Apply(download => download.Kill());
+            DownloadProcess[] downloadsProcess = IoC.Get<IDownloadService>().Downloads.ToArray();
+            dataService.Save("Downloads", downloadsProcess.Select(download => download.YouTubeVideo));
+            downloadsProcess.Apply(download => download.Kill());
         }
     }
 }

@@ -35,11 +35,11 @@
 
         public IObservableCollection<IDownloadViewModel> SelectedDownloads { get; } = new BindableCollection<IDownloadViewModel>();
 
-        public bool CanKill => SelectedDownloads.Any(downloadViewModel => downloadViewModel.Download.CanKill);
+        public bool CanKill => SelectedDownloads.Any(downloadViewModel => downloadViewModel.DownloadProcess.CanKill);
 
         public void Kill()
         {
-            SelectedDownloads.Select(downloadViewModel => downloadViewModel.Download).Where(download => download.CanKill).Apply(download => download.Kill());
+            SelectedDownloads.Select(downloadViewModel => downloadViewModel.DownloadProcess).Where(download => download.CanKill).Apply(download => download.Kill());
         }
 
         public void Handle(IEnumerable<IVideoViewModel> message)
@@ -55,7 +55,7 @@
             {
                 void DownloadCompleted(object sender, EventArgs e)
                 {
-                    downloadViewModel.Download.Exited -= DownloadCompleted;
+                    downloadViewModel.DownloadProcess.Exited -= DownloadCompleted;
                     downloadViewModel.DownloadStatus.PropertyChanged -= DownloadStatusPropertyChanged;
 
                     DelayedCallbackHelper.SetTimeout(3_000, () =>
@@ -65,7 +65,7 @@
                     });
                 }
 
-                downloadViewModel.Download.Exited += DownloadCompleted;
+                downloadViewModel.DownloadProcess.Exited += DownloadCompleted;
 
                 void DownloadStatusPropertyChanged(object sender, PropertyChangedEventArgs e)
                 {
@@ -79,7 +79,7 @@
             }
 
             Downloads.AddRange(downloads);
-            _downloadService.QueueDownloads(downloads.Select(downloadViewModel => downloadViewModel.Download));
+            _downloadService.QueueDownloads(downloads.Select(downloadViewModel => downloadViewModel.DownloadProcess));
         }
 
         private void RecomputeActionGuards()

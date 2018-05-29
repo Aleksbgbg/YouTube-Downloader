@@ -8,14 +8,14 @@
     {
         public IVideoViewModel VideoViewModel { get; private set; }
 
-        public Download Download { get; private set; }
+        public DownloadProcess DownloadProcess { get; private set; }
 
         public DownloadStatus DownloadStatus { get; } = new DownloadStatus();
 
-        public void Initialise(IVideoViewModel videoViewModel, Download download)
+        public void Initialise(IVideoViewModel videoViewModel, DownloadProcess downloadProcess)
         {
             VideoViewModel = videoViewModel;
-            Download = download;
+            DownloadProcess = downloadProcess;
         }
     }
 }

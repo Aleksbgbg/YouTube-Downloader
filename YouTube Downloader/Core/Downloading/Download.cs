@@ -13,31 +13,13 @@
     {
         private static readonly Settings Settings = IoC.Get<ISettingsService>().Settings;
 
-        private readonly string _processArguments;
-
         private readonly DownloadStatus _downloadStatus;
 
         private MonitoredProcess _monitoredProcess;
 
         internal Download(DownloadStatus downloadStatus, YouTubeVideo youTubeVideo)
         {
-            string GetFormat()
-            {
-                switch (Settings.DownloadType)
-                {
-                    case DownloadType.AudioVideo:
-                        return "bestvideo+bestaudio";
-
-                    case DownloadType.Audio:
-                        return "bestaudio";
-
-                    default:
-                        throw new InvalidOperationException("Download started with invalid Settings.");
-                }
-            }
-
             _downloadStatus = downloadStatus;
-            _processArguments = $"-o \"{Settings.DownloadPath}\\%(title)s.%(ext)s\" -f {GetFormat()} -- \"{youTubeVideo.Id}\"";
             YouTubeVideo = youTubeVideo;
         }
 
@@ -120,7 +102,22 @@
 
         private void GenerateAndStartProcess()
         {
-            _monitoredProcess = new MonitoredProcess("youtube-dl", _processArguments);
+            string GetFormat()
+            {
+                switch (Settings.DownloadType)
+                {
+                    case DownloadType.AudioVideo:
+                        return "bestvideo+bestaudio";
+
+                    case DownloadType.Audio:
+                        return "bestaudio";
+
+                    default:
+                        throw new InvalidOperationException("Download started with invalid Settings.");
+                }
+            }
+
+            _monitoredProcess = new MonitoredProcess("youtube-dl", $"-o \"{Settings.DownloadPath}\\%(title)s.%(ext)s\" -f {GetFormat()} -- \"{YouTubeVideo.Id}\"");
 
             void DownloadProcessExited(object sender, EventArgs e)
             {

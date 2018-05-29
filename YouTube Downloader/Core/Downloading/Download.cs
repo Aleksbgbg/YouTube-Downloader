@@ -1,7 +1,6 @@
 ﻿namespace YouTube.Downloader.Core.Downloading
 {
     using System;
-    using System.IO;
 
     using Caliburn.Micro;
 
@@ -24,26 +23,13 @@
         {
             string GetFormat()
             {
-                switch (Settings.OutputFormat)
+                switch (Settings.DownloadType)
                 {
-                    case OutputFormat.Auto:
-                        switch (Settings.DownloadType)
-                        {
-                            case DownloadType.AudioVideo:
-                                return "bestvideo+bestaudio";
+                    case DownloadType.AudioVideo:
+                        return "bestvideo+bestaudio";
 
-                            case DownloadType.Audio:
-                                return "bestaudio";
-
-                            default:
-                                throw new InvalidOperationException("Download started with invalid Settings.");
-                        }
-
-                    case OutputFormat.Mp4:
-                        return "mp4/bestvideo+bestaudio";
-
-                    case OutputFormat.Mp3:
-                        return "mp3/bestaudio";
+                    case DownloadType.Audio:
+                        return "bestaudio";
 
                     default:
                         throw new InvalidOperationException("Download started with invalid Settings.");
@@ -138,51 +124,11 @@
 
             void DownloadProcessExited(object sender, EventArgs e)
             {
-                string path = null;
-
                 _monitoredProcess.Exited -= DownloadProcessExited;
 
                 if (HasExited)
                 {
                     return;
-                }
-
-                if (Settings.OutputFormat != OutputFormat.Auto)
-                {
-                    string destination = (string)_monitoredProcess.ProcessMonitor.ParameterMonitorings["Destination"].Value;
-
-                    if (destination == null)
-                    {
-                        return;
-                    }
-
-                    FileInfo destinationInfo = new FileInfo(destination);
-
-                    string expectedExtension = Settings.OutputFormat == OutputFormat.Mp4 ? ".mp4" : ".mp3";
-
-                    if (destinationInfo.Extension != expectedExtension)
-                    {
-                        _monitoredProcess = new MonitoredProcess("ffmpeg", $"-i \"{destinationInfo.FullName}\" \"{Path.ChangeExtension(destinationInfo.FullName, expectedExtension)}\"");
-
-                        path = destinationInfo.FullName;
-
-                        void ConversionProcessExited(object _, EventArgs args)
-                        {
-                            _monitoredProcess.Exited -= ConversionProcessExited;
-
-                            File.Delete(path);
-
-                            DidComplete = true;
-                            HasExited = true;
-                        }
-
-                        _monitoredProcess.Exited += ConversionProcessExited;
-                        _monitoredProcess.Start();
-
-                        _downloadStatus.DownloadState = DownloadState.Converting;
-
-                        return;
-                    }
                 }
 
                 DidComplete = true;

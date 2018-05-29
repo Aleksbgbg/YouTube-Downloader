@@ -1,12 +1,12 @@
 ﻿namespace YouTube.Downloader.Services
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
     using Caliburn.Micro;
 
     using YouTube.Downloader.Core.Downloading;
-    using YouTube.Downloader.EventArgs;
     using YouTube.Downloader.Services.Interfaces;
 
     internal class DownloadService : IDownloadService
@@ -47,16 +47,16 @@
 
                 _currentDownloads.Add(download);
 
-                void DownloadFinished(object sender, DownloadFinishedEventArgs e)
+                void DownloadFinished(object sender, EventArgs e)
                 {
-                    download.Finished -= DownloadFinished;
+                    download.Exited -= DownloadFinished;
 
                     _currentDownloads.Remove(download);
 
                     DownloadNext();
                 }
 
-                download.Finished += DownloadFinished;
+                download.Exited += DownloadFinished;
 
                 download.Start();
 

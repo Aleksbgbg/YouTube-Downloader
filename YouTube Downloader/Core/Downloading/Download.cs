@@ -10,7 +10,7 @@
     using YouTube.Downloader.Models.Download;
     using YouTube.Downloader.Services.Interfaces;
 
-    internal class Download
+    internal class Download : MonitoredProcess
     {
         private static readonly ParameterMonitoring[] ParameterMonitorings =
         {
@@ -73,15 +73,14 @@
 
         private readonly DownloadStatus _downloadStatus;
 
-        private MonitoredProcess _monitoredProcess;
-
         internal Download(DownloadStatus downloadStatus, YouTubeVideo youTubeVideo)
+                :
+                base("youtube-dl",
+                     $"-o \"{Settings.DownloadPath}\\%(title)s.%(ext)s\" -f {(Settings.DownloadType == DownloadType.AudioVideo ? "bestvideo + bestaudio" : "bestaudio")} -\"{youTubeVideo.Id}\"")
         {
             _downloadStatus = downloadStatus;
             YouTubeVideo = youTubeVideo;
         }
-
-        internal event EventHandler<DownloadFinishedEventArgs> Finished;
 
         internal YouTubeVideo YouTubeVideo { get; }
 
@@ -108,11 +107,6 @@
             {
                 _hasExited = value;
                 UpdateDownloadState();
-
-                if (_hasExited)
-                {
-                    Finished?.Invoke(this, new DownloadFinishedEventArgs(DidComplete));
-                }
             }
         }
 
@@ -128,58 +122,16 @@
             }
         }
 
-        internal void Start()
+        internal override void Start()
         {
             if (HasStarted)
             {
                 throw new InvalidOperationException("Cannot start an already started download.");
             }
 
-            HasStarted = true;
-            GenerateAndStartProcess();
-        }
-
-        internal void Kill()
-        {
-            if (!HasStarted)
-            {
-                HasExited = true;
-                return;
-            }
-
-            if (HasExited)
-            {
-                throw new InvalidOperationException("Cannot kill a download which has already been killed.");
-            }
-
-            HasExited = true;
-
-            _monitoredProcess.Kill();
-            _monitoredProcess = null;
-        }
-
-        private void GenerateAndStartProcess()
-        {
-            string GetFormat()
-            {
-                switch (Settings.DownloadType)
-                {
-                    case DownloadType.AudioVideo:
-                        return "bestvideo+bestaudio";
-
-                    case DownloadType.Audio:
-                        return "bestaudio";
-
-                    default:
-                        throw new InvalidOperationException("Download started with invalid Settings.");
-                }
-            }
-
-            _monitoredProcess = new MonitoredProcess("youtube-dl", $"-o \"{Settings.DownloadPath}\\%(title)s.%(ext)s\" -f {GetFormat()} -- \"{YouTubeVideo.Id}\"");
-
             void DownloadProcessExited(object sender, EventArgs e)
             {
-                _monitoredProcess.Exited -= DownloadProcessExited;
+                Exited -= DownloadProcessExited;
 
                 if (HasExited)
                 {
@@ -190,18 +142,18 @@
                 HasExited = true;
             }
 
-            _monitoredProcess.Exited += DownloadProcessExited;
+            Exited += DownloadProcessExited;
 
-            ParameterMonitorings.Apply(_monitoredProcess.ProcessMonitor.AddParameterMonitoring);
+            ParameterMonitorings.Apply(ProcessMonitor.AddParameterMonitoring);
 
-            ParameterMonitoring progressMonitoring = _monitoredProcess.ProcessMonitor.ParameterMonitorings["Progress"];
+            ParameterMonitoring progressMonitoring = ProcessMonitor.ParameterMonitorings["Progress"];
 
-            _monitoredProcess.ProcessMonitor.Finished += ProcessMonitorFinished;
+            ProcessMonitor.Finished += ProcessMonitorFinished;
             progressMonitoring.ValueUpdated += ProgressUpdated;
 
             void ProcessMonitorFinished(object sender, EventArgs e)
             {
-                _monitoredProcess.ProcessMonitor.Finished -= ProcessMonitorFinished;
+                ProcessMonitor.Finished -= ProcessMonitorFinished;
                 progressMonitoring.ValueUpdated -= ProgressUpdated;
             }
 
@@ -220,7 +172,27 @@
                 _downloadStatus.DownloadProgress.TotalDownloadSize = progress.TotalDownloadSize;
             }
 
-            _monitoredProcess.Start();
+            HasStarted = true;
+
+            base.Start();
+        }
+
+        internal override void Kill()
+        {
+            if (!HasStarted)
+            {
+                HasExited = true;
+                return;
+            }
+
+            if (HasExited)
+            {
+                throw new InvalidOperationException("Cannot kill a download which has already been killed.");
+            }
+
+            HasExited = true;
+
+            base.Kill();
         }
 
         private void UpdateDownloadState()

@@ -139,7 +139,6 @@
     <Compile Include="Core\Downloading\ParameterMonitoring.cs" />
     <Compile Include="Core\Downloading\Progress.cs" />
     <Compile Include="Core\ThrowHelper.cs" />
-    <Compile Include="EventArgs\DownloadFinishedEventArgs.cs" />
     <Compile Include="EventArgs\ParameterUpdatedEventArgs.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="Factories\DownloadFactory.cs" />

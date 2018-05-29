@@ -5,9 +5,11 @@
 
     internal class MonitoredProcess
     {
+        private readonly Process _process;
+
         internal MonitoredProcess(string process, string arguments)
         {
-            Process = new Process
+            _process = new Process
             {
                 EnableRaisingEvents = true,
                 StartInfo = new ProcessStartInfo($"Resources/{process}.exe", arguments)
@@ -18,29 +20,27 @@
                 }
             };
 
-            ProcessMonitor = new ProcessMonitor(Process);
+            ProcessMonitor = new ProcessMonitor(_process);
         }
 
         internal event EventHandler Exited
         {
-            add => Process.Exited += value;
+            add => _process.Exited += value;
 
-            remove => Process.Exited -= value;
+            remove => _process.Exited -= value;
         }
 
-        internal Process Process { get; }
+        private protected ProcessMonitor ProcessMonitor { get; }
 
-        internal ProcessMonitor ProcessMonitor { get; }
-
-        internal void Start()
+        internal virtual void Start()
         {
-            Process.Start();
+            _process.Start();
             ProcessMonitor.Run();
         }
 
-        internal void Kill()
+        internal virtual void Kill()
         {
-            Process.Kill();
+            _process.Kill();
         }
     }
 }

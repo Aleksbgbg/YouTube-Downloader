@@ -10,7 +10,7 @@
     using YouTube.Downloader.Services.Interfaces;
     using YouTube.Downloader.ViewModels.Interfaces;
 
-    internal class RequeryViewModel : ViewModelBase, IRequeryViewModel
+    internal sealed class RequeryViewModel : ViewModelBase, IRequeryViewModel
     {
         private readonly IVideoFactory _videoFactory;
 
@@ -20,6 +20,8 @@
 
         public RequeryViewModel(IVideoFactory videoFactory, IYouTubeApiService youTubeApiService)
         {
+            DisplayName = "Exchange Video";
+
             _videoFactory = videoFactory;
             _youTubeApiService = youTubeApiService;
 
@@ -39,8 +41,6 @@
 
                 _query = value;
                 NotifyOfPropertyChange(() => Query);
-
-                DisplayName = _query == string.Empty ? "Requery Video" : Query;
             }
         }
 

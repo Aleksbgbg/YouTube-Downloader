@@ -73,7 +73,7 @@
         internal DownloadProcess(DownloadStatus downloadStatus, YouTubeVideo youTubeVideo, Settings settings)
                 :
                 base("youtube-dl",
-                     $"-o \"{settings.DownloadPath}\\%(title)s.%(ext)s\" -f {(settings.DownloadType == DownloadType.AudioVideo ? "bestvideo + bestaudio" : "bestaudio")} -\"{youTubeVideo.Id}\"")
+                     $"-o \"{settings.DownloadPath}\\%(title)s.%(ext)s\" -f {(settings.DownloadType == DownloadType.AudioVideo ? "bestvideo + bestaudio" : "bestaudio")} -- \"{youTubeVideo.Id}\"")
         {
             _downloadStatus = downloadStatus;
             YouTubeVideo = youTubeVideo;

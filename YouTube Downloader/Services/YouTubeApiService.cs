@@ -34,7 +34,7 @@
             {
                 _youTubeApiService = new YouTubeService(new BaseClientService.Initializer
                 {
-                        HttpClientInitializer = GoogleWebAuthorizationBroker.AuthorizeAsync(GoogleClientSecrets.Load(clientSecrets).Secrets,
+                    HttpClientInitializer = GoogleWebAuthorizationBroker.AuthorizeAsync(GoogleClientSecrets.Load(clientSecrets).Secrets,
                                                                                             new string[] { YouTubeService.Scope.YoutubeReadonly },
                                                                                             "user",
                                                                                             CancellationToken.None).Result
@@ -53,7 +53,12 @@
             GC.SuppressFinalize(this);
         }
 
-        public async Task<IEnumerable<YouTubeVideo>> QueryVideos(string query)
+        public async Task<IEnumerable<QueryResult>[]> QueryVideos(IEnumerable<QueryResult> queries)
+        {
+            return await Task.WhenAll(queries.Select(QueryVideosPrivate));
+        }
+
+        private async Task<IEnumerable<QueryResult>> QueryVideosPrivate(QueryResult query)
         {
             // Types of query:
             // == Video ==
@@ -68,16 +73,16 @@
 
             // Query type 4
             {
-                Match queryMatch = Regex.Match(query, @"watch\?v=[^&]+.+list=(?<PlaylistId>[^&\n]+)");
+                Match queryMatch = Regex.Match(query.Query, @"watch\?v=[^&]+.+list=(?<PlaylistId>[^&\n]+)");
 
                 if (queryMatch.Success)
                 {
-                    return await GetPlaylistVideos(queryMatch.Groups["PlaylistId"].Value);
+                    return (await GetPlaylistVideos(queryMatch.Groups["PlaylistId"].Value)).Select(video => new QueryResult(query, video));
                 }
             }
 
             SearchResource.ListRequest searchRequest = _youTubeApiService.Search.List("snippet");
-            searchRequest.Q = query;
+            searchRequest.Q = query.Query;
             searchRequest.MaxResults = 1;
 
             SearchListResponse searchResponse = await searchRequest.ExecuteAsync();
@@ -88,28 +93,28 @@
             {
                 if (result.Id.Kind.Contains("video")) // Query types 1, 2, 3
                 {
-                    return (await GetVideo(result.Id.VideoId)).ToEnumerable();
+                    return new QueryResult(query, await GetVideo(result.Id.VideoId)).ToEnumerable();
                 }
 
                 if (result.Id.Kind.Contains("playlist")) // Query types 5, 6
                 {
-                    return await GetPlaylistVideos(result.Id.PlaylistId);
+                    return (await GetPlaylistVideos(result.Id.PlaylistId)).Select(video => new QueryResult(query, video));
                 }
             }
 
             // Invalid query (for the time being)
-            return Enumerable.Empty<YouTubeVideo>();
+            return Enumerable.Empty<QueryResult>();
         }
 
-        public async Task<IEnumerable<YouTubeVideo>> QueryManyVideos(string query)
+        public async Task<IEnumerable<QueryResult>> QueryManyVideos(QueryResult query)
         {
             SearchResource.ListRequest searchRequest = _youTubeApiService.Search.List("snippet");
-            searchRequest.Q = query;
+            searchRequest.Q = query.Query;
             searchRequest.MaxResults = MaxQueryResults;
 
             SearchListResponse searchResponse = await searchRequest.ExecuteAsync();
 
-            return await GetVideos(searchResponse.Items.Where(video => video.Id.Kind.Contains("video")).Select(video => video.Id.VideoId));
+            return (await GetVideos(searchResponse.Items.Where(video => video.Id.Kind.Contains("video")).Select(video => video.Id.VideoId))).Select(video => new QueryResult(query, video));
         }
 
         private async Task<IEnumerable<YouTubeVideo>> GetPlaylistVideos(string playlistId)

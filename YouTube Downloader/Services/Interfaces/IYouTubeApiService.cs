@@ -8,8 +8,8 @@
 
     internal interface IYouTubeApiService : IDisposable
     {
-        Task<IEnumerable<YouTubeVideo>> QueryVideos(string query);
+        Task<IEnumerable<QueryResult>[]> QueryVideos(IEnumerable<QueryResult> query);
 
-        Task<IEnumerable<YouTubeVideo>> QueryManyVideos(string query);
+        Task<IEnumerable<QueryResult>> QueryManyVideos(QueryResult query);
     }
 }

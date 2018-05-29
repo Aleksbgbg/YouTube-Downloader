@@ -4,6 +4,8 @@
 
     using Caliburn.Micro;
 
+    using YouTube.Downloader.Models;
+
     internal interface IRequeryViewModel : IViewModelBase
     {
         IVideoViewModel NewVideo { get; }
@@ -14,6 +16,6 @@
 
         IEnumerable<IResult> Search();
 
-        void Initialise(IVideoViewModel requeryTarget);
+        void Initialise(IVideoViewModel requeryTarget, QueryResult queryResult);
     }
 }

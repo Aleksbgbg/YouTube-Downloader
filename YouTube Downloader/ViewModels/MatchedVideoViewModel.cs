@@ -45,7 +45,7 @@
         {
             IsExchanging = true;
 
-            IRequeryViewModel requeryViewModel = _requeryFactory.MakeRequeryViewModel(VideoViewModel);
+            IRequeryViewModel requeryViewModel = _requeryFactory.MakeRequeryViewModel(VideoViewModel, QueryResult);
 
             void RequeryViewModelDeactivated(object sender, Caliburn.Micro.DeactivationEventArgs e)
             {

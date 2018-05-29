@@ -98,10 +98,10 @@
             Results.AddRange(queryResponse.Result.Select(_videoFactory.MakeMatchedVideoViewModel));
         }
 
-        public void Initialise(IVideoViewModel requeryTarget)
+        public void Initialise(IVideoViewModel requeryTarget, QueryResult queryResult)
         {
             _requeryTarget = requeryTarget;
-            Query = requeryTarget.Video.Title;
+            Query = queryResult.Query;
 
             NewVideo = _videoFactory.MakeVideoViewModel(requeryTarget.Video);
 

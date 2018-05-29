@@ -56,12 +56,12 @@
                 _selectedMatch = value;
                 NotifyOfPropertyChange(() => SelectedMatch);
 
-                NotifyOfPropertyChange(() => CanApply);
-
                 if (_selectedMatch != null)
                 {
                     NewVideo = SelectedMatch.VideoViewModel;
                 }
+
+                NotifyOfPropertyChange(() => CanApply);
             }
         }
 
@@ -79,7 +79,7 @@
             }
         }
 
-        public bool CanApply => SelectedMatch != null;
+        public bool CanApply => !(SelectedMatch == null || NewVideo.Video.Id == _requeryTarget.Video.Id);
 
         public void Apply()
         {

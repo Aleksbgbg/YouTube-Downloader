@@ -120,28 +120,8 @@
             }
         }
 
-        internal override void Start()
+        private protected override void OnStart()
         {
-            if (HasStarted)
-            {
-                throw new InvalidOperationException("Cannot start an already started download.");
-            }
-
-            void DownloadProcessExited(object sender, EventArgs e)
-            {
-                Exited -= DownloadProcessExited;
-
-                if (HasExited)
-                {
-                    return;
-                }
-
-                DidComplete = true;
-                HasExited = true;
-            }
-
-            Exited += DownloadProcessExited;
-
             ParameterMonitorings.Select(parameterMonitoring => parameterMonitoring.GetCopy()).Apply(ProcessMonitor.AddParameterMonitoring);
 
             ParameterMonitoring progressMonitoring = ProcessMonitor.ParameterMonitorings["Progress"];
@@ -171,26 +151,16 @@
             }
 
             HasStarted = true;
-
-            base.Start();
         }
 
-        internal override void Kill()
+        private protected override void OnExited(bool killed)
         {
-            if (!HasStarted)
+            if (!killed)
             {
-                HasExited = true;
-                return;
-            }
-
-            if (HasExited)
-            {
-                throw new InvalidOperationException("Cannot kill a download which has already been killed.");
+                DidComplete = true;
             }
 
             HasExited = true;
-
-            base.Kill();
         }
 
         private void UpdateDownloadState()

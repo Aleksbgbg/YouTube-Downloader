@@ -7,7 +7,7 @@
     {
         IVideoViewModel VideoViewModel { get; }
 
-        MonitoredProcess Process { get; }
+        MonitoredProcess Process { get; set; }
 
         DownloadStatus DownloadStatus { get; }
 

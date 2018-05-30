@@ -9,7 +9,7 @@
     {
         public IVideoViewModel VideoViewModel { get; private set; }
 
-        public MonitoredProcess Process { get; private set; }
+        public MonitoredProcess Process { get; set; }
 
         public DownloadStatus DownloadStatus { get; } = new DownloadStatus();
 

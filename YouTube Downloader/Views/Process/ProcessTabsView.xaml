@@ -10,6 +10,7 @@
              mc:Ignorable="d"
 			 d:DataContext="{d:DesignInstance ViewModels:ProcessTabsViewModel}">
     <TabControl x:Name="Items">
+
         <TabControl.ContentTemplate>
             <DataTemplate>
                 <DockPanel>
@@ -38,10 +39,15 @@
                         </Button>
                     </StackPanel>-->
 
-                    <ListBox x:Name="Processes"
-                 BorderThickness="0"
-                 SelectionMode="Extended"
-                 Helpers:SelectedItemsHelper.SelectedItems="{Binding SelectedProcesses, Mode=OneTime}">
+                    <ListBox ItemsSource="{Binding Processes}"
+                             BorderThickness="0" SelectionMode="Extended"
+                             Helpers:SelectedItemsHelper.SelectedItems="{Binding SelectedProcesses, Mode=OneTime}">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <ContentControl Caliburn:View.Model="{Binding Mode=OneTime}"/>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+
                         <ListBox.ItemContainerStyle>
                             <Style TargetType="ListBoxItem" BasedOn="{StaticResource {x:Type ListBoxItem}}">
                                 <Setter Property="SnapsToDevicePixels" Value="True"/>
@@ -51,8 +57,9 @@
                                     <Setter.Value>
                                         <ControlTemplate TargetType="ListBoxItem">
                                             <Border x:Name="Bd" BorderBrush="{TemplateBinding BorderBrush}"
-                                        BorderThickness="{TemplateBinding BorderThickness}"
-                                        Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}"
+                                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                                    Background="{TemplateBinding Background}"
+                                                    Padding="{TemplateBinding Padding}"
                                         SnapsToDevicePixels="True">
                                                 <ContentPresenter ContentTemplate="{TemplateBinding ContentTemplate}"
                                                       Content="{TemplateBinding Content}"

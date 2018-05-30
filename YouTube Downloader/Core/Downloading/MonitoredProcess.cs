@@ -3,7 +3,7 @@
     using System;
     using System.Diagnostics;
 
-    internal class MonitoredProcess
+    internal abstract class MonitoredProcess
     {
         private readonly Process _process;
 

@@ -7,7 +7,6 @@
 
     using Caliburn.Micro;
 
-    using YouTube.Downloader.Core.Downloading;
     using YouTube.Downloader.Factories;
     using YouTube.Downloader.Factories.Interfaces;
     using YouTube.Downloader.Models;
@@ -91,7 +90,6 @@
 
             IoC.Get<IQueryViewModel>().Query = dataService.LoadAndWipe<string>("Query") ?? string.Empty;
             IoC.Get<IMatchedVideosViewModel>().Load(dataService.LoadAndWipe<IEnumerable<YouTubeVideo>>("Matched Videos", "[]"));
-            IoC.Get<ICurrentDownloadsViewModel>().AddDownloads(dataService.LoadAndWipe<IEnumerable<YouTubeVideo>>("Downloads", "[]").Select(IoC.Get<IVideoFactory>().MakeVideoViewModel));
 
             DisplayRootViewFor<IShellViewModel>();
         }
@@ -102,10 +100,6 @@
 
             dataService.Save("Query", IoC.Get<IQueryViewModel>().Query);
             dataService.Save("Matched Videos", IoC.Get<IMatchedVideosViewModel>().Videos.Select(matchedVideoViewModel => matchedVideoViewModel.VideoViewModel.Video));
-
-            DownloadProcess[] downloadsProcess = IoC.Get<IDownloadService>().Downloads.ToArray();
-            dataService.Save("Downloads", downloadsProcess.Select(download => download.YouTubeVideo));
-            downloadsProcess.Apply(download => download.Kill());
         }
     }
 }

@@ -18,6 +18,8 @@
 
         private IVideoViewModel _requeryTarget;
 
+        private QueryResult _targetQuery;
+
         public RequeryViewModel(IVideoFactory videoFactory, IYouTubeApiService youTubeApiService)
         {
             DisplayName = "Exchange Video";
@@ -84,6 +86,7 @@
         public void Exchange()
         {
             _requeryTarget.Video = SelectedMatch.VideoViewModel.Video;
+            _targetQuery.MatchedVideo = _requeryTarget.Video;
             TryClose();
         }
 
@@ -107,6 +110,7 @@
         {
             _requeryTarget = requeryTarget;
             Query = queryResult.Query;
+            _targetQuery = queryResult;
 
             NewVideo = _videoFactory.MakeVideoViewModel(requeryTarget.Video);
 

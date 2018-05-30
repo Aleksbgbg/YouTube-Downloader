@@ -2,12 +2,14 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.Linq;
     using System.Windows.Data;
 
     using Caliburn.Micro;
 
     using YouTube.Downloader.Core;
+    using YouTube.Downloader.Models.Download;
     using YouTube.Downloader.ViewModels.Interfaces.Process;
 
     internal abstract class ProcessTabViewModel : ViewModelBase, IProcessTabViewModel, IHandle<ProcessTransferMessage>
@@ -53,6 +55,7 @@
                 void ProcessExited(object sender, EventArgs e)
                 {
                     processViewModel.Process.Exited -= ProcessExited;
+                    processViewModel.DownloadStatus.PropertyChanged -= DownloadStatusPropertyChanged;
 
                     SelectedProcesses.Remove(processViewModel);
                     Processes.Remove(processViewModel);
@@ -60,7 +63,16 @@
                     OnProcessExited(processViewModel);
                 }
 
+                void DownloadStatusPropertyChanged(object sender, PropertyChangedEventArgs e)
+                {
+                    if (e.PropertyName == nameof(DownloadStatus.DownloadState))
+                    {
+                        Processes.Refresh();
+                    }
+                }
+
                 processViewModel.Process.Exited += ProcessExited;
+                processViewModel.DownloadStatus.PropertyChanged += DownloadStatusPropertyChanged;
             }
 
             Processes.AddRange(processViewModels);

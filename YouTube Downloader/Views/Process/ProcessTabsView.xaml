@@ -9,7 +9,7 @@
              xmlns:ViewModels="clr-namespace:YouTube.Downloader.ViewModels.Process"
              mc:Ignorable="d"
 			 d:DataContext="{d:DesignInstance ViewModels:ProcessTabsViewModel}">
-    <TabControl x:Name="Items">
+    <TabControl x:Name="Items" BorderThickness="0">
         <TabControl.ItemTemplate>
             <DataTemplate>
                 <StackPanel Orientation="Horizontal">

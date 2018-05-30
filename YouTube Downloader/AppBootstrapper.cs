@@ -40,6 +40,7 @@
             _container.Singleton<IEventAggregator, EventAggregator>();
 
             _container.Singleton<IAppDataService, AppDataService>();
+            _container.Singleton<IConversionService, ConversionService>();
             _container.Singleton<IDataService, DataService>();
             _container.Singleton<IDownloadService, DownloadService>();
             _container.Singleton<ISettingsService, SettingsService>();

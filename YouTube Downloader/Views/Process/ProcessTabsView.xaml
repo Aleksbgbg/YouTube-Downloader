@@ -10,13 +10,25 @@
              mc:Ignorable="d"
 			 d:DataContext="{d:DesignInstance ViewModels:ProcessTabsViewModel}">
     <TabControl x:Name="Items">
+        <TabControl.ItemTemplate>
+            <DataTemplate>
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="{Binding DisplayName, Mode=OneTime, Converter={x:Static Converters:ResourceConverter.Default}}" Height="20"/>
+                    <TextBlock Text="{Binding DisplayName, Mode=OneTime}" Margin="5, 0"/>
+                </StackPanel>
+            </DataTemplate>
+        </TabControl.ItemTemplate>
 
         <TabControl.ContentTemplate>
             <DataTemplate>
                 <DockPanel>
-                    <TextBlock DockPanel.Dock="Top" Text="{Binding DisplayName, Mode=OneTime}" FontSize="16"
-                   FontWeight="DemiBold" HorizontalAlignment="Center"
-                   Margin="5"/>
+                    <StackPanel DockPanel.Dock="Top" HorizontalAlignment="Center" Orientation="Horizontal">
+                        <Image Source="{Binding DisplayName, Mode=OneTime, Converter={x:Static Converters:ResourceConverter.Default}}"
+                               Height="20"/>
+                        <TextBlock Text="{Binding DisplayName, Mode=OneTime}"
+                                   FontSize="16" FontWeight="DemiBold" Margin="5"/>
+                    </StackPanel>
+                    
 
                     <!--<StackPanel DockPanel.Dock="Bottom" HorizontalAlignment="Center" Orientation="Horizontal">
                         <StackPanel.Style>

@@ -82,41 +82,11 @@
 
         internal bool CanKill => !HasExited;
 
-        private bool _hasStarted;
-        internal bool HasStarted
-        {
-            get => _hasStarted;
+        internal bool HasStarted { get; private set; }
 
-            private set
-            {
-                _hasStarted = value;
-                UpdateDownloadState();
-            }
-        }
+        internal bool HasExited { get; private set; }
 
-        private bool _hasExited;
-        internal bool HasExited
-        {
-            get => _hasExited;
-
-            private set
-            {
-                _hasExited = value;
-                UpdateDownloadState();
-            }
-        }
-
-        private bool _didComplete;
-        internal bool DidComplete
-        {
-            get => _didComplete;
-
-            private set
-            {
-                _didComplete = value;
-                UpdateDownloadState();
-            }
-        }
+        internal bool DidComplete { get; private set; }
 
         private protected override void OnStart()
         {
@@ -159,22 +129,6 @@
             }
 
             HasExited = true;
-        }
-
-        private void UpdateDownloadState()
-        {
-            if (HasExited)
-            {
-                DownloadStatus.DownloadState = DidComplete ? DownloadState.Completed : DownloadState.Exited;
-            }
-            else if (HasStarted)
-            {
-                DownloadStatus.DownloadState = DownloadState.Downloading;
-            }
-            else
-            {
-                DownloadStatus.DownloadState = DownloadState.Queued;
-            }
         }
     }
 }

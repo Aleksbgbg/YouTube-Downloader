@@ -3,9 +3,8 @@
     using System;
     using System.Collections.Generic;
 
-    using Caliburn.Micro;
-
     using YouTube.Downloader.Core.Downloading;
+    using YouTube.Downloader.Models.Download;
     using YouTube.Downloader.Services.Interfaces;
 
     internal class ConversionService : IConversionService
@@ -18,7 +17,11 @@
 
         public void QueueConversion(IEnumerable<ConvertProcess> conversions)
         {
-            conversions.Apply(_conversionQueue.Enqueue);
+            foreach (ConvertProcess convertProcess in conversions)
+            {
+                convertProcess.DownloadStatus.DownloadState = DownloadState.Queued;
+                _conversionQueue.Enqueue(convertProcess);
+            }
 
             while (_currentConversions.Count < MaxConcurrentConversions && _conversionQueue.Count > 0)
             {
@@ -37,6 +40,7 @@
             }
 
             ConvertProcess convertProcess = _conversionQueue.Dequeue();
+            convertProcess.DownloadStatus.DownloadState = DownloadState.Converting;
 
             //if (downloadProcess.HasExited)
             //{

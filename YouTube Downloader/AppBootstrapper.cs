@@ -48,7 +48,7 @@
             _container.Singleton<IFileSystemUtility, FileSystemUtility>();
 
             // Register Factories
-            _container.Singleton<IDownloadFactory, DownloadFactory>();
+            _container.Singleton<IProcessFactory, ProcessFactory>();
             _container.Singleton<IVideoFactory, VideoFactory>();
 
             // Register ViewModels
@@ -65,9 +65,6 @@
             _container.Singleton<IConversionsTabViewModel, ConversionsTabViewModel>();
             _container.Singleton<ICompletedTabViewModel, CompletedTabViewModel>();
             _container.PerRequest<IProcessViewModel, ProcessViewModel>();
-
-            _container.Singleton<ICurrentDownloadsViewModel, CurrentDownloadsViewModel>();
-            _container.PerRequest<IDownloadViewModel, DownloadViewModel>();
 
             _container.PerRequest<IVideoViewModel, VideoViewModel>();
 

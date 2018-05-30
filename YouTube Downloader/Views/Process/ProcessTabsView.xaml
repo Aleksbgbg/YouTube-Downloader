@@ -10,6 +10,12 @@
              mc:Ignorable="d"
 			 d:DataContext="{d:DesignInstance ViewModels:ProcessTabsViewModel}">
     <TabControl x:Name="Items" BorderThickness="0">
+        <TabControl.Resources>
+            <Style TargetType="{x:Type TabPanel}">
+                <Setter Property="HorizontalAlignment" Value="Center"/>
+            </Style>
+        </TabControl.Resources>
+
         <TabControl.ItemTemplate>
             <DataTemplate>
                 <StackPanel Orientation="Horizontal">

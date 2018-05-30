@@ -53,7 +53,7 @@
                             </DataTrigger>
 
                             <DataTrigger Binding="{Binding DownloadStatus.DownloadState}" Value="Converting">
-                                <Setter Property="Source" Value="{StaticResource Converting}"/>
+                                <Setter Property="Source" Value="{StaticResource Conversions}"/>
                             </DataTrigger>
 
                             <DataTrigger Binding="{Binding DownloadStatus.DownloadState}" Value="Completed">

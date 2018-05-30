@@ -5,6 +5,7 @@
 
     using Caliburn.Micro;
 
+    using YouTube.Downloader.Core;
     using YouTube.Downloader.Factories.Interfaces;
     using YouTube.Downloader.Models;
     using YouTube.Downloader.ViewModels.Interfaces;
@@ -13,11 +14,14 @@
     {
         private readonly IEventAggregator _eventAggregator;
 
+        private readonly IProcessFactory _processFactory;
+
         private readonly IVideoFactory _videoFactory;
 
-        public MatchedVideosViewModel(IEventAggregator eventAggregator, IVideoFactory videoFactory)
+        public MatchedVideosViewModel(IEventAggregator eventAggregator, IProcessFactory processFactory, IVideoFactory videoFactory)
         {
             _eventAggregator = eventAggregator;
+            _processFactory = processFactory;
             _videoFactory = videoFactory;
         }
 
@@ -35,7 +39,9 @@
 
         public void DownloadSelected()
         {
-            _eventAggregator.BeginPublishOnUIThread(SelectedVideos.Select(matchedVideo => matchedVideo.VideoViewModel));
+            _eventAggregator.BeginPublishOnUIThread(new ProcessTransferMessage(ProcessTransferType.Download,
+                                                                               SelectedVideos.Select(matchedVideo => matchedVideo.VideoViewModel)
+                                                                                             .Select(_processFactory.MakeProcessViewModel)));
         }
     }
 }

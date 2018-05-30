@@ -16,9 +16,9 @@
 
         private readonly List<ConvertProcess> _currentConversions = new List<ConvertProcess>();
 
-        public void QueueConversion(ConvertProcess conversion)
+        public void QueueConversion(IEnumerable<ConvertProcess> conversions)
         {
-            _conversionQueue.Enqueue(conversion);
+            conversions.Apply(_conversionQueue.Enqueue);
 
             while (_currentConversions.Count < MaxConcurrentConversions && _conversionQueue.Count > 0)
             {

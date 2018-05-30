@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
 
     using Caliburn.Micro;
 
@@ -16,8 +15,6 @@
         private readonly Queue<DownloadProcess> _downloadQueue = new Queue<DownloadProcess>();
 
         private readonly List<DownloadProcess> _currentDownloads = new List<DownloadProcess>();
-
-        public IEnumerable<DownloadProcess> Downloads => _currentDownloads.Concat(_downloadQueue);
 
         public void QueueDownloads(IEnumerable<DownloadProcess> downloads)
         {

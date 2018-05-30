@@ -1,11 +1,13 @@
 ﻿namespace YouTube.Downloader.ViewModels.Process
 {
+    using Caliburn.Micro;
+
     using YouTube.Downloader.Core;
     using YouTube.Downloader.ViewModels.Interfaces.Process;
 
     internal class CompletedTabViewModel : ProcessTabViewModel, ICompletedTabViewModel
     {
-        public CompletedTabViewModel() : base(processTransferType => processTransferType == ProcessTransferType.Complete)
+        public CompletedTabViewModel(IEventAggregator eventAggregator) : base(eventAggregator, processTransferType => processTransferType == ProcessTransferType.Complete)
         {
         }
     }

@@ -14,9 +14,11 @@
     {
         private readonly Predicate<ProcessTransferType> _processTransferFilter;
 
-        private protected ProcessTabViewModel(Predicate<ProcessTransferType> processTransferFilter)
+        private protected ProcessTabViewModel(IEventAggregator eventAggregator, Predicate<ProcessTransferType> processTransferFilter)
         {
             DisplayName = GetType().Name.Replace("TabViewModel", string.Empty);
+
+            eventAggregator.Subscribe(this);
 
             _processTransferFilter = processTransferFilter;
 

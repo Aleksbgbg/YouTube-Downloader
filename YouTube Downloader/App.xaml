@@ -27,6 +27,29 @@
                 <Setter Property="SelectionMode" Value="Single"/>
             </Style>
 
+            <Style TargetType="TabItem" BasedOn="{StaticResource {x:Type TabItem}}">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="TabItem">
+                            <Grid Name="Panel">
+                                <ContentPresenter x:Name="ContentSite" VerticalAlignment="Center"
+                                                  HorizontalAlignment="Center" ContentSource="Header" Margin="10,2"/>
+                            </Grid>
+
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter TargetName="Panel" Property="Background" Value="#76D7C4"/>
+                                </Trigger>
+
+                                <Trigger Property="IsSelected" Value="False">
+                                    <Setter TargetName="Panel" Property="Background" Value="White"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
             <Style TargetType="TextBlock">
                 <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
                 <Setter Property="VerticalAlignment" Value="Center"/>

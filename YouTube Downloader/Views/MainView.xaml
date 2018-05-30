@@ -21,6 +21,6 @@
                       HorizontalAlignment="Stretch" Width="5"
                       Margin="0, 5"/>
 
-        <ContentControl Grid.Column="2" Caliburn:View.Model="{Binding CurrentDownloadsViewModel, Mode=OneTime}"/>
+        <ContentControl Grid.Column="2" Caliburn:View.Model="{Binding ProcessTabsViewModel, Mode=OneTime}"/>
     </Grid>
 </UserControl>

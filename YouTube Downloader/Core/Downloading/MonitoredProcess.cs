@@ -3,13 +3,15 @@
     using System;
     using System.Diagnostics;
 
+    using YouTube.Downloader.Models.Download;
+
     internal abstract class MonitoredProcess
     {
         private readonly Process _process;
 
         private bool _calledKill;
 
-        internal MonitoredProcess(string process, string arguments)
+        internal MonitoredProcess(string process, string arguments, DownloadStatus downloadStatus)
         {
             _process = new Process
             {
@@ -22,6 +24,7 @@
                 }
             };
 
+            DownloadStatus = downloadStatus;
             ProcessMonitor = new ProcessMonitor(_process);
 
             Exited += (sender, e) =>
@@ -39,6 +42,8 @@
 
             remove => _process.Exited -= value;
         }
+
+        internal DownloadStatus DownloadStatus { get; }
 
         internal ProcessMonitor ProcessMonitor { get; }
 

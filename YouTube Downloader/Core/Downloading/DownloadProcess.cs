@@ -69,14 +69,12 @@
                 new ParameterMonitoring("Destination", new Regex(@"^\[download] Destination: (?<Filename>.+)$"), (_, match) => match.Groups["Filename"].Value)
         };
 
-        private readonly DownloadStatus _downloadStatus;
-
         internal DownloadProcess(DownloadStatus downloadStatus, YouTubeVideo youTubeVideo, Settings settings)
                 :
                 base("youtube-dl",
-                     $"-o \"{settings.DownloadPath}\\%(title)s.%(ext)s\" -f {(settings.DownloadType == DownloadType.AudioVideo ? "bestvideo + bestaudio" : "bestaudio")} -- \"{youTubeVideo.Id}\"")
+                     $"-o \"{settings.DownloadPath}\\%(title)s.%(ext)s\" -f {(settings.DownloadType == DownloadType.AudioVideo ? "bestvideo + bestaudio" : "bestaudio")} -- \"{youTubeVideo.Id}\"",
+                     downloadStatus)
         {
-            _downloadStatus = downloadStatus;
             YouTubeVideo = youTubeVideo;
         }
 
@@ -139,15 +137,15 @@
             {
                 Progress progress = (Progress)e.NewValue;
 
-                _downloadStatus.DownloadProgress.Stage = progress.Stage;
+                DownloadStatus.DownloadProgress.Stage = progress.Stage;
 
                 if (progress.DownloadSpeed.HasValue)
                 {
-                    _downloadStatus.DownloadProgress.DownloadSpeed = progress.DownloadSpeed.Value;
+                    DownloadStatus.DownloadProgress.DownloadSpeed = progress.DownloadSpeed.Value;
                 }
 
-                _downloadStatus.DownloadProgress.ProgressPercentage = progress.DownloadPercentage;
-                _downloadStatus.DownloadProgress.TotalDownloadSize = progress.TotalDownloadSize;
+                DownloadStatus.DownloadProgress.ProgressPercentage = progress.DownloadPercentage;
+                DownloadStatus.DownloadProgress.TotalDownloadSize = progress.TotalDownloadSize;
             }
 
             HasStarted = true;
@@ -167,15 +165,15 @@
         {
             if (HasExited)
             {
-                _downloadStatus.DownloadState = DidComplete ? DownloadState.Completed : DownloadState.Exited;
+                DownloadStatus.DownloadState = DidComplete ? DownloadState.Completed : DownloadState.Exited;
             }
             else if (HasStarted)
             {
-                _downloadStatus.DownloadState = DownloadState.Downloading;
+                DownloadStatus.DownloadState = DownloadState.Downloading;
             }
             else
             {
-                _downloadStatus.DownloadState = DownloadState.Queued;
+                DownloadStatus.DownloadState = DownloadState.Queued;
             }
         }
     }

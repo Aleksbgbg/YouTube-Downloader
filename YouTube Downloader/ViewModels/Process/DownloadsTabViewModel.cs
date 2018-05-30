@@ -48,7 +48,7 @@
             }
             else
             {
-                processViewModel.Process = new ConvertProcess(destination, _settings.OutputFormat.ToString().ToLower());
+                processViewModel.Process = new ConvertProcess(destination, _settings.OutputFormat.ToString().ToLower(), processViewModel.Process.DownloadStatus);
                 nextTransfer = ProcessTransferType.Convert;
             }
 

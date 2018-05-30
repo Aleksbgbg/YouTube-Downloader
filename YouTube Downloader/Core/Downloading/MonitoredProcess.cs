@@ -40,7 +40,7 @@
             remove => _process.Exited -= value;
         }
 
-        private protected ProcessMonitor ProcessMonitor { get; }
+        internal ProcessMonitor ProcessMonitor { get; }
 
         internal void Start()
         {

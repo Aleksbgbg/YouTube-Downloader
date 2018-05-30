@@ -37,8 +37,8 @@
         {
             ProcessTransferType nextTransfer;
 
-            string outputFilename = (string)processViewModel.Process.ProcessMonitor.ParameterMonitorings["Filename"].Value;
-            string extension = Path.GetExtension(outputFilename);
+            string destination = (string)processViewModel.Process.ProcessMonitor.ParameterMonitorings["Destination"].Value;
+            string extension = Path.GetExtension(destination);
 
             if (_settings.OutputFormat == OutputFormat.Auto ||
                 _settings.OutputFormat == OutputFormat.Mp4 && extension == ".mp4" ||
@@ -48,7 +48,7 @@
             }
             else
             {
-                processViewModel.Process = new ConvertProcess(outputFilename, _settings.OutputFormat.ToString().ToLower());
+                processViewModel.Process = new ConvertProcess(destination, _settings.OutputFormat.ToString().ToLower());
                 nextTransfer = ProcessTransferType.Convert;
             }
 

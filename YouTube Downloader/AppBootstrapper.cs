@@ -17,6 +17,8 @@
     using YouTube.Downloader.Utilities.Interfaces;
     using YouTube.Downloader.ViewModels;
     using YouTube.Downloader.ViewModels.Interfaces;
+    using YouTube.Downloader.ViewModels.Interfaces.Process;
+    using YouTube.Downloader.ViewModels.Process;
 
     internal class AppBootstrapper : BootstrapperBase
     {
@@ -58,6 +60,12 @@
             _container.Singleton<IRequeryViewModel, RequeryViewModel>();
             _container.Singleton<IMatchedVideosViewModel, MatchedVideosViewModel>();
             _container.PerRequest<IMatchedVideoViewModel, MatchedVideoViewModel>();
+
+            _container.Singleton<IProcessTabsViewModel, ProcessTabsViewModel>();
+            _container.Singleton<IDownloadsTabViewModel, DownloadsTabViewModel>();
+            _container.Singleton<IConversionsTabViewModel, ConversionsTabViewModel>();
+            _container.Singleton<ICompletedTabViewModel, CompletedTabViewModel>();
+            _container.PerRequest<IProcessViewModel, ProcessViewModel>();
 
             _container.Singleton<ICurrentDownloadsViewModel, CurrentDownloadsViewModel>();
             _container.PerRequest<IDownloadViewModel, DownloadViewModel>();

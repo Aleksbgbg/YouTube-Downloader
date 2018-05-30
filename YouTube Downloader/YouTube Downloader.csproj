@@ -139,6 +139,7 @@
     <Compile Include="Core\Downloading\MonitoredProcess.cs" />
     <Compile Include="Core\Downloading\ParameterMonitoring.cs" />
     <Compile Include="Core\Downloading\Progress.cs" />
+    <Compile Include="Core\ProcessTransferType.cs" />
     <Compile Include="Core\ThrowHelper.cs" />
     <Compile Include="EventArgs\ParameterUpdatedEventArgs.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
@@ -153,6 +154,7 @@
     <Compile Include="Models\Download\DownloadStatus.cs" />
     <Compile Include="Models\Download\DownloadType.cs" />
     <Compile Include="Models\OutputFormat.cs" />
+    <Compile Include="Core\ProcessTransferMessage.cs" />
     <Compile Include="Services\AppDataService.cs" />
     <Compile Include="Services\DataService.cs" />
     <Compile Include="Services\Interfaces\IAppDataService.cs" />
@@ -170,9 +172,21 @@
     <Compile Include="ViewModels\Interfaces\ICurrentDownloadsViewModel.cs" />
     <Compile Include="ViewModels\Interfaces\IDownloadViewModel.cs" />
     <Compile Include="ViewModels\Interfaces\IMatchedVideoViewModel.cs" />
+    <Compile Include="ViewModels\Interfaces\Process\ICompletedTabViewModel.cs" />
+    <Compile Include="ViewModels\Interfaces\Process\IConversionsTabViewModel.cs" />
+    <Compile Include="ViewModels\Interfaces\Process\IDownloadsTabViewModel.cs" />
+    <Compile Include="ViewModels\Interfaces\Process\IProcessTabsViewModel.cs" />
     <Compile Include="ViewModels\Interfaces\IRequeryViewModel.cs" />
     <Compile Include="ViewModels\Interfaces\ISettingsViewModel.cs" />
+    <Compile Include="ViewModels\Interfaces\Process\IProcessTabViewModel.cs" />
+    <Compile Include="ViewModels\Interfaces\Process\IProcessViewModel.cs" />
     <Compile Include="ViewModels\MatchedVideoViewModel.cs" />
+    <Compile Include="ViewModels\Process\CompletedTabViewModel.cs" />
+    <Compile Include="ViewModels\Process\ConversionsTabViewModel.cs" />
+    <Compile Include="ViewModels\Process\DownloadsTabViewModel.cs" />
+    <Compile Include="ViewModels\Process\ProcessTabsViewModel.cs" />
+    <Compile Include="ViewModels\Process\ProcessTabViewModel.cs" />
+    <Compile Include="ViewModels\Process\ProcessViewModel.cs" />
     <Compile Include="ViewModels\RequeryViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="Views\CurrentDownloadsView.xaml.cs">
@@ -186,6 +200,9 @@
     </Compile>
     <Compile Include="Views\MatchedVideoView.xaml.cs">
       <DependentUpon>MatchedVideoView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Process\ProcessTabsView.xaml.cs">
+      <DependentUpon>ProcessTabsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\RequeryView.xaml.cs">
       <DependentUpon>RequeryView.xaml</DependentUpon>
@@ -216,6 +233,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\MatchedVideoView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Process\ProcessTabsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -381,6 +402,7 @@
   <ItemGroup>
     <Resource Include="Images\Converting.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Fody.3.0.3\build\Fody.targets" Condition="Exists('..\packages\Fody.3.0.3\build\Fody.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

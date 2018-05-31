@@ -66,7 +66,12 @@
 
                     return new Progress(totalDownloadSize, progressPercentage, GetDownloadSpeed(), stage);
                 }),
-                new ParameterMonitoring("Destination", new Regex(@"^\[download] Destination: (?<Filename>.+)$"), (_, match) => match.Groups["Filename"].Value)
+                new ParameterMonitoring("Destination", new Regex(@"^\[download] Destination: (.*)$|^\[download] (.*) has already been downloaded$"), (_, match) =>
+                {
+                    string firstMatch = match.Groups[1].Value;
+
+                    return firstMatch == string.Empty ? match.Groups[2].Value : firstMatch;
+                })
         };
 
         internal DownloadProcess(DownloadStatus downloadStatus, YouTubeVideo youTubeVideo, Settings settings)

@@ -136,6 +136,7 @@
     <Compile Include="Converters\ResourceConverter.cs" />
     <Compile Include="Converters\StageTextConverter.cs" />
     <Compile Include="Core\DelayedCallbackHelper.cs" />
+    <Compile Include="Core\DigitalStorageManager.cs" />
     <Compile Include="Core\Downloading\ConvertProcess.cs" />
     <Compile Include="Core\Downloading\MonitoredProcess.cs" />
     <Compile Include="Core\Downloading\ParameterMonitoring.cs" />

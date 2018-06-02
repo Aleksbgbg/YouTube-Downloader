@@ -151,6 +151,7 @@
     <Compile Include="Core\Downloading\ProcessMonitor.cs" />
     <Compile Include="Helpers\ImageContentHelper.cs" />
     <Compile Include="Helpers\SelectedItemsHelper.cs" />
+    <Compile Include="Models\ConvertProgress.cs" />
     <Compile Include="Models\Download\DownloadProgress.cs" />
     <Compile Include="Models\Download\DownloadStatus.cs" />
     <Compile Include="Models\Download\DownloadType.cs" />

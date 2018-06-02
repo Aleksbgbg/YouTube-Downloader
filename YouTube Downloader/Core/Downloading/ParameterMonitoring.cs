@@ -9,11 +9,12 @@
     {
         private readonly Func<object, Match, object> _matchProcessor;
 
-        internal ParameterMonitoring(string name, Regex regex, Func<object, Match, object> matchProcessor)
+        internal ParameterMonitoring(string name, Regex regex, Func<object, Match, object> matchProcessor, object defaultValue = default)
         {
             Name = name;
             Regex = regex;
             _matchProcessor = matchProcessor;
+            Value = defaultValue;
         }
 
         internal event EventHandler<ParameterUpdatedEventArgs> ValueUpdated;

@@ -7,10 +7,8 @@
     {
         IVideoViewModel VideoViewModel { get; }
 
-        MonitoredProcess Process { get; set; }
+        MonitoredProcess Process { get; }
 
-        DownloadStatus DownloadStatus { get; }
-
-        void Initialise(IVideoViewModel videoViewModel, MonitoredProcess process);
+        DownloadState DownloadState { get; set; }
     }
 }

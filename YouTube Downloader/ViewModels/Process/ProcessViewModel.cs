@@ -5,15 +5,15 @@
     using YouTube.Downloader.ViewModels.Interfaces;
     using YouTube.Downloader.ViewModels.Interfaces.Process;
 
-    internal class ProcessViewModel : ViewModelBase, IProcessViewModel
+    internal abstract class ProcessViewModel : ViewModelBase, IProcessViewModel
     {
         public IVideoViewModel VideoViewModel { get; private set; }
 
-        public MonitoredProcess Process { get; set; }
+        public MonitoredProcess Process { get; private set; }
 
-        public DownloadStatus DownloadStatus { get; } = new DownloadStatus();
+        public DownloadState DownloadState { get; set; }
 
-        public void Initialise(IVideoViewModel videoViewModel, MonitoredProcess process)
+        private protected void Initialise(IVideoViewModel videoViewModel, MonitoredProcess process)
         {
             VideoViewModel = videoViewModel;
             Process = process;

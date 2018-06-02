@@ -20,7 +20,6 @@
             foreach (DownloadProcess download in downloads)
             {
                 _downloadQueue.Enqueue(download);
-                download.DownloadStatus.DownloadState = DownloadState.Queued;
             }
 
             while (_currentDownloads.Count < MaxConcurrentDownloads && _downloadQueue.Count > 0)
@@ -39,7 +38,6 @@
                 }
 
                 DownloadProcess downloadProcess = _downloadQueue.Dequeue();
-                downloadProcess.DownloadStatus.DownloadState = DownloadState.Downloading;
 
                 if (downloadProcess.HasExited)
                 {

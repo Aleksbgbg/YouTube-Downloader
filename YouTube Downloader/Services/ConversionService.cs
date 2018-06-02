@@ -19,7 +19,6 @@
         {
             foreach (ConvertProcess convertProcess in conversions)
             {
-                convertProcess.DownloadStatus.DownloadState = DownloadState.Queued;
                 _conversionQueue.Enqueue(convertProcess);
             }
 
@@ -40,7 +39,6 @@
             }
 
             ConvertProcess convertProcess = _conversionQueue.Dequeue();
-            convertProcess.DownloadStatus.DownloadState = DownloadState.Converting;
 
             //if (downloadProcess.HasExited)
             //{

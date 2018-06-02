@@ -7,7 +7,6 @@
 
     using YouTube.Downloader.EventArgs;
     using YouTube.Downloader.Models;
-    using YouTube.Downloader.Models.Download;
 
     internal class ConvertProcess : MonitoredProcess
     {
@@ -57,6 +56,16 @@
 
             void ProgressUpdated(object sender, ParameterUpdatedEventArgs e)
             {
+                Dictionary<string, string> keyValuePairs = (Dictionary<string, string>)e.NewValue;
+
+                string size = keyValuePairs["size"]; // Format: 1024kB
+                string bitrate = keyValuePairs["bitrate"]; // Format: 1024.3kbits/s
+
+                Match sizeMatch = Regex.Match(size, @"(?<Size>\d+)(?<Units>.+)");
+                Match bitrateMatch = Regex.Match(bitrate, @"(?<Size>\d+(?:\.\d+)?)(?<Units>.+)its\/s");
+
+                _convertProgress.Bitrate = DigitalStorageManager.GetBytes(double.Parse(sizeMatch.Groups["Size"].Value), sizeMatch.Groups["Units"].Value);
+                _convertProgress.ConvertedBytes = DigitalStorageManager.GetBytes(double.Parse(bitrateMatch.Groups["Size"].Value), bitrateMatch.Groups["Units"].Value);
             }
         }
 

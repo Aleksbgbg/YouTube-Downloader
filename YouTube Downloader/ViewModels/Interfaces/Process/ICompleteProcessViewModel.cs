@@ -2,5 +2,6 @@
 {
     internal interface ICompleteProcessViewModel : IProcessViewModel
     {
+        void Initialise(IVideoViewModel videoViewModel);
     }
 }

@@ -65,6 +65,11 @@
             _container.Singleton<IDownloadsTabViewModel, DownloadsTabViewModel>();
             _container.Singleton<IConversionsTabViewModel, ConversionsTabViewModel>();
             _container.Singleton<ICompletedTabViewModel, CompletedTabViewModel>();
+
+            _container.PerRequest<IDownloadProcessViewModel, DownloadProcessViewModel>();
+            _container.PerRequest<IConvertProcessViewModel, ConvertProcessViewModel>();
+            _container.PerRequest<ICompleteProcessViewModel, CompleteProcessViewModel>();
+
             _container.PerRequest<IProcessViewModel, ProcessViewModel>();
 
             _container.PerRequest<IVideoViewModel, VideoViewModel>();

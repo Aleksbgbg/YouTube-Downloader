@@ -173,7 +173,10 @@
     <Compile Include="Utilities\Interfaces\IFileSystemUtility.cs" />
     <Compile Include="ViewModels\Interfaces\IMatchedVideoViewModel.cs" />
     <Compile Include="ViewModels\Interfaces\Process\ICompletedTabViewModel.cs" />
+    <Compile Include="ViewModels\Interfaces\Process\ICompleteProcessViewModel.cs" />
     <Compile Include="ViewModels\Interfaces\Process\IConversionsTabViewModel.cs" />
+    <Compile Include="ViewModels\Interfaces\Process\IConvertProcessViewModel.cs" />
+    <Compile Include="ViewModels\Interfaces\Process\IDownloadProcessViewModel.cs" />
     <Compile Include="ViewModels\Interfaces\Process\IDownloadsTabViewModel.cs" />
     <Compile Include="ViewModels\Interfaces\Process\IProcessTabsViewModel.cs" />
     <Compile Include="ViewModels\Interfaces\IRequeryViewModel.cs" />
@@ -182,7 +185,10 @@
     <Compile Include="ViewModels\Interfaces\Process\IProcessViewModel.cs" />
     <Compile Include="ViewModels\MatchedVideoViewModel.cs" />
     <Compile Include="ViewModels\Process\CompletedTabViewModel.cs" />
+    <Compile Include="ViewModels\Process\CompleteProcessViewModel.cs" />
     <Compile Include="ViewModels\Process\ConversionsTabViewModel.cs" />
+    <Compile Include="ViewModels\Process\ConvertProcessViewModel.cs" />
+    <Compile Include="ViewModels\Process\DownloadProcessViewModel.cs" />
     <Compile Include="ViewModels\Process\DownloadsTabViewModel.cs" />
     <Compile Include="ViewModels\Process\ProcessTabsViewModel.cs" />
     <Compile Include="ViewModels\Process\ProcessTabViewModel.cs" />

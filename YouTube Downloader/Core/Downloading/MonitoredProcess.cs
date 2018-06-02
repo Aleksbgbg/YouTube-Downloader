@@ -13,12 +13,12 @@
 
         private bool _calledKill;
 
-        internal MonitoredProcess(string process, string arguments, DownloadStatus downloadStatus)
+        private protected MonitoredProcess(string process, string arguments, DownloadStatus downloadStatus)
                 : this(process, arguments, downloadStatus, new ParameterMonitoring[] { })
         {
         }
 
-        internal MonitoredProcess(string process, string arguments, DownloadStatus downloadStatus, ParameterMonitoring[] parameterMonitorings)
+        private protected MonitoredProcess(string process, string arguments, DownloadStatus downloadStatus, ParameterMonitoring[] parameterMonitorings)
         {
             _process = new Process
             {

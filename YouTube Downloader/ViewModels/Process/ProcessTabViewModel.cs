@@ -28,7 +28,7 @@
             _processDispatcherService = processDispatcherService;
             _processTransferFilter = processTransferFilter;
 
-            ((ListCollectionView)CollectionViewSource.GetDefaultView(Processes)).CustomSort = Comparer<IProcessViewModel>.Create((first, second) => -first.DownloadStatus.DownloadState.CompareTo(second.DownloadStatus.DownloadState));
+            ((ListCollectionView)CollectionViewSource.GetDefaultView(Processes)).CustomSort = Comparer<IProcessViewModel>.Create((first, second) => -first.DownloadState.CompareTo(second.DownloadState));
         }
 
         public sealed override string DisplayName
@@ -59,7 +59,7 @@
                 void ProcessExited(object sender, EventArgs e)
                 {
                     processViewModel.Process.Exited -= ProcessExited;
-                    processViewModel.DownloadStatus.PropertyChanged -= DownloadStatusPropertyChanged;
+                    processViewModel.PropertyChanged -= DownloadStatusPropertyChanged;
 
                     SelectedProcesses.Remove(processViewModel);
                     Processes.Remove(processViewModel);
@@ -76,7 +76,7 @@
                 }
 
                 processViewModel.Process.Exited += ProcessExited;
-                processViewModel.DownloadStatus.PropertyChanged += DownloadStatusPropertyChanged;
+                processViewModel.PropertyChanged += DownloadStatusPropertyChanged;
             }
 
             Processes.AddRange(processViewModels);

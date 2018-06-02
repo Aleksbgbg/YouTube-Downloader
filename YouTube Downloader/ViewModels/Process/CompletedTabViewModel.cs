@@ -8,7 +8,8 @@
 
     internal class CompletedTabViewModel : ProcessTabViewModel, ICompletedTabViewModel
     {
-        public CompletedTabViewModel(IEventAggregator eventAggregator) : base(eventAggregator, processTransferType => processTransferType == ProcessTransferType.Complete)
+        public CompletedTabViewModel(IEventAggregator eventAggregator)
+                : base(eventAggregator, null, processTransferType => processTransferType == ProcessTransferType.Complete)
         {
         }
 

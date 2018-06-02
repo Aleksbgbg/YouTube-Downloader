@@ -10,18 +10,22 @@
 
     using YouTube.Downloader.Core;
     using YouTube.Downloader.Models.Download;
+    using YouTube.Downloader.Services.Interfaces;
     using YouTube.Downloader.ViewModels.Interfaces.Process;
 
     internal abstract class ProcessTabViewModel : ViewModelBase, IProcessTabViewModel, IHandle<ProcessTransferMessage>
     {
+        private readonly IProcessDispatcherService _processDispatcherService;
+
         private readonly Predicate<ProcessTransferType> _processTransferFilter;
 
-        private protected ProcessTabViewModel(IEventAggregator eventAggregator, Predicate<ProcessTransferType> processTransferFilter)
+        private protected ProcessTabViewModel(IEventAggregator eventAggregator, IProcessDispatcherService processDispatcherService, Predicate<ProcessTransferType> processTransferFilter)
         {
             DisplayName = GetType().Name.Replace("TabViewModel", string.Empty);
 
             eventAggregator.Subscribe(this);
 
+            _processDispatcherService = processDispatcherService;
             _processTransferFilter = processTransferFilter;
 
             ((ListCollectionView)CollectionViewSource.GetDefaultView(Processes)).CustomSort = Comparer<IProcessViewModel>.Create((first, second) => -first.DownloadStatus.DownloadState.CompareTo(second.DownloadStatus.DownloadState));
@@ -85,6 +89,7 @@
 
         private protected virtual void OnProcessExited(IProcessViewModel processViewModel)
         {
+            _processDispatcherService.Dispatch(processViewModel);
         }
     }
 }

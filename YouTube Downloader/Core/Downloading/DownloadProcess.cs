@@ -78,7 +78,8 @@
                 :
                 base("youtube-dl",
                      $"-o \"{settings.DownloadPath}\\%(title)s.%(ext)s\" -f {(settings.DownloadType == DownloadType.AudioVideo ? "bestvideo+bestaudio" : "bestaudio")} -- \"{youTubeVideo.Id}\"",
-                     downloadStatus)
+                     downloadStatus,
+                     ParameterMonitorings)
         {
             YouTubeVideo = youTubeVideo;
         }
@@ -95,8 +96,6 @@
 
         private protected override void OnStart()
         {
-            ParameterMonitorings.Select(parameterMonitoring => parameterMonitoring.GetCopy()).Apply(ProcessMonitor.AddParameterMonitoring);
-
             ParameterMonitoring progressMonitoring = ProcessMonitor.ParameterMonitorings["Progress"];
 
             ProcessMonitor.Finished += ProcessMonitorFinished;

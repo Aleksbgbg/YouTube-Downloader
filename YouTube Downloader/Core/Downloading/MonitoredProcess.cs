@@ -7,11 +7,18 @@
 
     internal abstract class MonitoredProcess
     {
+        private readonly ParameterMonitoring[] _parameterMonitorings;
+
         private readonly Process _process;
 
         private bool _calledKill;
 
         internal MonitoredProcess(string process, string arguments, DownloadStatus downloadStatus)
+                : this(process, arguments, downloadStatus, new ParameterMonitoring[] { })
+        {
+        }
+
+        internal MonitoredProcess(string process, string arguments, DownloadStatus downloadStatus, ParameterMonitoring[] parameterMonitorings)
         {
             _process = new Process
             {
@@ -25,6 +32,8 @@
             };
 
             DownloadStatus = downloadStatus;
+            _parameterMonitorings = parameterMonitorings;
+
             ProcessMonitor = new ProcessMonitor(_process);
 
             Exited += (sender, e) =>
@@ -49,6 +58,11 @@
 
         internal void Start()
         {
+            foreach (ParameterMonitoring parameterMonitoring in _parameterMonitorings)
+            {
+                ProcessMonitor.AddParameterMonitoring(parameterMonitoring.GetCopy());
+            }
+
             _process.Start();
             ProcessMonitor.Run();
 

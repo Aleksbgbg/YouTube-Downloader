@@ -3,8 +3,6 @@
     using System;
     using System.Diagnostics;
 
-    using YouTube.Downloader.Models.Download;
-
     internal abstract class MonitoredProcess
     {
         private readonly ParameterMonitoring[] _parameterMonitorings;
@@ -13,12 +11,12 @@
 
         private bool _calledKill;
 
-        private protected MonitoredProcess(string process, string arguments, DownloadStatus downloadStatus)
-                : this(process, arguments, downloadStatus, new ParameterMonitoring[] { })
+        private protected MonitoredProcess(string process, string arguments)
+                : this(process, arguments, new ParameterMonitoring[] { })
         {
         }
 
-        private protected MonitoredProcess(string process, string arguments, DownloadStatus downloadStatus, ParameterMonitoring[] parameterMonitorings)
+        private protected MonitoredProcess(string process, string arguments, ParameterMonitoring[] parameterMonitorings)
         {
             _process = new Process
             {
@@ -31,7 +29,6 @@
                 }
             };
 
-            DownloadStatus = downloadStatus;
             _parameterMonitorings = parameterMonitorings;
 
             ProcessMonitor = new ProcessMonitor(_process);
@@ -51,8 +48,6 @@
 
             remove => _process.Exited -= value;
         }
-
-        internal DownloadStatus DownloadStatus { get; }
 
         internal ProcessMonitor ProcessMonitor { get; }
 

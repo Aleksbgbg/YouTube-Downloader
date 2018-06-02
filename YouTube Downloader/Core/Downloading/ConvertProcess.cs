@@ -6,6 +6,7 @@
     using System.Text.RegularExpressions;
 
     using YouTube.Downloader.EventArgs;
+    using YouTube.Downloader.Models;
     using YouTube.Downloader.Models.Download;
 
     internal class ConvertProcess : MonitoredProcess
@@ -29,14 +30,16 @@
 
         private readonly string _filename;
 
-        internal ConvertProcess(string filename, string newExtension, DownloadStatus downloadStatus)
+        private readonly ConvertProgress _convertProgress;
+
+        internal ConvertProcess(string filename, string newExtension, ConvertProgress convertProgress)
                 :
                 base("ffmpeg",
                      $"-i \"{filename}\" \"{Path.ChangeExtension(filename, newExtension)}\"",
-                     downloadStatus,
                      ParameterMonitorings)
         {
             _filename = filename;
+            _convertProgress = convertProgress;
         }
 
         private protected override void OnStart()

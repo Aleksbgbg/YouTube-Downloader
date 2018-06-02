@@ -1,10 +1,7 @@
 ﻿namespace YouTube.Downloader.Core.Downloading
 {
     using System;
-    using System.Linq;
     using System.Text.RegularExpressions;
-
-    using Caliburn.Micro;
 
     using YouTube.Downloader.EventArgs;
     using YouTube.Downloader.Models;
@@ -74,13 +71,15 @@
                 })
         };
 
-        internal DownloadProcess(DownloadStatus downloadStatus, YouTubeVideo youTubeVideo, Settings settings)
+        private readonly DownloadProgress _downloadProgress;
+
+        internal DownloadProcess(DownloadProgress downloadProgress, YouTubeVideo youTubeVideo, Settings settings)
                 :
                 base("youtube-dl",
                      $"-o \"{settings.DownloadPath}\\%(title)s.%(ext)s\" -f {(settings.DownloadType == DownloadType.AudioVideo ? "bestvideo+bestaudio" : "bestaudio")} -- \"{youTubeVideo.Id}\"",
-                     downloadStatus,
                      ParameterMonitorings)
         {
+            _downloadProgress = downloadProgress;
             YouTubeVideo = youTubeVideo;
         }
 
@@ -111,15 +110,15 @@
             {
                 Progress progress = (Progress)e.NewValue;
 
-                DownloadStatus.DownloadProgress.Stage = progress.Stage;
+                _downloadProgress.Stage = progress.Stage;
 
                 if (progress.DownloadSpeed.HasValue)
                 {
-                    DownloadStatus.DownloadProgress.DownloadSpeed = progress.DownloadSpeed.Value;
+                    _downloadProgress.DownloadSpeed = progress.DownloadSpeed.Value;
                 }
 
-                DownloadStatus.DownloadProgress.ProgressPercentage = progress.DownloadPercentage;
-                DownloadStatus.DownloadProgress.TotalDownloadSize = progress.TotalDownloadSize;
+                _downloadProgress.ProgressPercentage = progress.DownloadPercentage;
+                _downloadProgress.TotalDownloadSize = progress.TotalDownloadSize;
             }
 
             HasStarted = true;

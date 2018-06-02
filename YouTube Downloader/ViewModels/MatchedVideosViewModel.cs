@@ -41,7 +41,7 @@
         {
             _eventAggregator.BeginPublishOnUIThread(new ProcessTransferMessage(ProcessTransferType.Download,
                                                                                SelectedVideos.Select(matchedVideo => matchedVideo.VideoViewModel)
-                                                                                             .Select(_processFactory.MakeProcessViewModel)));
+                                                                                             .Select(_processFactory.MakeDownloadProcessViewModel)));
         }
     }
 }

@@ -5,6 +5,7 @@
     using YouTube.Downloader.Core.Downloading;
     using YouTube.Downloader.Factories.Interfaces;
     using YouTube.Downloader.Models;
+    using YouTube.Downloader.Models.Download;
     using YouTube.Downloader.Services.Interfaces;
     using YouTube.Downloader.ViewModels.Interfaces;
     using YouTube.Downloader.ViewModels.Interfaces.Process;
@@ -18,12 +19,31 @@
             _settings = settingsService.Settings;
         }
 
-        public IProcessViewModel MakeProcessViewModel(IVideoViewModel videoViewModel)
+        public IDownloadProcessViewModel MakeDownloadProcessViewModel(IVideoViewModel videoViewModel)
         {
-            IProcessViewModel processViewModel = IoC.Get<IProcessViewModel>();
-            processViewModel.Initialise(videoViewModel, new DownloadProcess(processViewModel.DownloadStatus, videoViewModel.Video, _settings));
+            IDownloadProcessViewModel downloadProcessViewModel = IoC.Get<IDownloadProcessViewModel>();
 
-            return processViewModel;
+            DownloadProgress downloadProgress = new DownloadProgress();
+
+            downloadProcessViewModel.Initialise(videoViewModel, new DownloadProcess(downloadProgress, videoViewModel.Video, _settings), downloadProgress);
+
+            return downloadProcessViewModel;
+        }
+
+        public IConvertProcessViewModel MakeConvertProcessViewModel(IVideoViewModel videoViewModel, ConvertProcess process, ConvertProgress progress)
+        {
+            IConvertProcessViewModel convertProcessViewModel = IoC.Get<IConvertProcessViewModel>();
+            convertProcessViewModel.Initialise(videoViewModel, process, progress);
+
+            return convertProcessViewModel;
+        }
+
+        public ICompleteProcessViewModel MakeCompleteProcessViewModel(IVideoViewModel videoViewModel)
+        {
+            ICompleteProcessViewModel completeProcessViewModel = IoC.Get<ICompleteProcessViewModel>();
+            completeProcessViewModel.Initialise(videoViewModel);
+
+            return completeProcessViewModel;
         }
     }
 }

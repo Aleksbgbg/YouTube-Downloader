@@ -32,7 +32,7 @@
         {
             get => _progress;
 
-            set
+            private set
             {
                 if (_progress == value) return;
 

@@ -42,6 +42,8 @@
             };
         }
 
+        internal event EventHandler Started;
+
         internal event EventHandler Exited
         {
             add => _process.Exited += value;
@@ -60,6 +62,8 @@
 
             _process.Start();
             ProcessMonitor.Run();
+
+            Started?.Invoke(this, EventArgs.Empty);
 
             OnStart();
         }

@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.IO;
+    using System.Linq;
 
     using Caliburn.Micro;
 
@@ -47,8 +48,20 @@
             switch (viewModel)
             {
                 case IVideoViewModel videoViewModel:
-                    nextTransfer = ProcessTransferType.Download;
-                    dispatch = _processFactory.MakeDownloadProcessViewModel(videoViewModel);
+                    {
+                        string videoTitle = videoViewModel.Video.Title;
+
+                        if (Directory.GetFiles(_settings.DownloadPath).Select(Path.GetFileNameWithoutExtension).Any(filename => filename == videoTitle))
+                        {
+                            nextTransfer = ProcessTransferType.Complete;
+                            dispatch = _processFactory.MakeCompleteProcessViewModel(videoViewModel);
+                        }
+                        else
+                        {
+                            nextTransfer = ProcessTransferType.Download;
+                            dispatch = _processFactory.MakeDownloadProcessViewModel(videoViewModel);
+                        }
+                    }
                     break;
 
                 case IDownloadProcessViewModel downloadProcessViewModel:

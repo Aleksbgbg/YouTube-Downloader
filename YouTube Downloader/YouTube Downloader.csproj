@@ -145,6 +145,8 @@
     <Compile Include="Core\ThrowHelper.cs" />
     <Compile Include="EventArgs\ParameterUpdatedEventArgs.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
+    <Compile Include="Factories\ActionButtonFactory.cs" />
+    <Compile Include="Factories\Interfaces\IActionButtonFactory.cs" />
     <Compile Include="Factories\ProcessFactory.cs" />
     <Compile Include="Factories\Interfaces\IProcessFactory.cs" />
     <Compile Include="Core\Downloading\DownloadProcess.cs" />
@@ -158,6 +160,7 @@
     <Compile Include="Models\Download\DownloadType.cs" />
     <Compile Include="Models\OutputFormat.cs" />
     <Compile Include="Core\ProcessTransferMessage.cs" />
+    <Compile Include="Models\ActionButton.cs" />
     <Compile Include="Services\AppDataService.cs" />
     <Compile Include="Services\ConversionService.cs" />
     <Compile Include="Services\DataService.cs" />
@@ -174,6 +177,8 @@
     <Compile Include="Services\Interfaces\IDownloadService.cs" />
     <Compile Include="Utilities\FileSystemUtility.cs" />
     <Compile Include="Utilities\Interfaces\IFileSystemUtility.cs" />
+    <Compile Include="ViewModels\ActionButtonViewModel.cs" />
+    <Compile Include="ViewModels\Interfaces\IActionButtonViewModel.cs" />
     <Compile Include="ViewModels\Interfaces\IMatchedVideoViewModel.cs" />
     <Compile Include="ViewModels\Interfaces\Process\ICompletedTabViewModel.cs" />
     <Compile Include="ViewModels\Interfaces\Process\ICompleteProcessViewModel.cs" />
@@ -201,6 +206,9 @@
     <Compile Include="Controls\DownloadPathControl.xaml.cs">
       <DependentUpon>DownloadPathControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ActionButtonView.xaml.cs">
+      <DependentUpon>ActionButtonView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Process\ProcessView.xaml.cs">
       <DependentUpon>ProcessView.xaml</DependentUpon>
     </Compile>
@@ -223,6 +231,10 @@
       <DependentUpon>VideoView.xaml</DependentUpon>
     </Compile>
     <Page Include="Controls\DownloadPathControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ActionButtonView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -30,14 +30,15 @@
 
         internal void Run()
         {
-            RunMonitoringThread();
+            RunMonitoringThread(_process.StandardOutput);
+            RunMonitoringThread(_process.StandardError);
         }
 
-        private void RunMonitoringThread()
+        private void RunMonitoringThread(StreamReader reader)
         {
             Task.Run(() =>
             {
-                using (StreamReader progressReader = _process.StandardOutput)
+                using (StreamReader progressReader = reader)
                 {
                     try
                     {

@@ -89,8 +89,6 @@
             _container.PerRequest<IConvertProcessViewModel, ConvertProcessViewModel>();
             _container.PerRequest<ICompleteProcessViewModel, CompleteProcessViewModel>();
 
-            _container.PerRequest<IProcessViewModel, ProcessViewModel>();
-
             _container.PerRequest<IVideoViewModel, VideoViewModel>();
 
             _container.Singleton<ISettingsViewModel, SettingsViewModel>();

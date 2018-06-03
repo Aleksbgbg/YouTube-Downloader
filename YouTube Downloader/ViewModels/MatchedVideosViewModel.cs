@@ -5,24 +5,21 @@
 
     using Caliburn.Micro;
 
-    using YouTube.Downloader.Core;
     using YouTube.Downloader.Factories.Interfaces;
     using YouTube.Downloader.Models;
+    using YouTube.Downloader.Services.Interfaces;
     using YouTube.Downloader.ViewModels.Interfaces;
 
     internal class MatchedVideosViewModel : ViewModelBase, IMatchedVideosViewModel
     {
-        private readonly IEventAggregator _eventAggregator;
-
-        private readonly IProcessFactory _processFactory;
-
         private readonly IVideoFactory _videoFactory;
 
-        public MatchedVideosViewModel(IEventAggregator eventAggregator, IProcessFactory processFactory, IVideoFactory videoFactory)
+        private readonly IProcessDispatcherService _processDispatcherService;
+
+        public MatchedVideosViewModel(IVideoFactory videoFactory, IProcessDispatcherService processDispatcherService)
         {
-            _eventAggregator = eventAggregator;
-            _processFactory = processFactory;
             _videoFactory = videoFactory;
+            _processDispatcherService = processDispatcherService;
         }
 
         public IObservableCollection<IMatchedVideoViewModel> Videos { get; } = new BindableCollection<IMatchedVideoViewModel>();
@@ -39,9 +36,7 @@
 
         public void DownloadSelected()
         {
-            _eventAggregator.BeginPublishOnUIThread(new ProcessTransferMessage(ProcessTransferType.Download,
-                                                                               SelectedVideos.Select(matchedVideo => matchedVideo.VideoViewModel)
-                                                                                             .Select(_processFactory.MakeDownloadProcessViewModel)));
+            _processDispatcherService.Dispatch(SelectedVideos.Select(matchedVideo => matchedVideo.VideoViewModel));
         }
     }
 }

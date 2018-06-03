@@ -11,6 +11,7 @@
     using YouTube.Downloader.Extensions;
     using YouTube.Downloader.Factories.Interfaces;
     using YouTube.Downloader.Models;
+    using YouTube.Downloader.Models.Download;
     using YouTube.Downloader.Services.Interfaces;
     using YouTube.Downloader.ViewModels.Interfaces;
     using YouTube.Downloader.ViewModels.Interfaces.Process;
@@ -66,7 +67,7 @@
                             nextTransfer = ProcessTransferType.Convert;
 
                             ConvertProgress convertProgress = new ConvertProgress(fileInfo.Length);
-                            ConvertProcess convertProcess = new ConvertProcess(fileInfo.FullName, fileInfo.Extension, convertProgress);
+                            ConvertProcess convertProcess = new ConvertProcess(fileInfo.FullName, _settings.OutputFormat.ToString().ToLower(), convertProgress);
 
                             dispatch = _processFactory.MakeConvertProcessViewModel(downloadProcessViewModel.VideoViewModel, convertProcess, convertProgress);
                         }
@@ -80,6 +81,32 @@
 
                 default:
                     throw new InvalidOperationException("Cannot dispatch non-download or non-convert process.");
+            }
+
+            void ProcessStarted(object sender, EventArgs e)
+            {
+                switch (dispatch)
+                {
+                    case IDownloadProcessViewModel _:
+                        dispatch.DownloadState = DownloadState.Downloading;
+                        break;
+
+                    case IConvertProcessViewModel _:
+                        dispatch.DownloadState = DownloadState.Converting;
+                        break;
+                }
+            }
+
+            void ProcessExited(object sender, EventArgs e)
+            {
+                dispatch.Process.Started -= ProcessStarted;
+                dispatch.Process.Exited -= ProcessExited;
+            }
+
+            if (dispatch.Process != null)
+            {
+                dispatch.Process.Started += ProcessStarted;
+                dispatch.Process.Exited += ProcessExited;
             }
 
             _eventAggregator.BeginPublishOnUIThread(new ProcessTransferMessage(nextTransfer, dispatch.ToEnumerable()));

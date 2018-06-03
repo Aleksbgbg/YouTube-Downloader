@@ -42,7 +42,7 @@
 
         internal ParameterMonitoring GetCopy()
         {
-            return new ParameterMonitoring(Name, Regex, _matchProcessor);
+            return new ParameterMonitoring(Name, Regex, _matchProcessor, Value);
         }
     }
 }

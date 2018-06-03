@@ -75,8 +75,11 @@
                     }
                 }
 
-                processViewModel.Process.Exited += ProcessExited;
-                processViewModel.PropertyChanged += DownloadStatusPropertyChanged;
+                if (processViewModel.Process != null)
+                {
+                    processViewModel.Process.Exited += ProcessExited;
+                    processViewModel.PropertyChanged += DownloadStatusPropertyChanged;
+                }
             }
 
             Processes.AddRange(processViewModels);

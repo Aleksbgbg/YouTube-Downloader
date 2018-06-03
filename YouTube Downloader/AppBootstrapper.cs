@@ -43,6 +43,7 @@
             _container.Singleton<IConversionService, ConversionService>();
             _container.Singleton<IDataService, DataService>();
             _container.Singleton<IDownloadService, DownloadService>();
+            _container.Singleton<IProcessDispatcherService, ProcessDispatcherService>();
             _container.Singleton<ISettingsService, SettingsService>();
             _container.Singleton<IYouTubeApiService, YouTubeApiService>();
 

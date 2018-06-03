@@ -36,26 +36,15 @@
                     </StackPanel>
                     
 
-                    <!--<StackPanel DockPanel.Dock="Bottom" HorizontalAlignment="Center" Orientation="Horizontal">
-                        <StackPanel.Style>
-                            <Style TargetType="StackPanel">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding SelectedDownloads.Count, Converter={x:Static Converters:CountToBooleanConverter.Default}}"
-                                     Value="False">
-                                        <Setter Property="Visibility" Value="Collapsed"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </StackPanel.Style>
-
-                        <Button Width="75" Margin="5"
-                    Caliburn:Message.Attach="Kill">
-                            <StackPanel Orientation="Horizontal">
-                                <Image Source="{StaticResource Delete}" Width="20"/>
-                                <TextBlock Text="Kill" Margin="5, 0"/>
-                            </StackPanel>
-                        </Button>
-                    </StackPanel>-->
+                    <StackPanel DockPanel.Dock="Bottom" HorizontalAlignment="Center" Orientation="Horizontal">
+                        <ItemsControl ItemsSource="{Binding Buttons, Mode=OneTime}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <ContentControl Caliburn:View.Model="{Binding Mode=OneTime}"/>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
 
                     <ListBox ItemsSource="{Binding Processes}"
                              BorderThickness="0" SelectionMode="Extended"

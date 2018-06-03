@@ -11,6 +11,7 @@
     using YouTube.Downloader.Core;
     using YouTube.Downloader.Models.Download;
     using YouTube.Downloader.Services.Interfaces;
+    using YouTube.Downloader.ViewModels.Interfaces;
     using YouTube.Downloader.ViewModels.Interfaces.Process;
 
     internal abstract class ProcessTabViewModel : ViewModelBase, IProcessTabViewModel, IHandle<ProcessTransferMessage>
@@ -37,6 +38,8 @@
 
             set => base.DisplayName = value;
         }
+
+        public IActionButtonViewModel[] Buttons { get; private protected set; }
 
         public IObservableCollection<IProcessViewModel> Processes { get; } = new BindableCollection<IProcessViewModel>();
 

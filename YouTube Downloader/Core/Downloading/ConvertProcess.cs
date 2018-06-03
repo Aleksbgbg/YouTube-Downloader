@@ -16,7 +16,7 @@
             {
                 Dictionary<string, string> keyValuePairs = (Dictionary<string, string>)dict;
 
-                while (match != null)
+                while (match.Length != 0)
                 {
                     keyValuePairs[match.Groups["Key"].Value] = match.Groups["Value"].Value;
 

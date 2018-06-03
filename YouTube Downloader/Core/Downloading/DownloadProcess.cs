@@ -53,7 +53,7 @@
         internal DownloadProcess(DownloadProgress downloadProgress, YouTubeVideo youTubeVideo, Settings settings)
                 :
                 base("youtube-dl",
-                     $"-o \"{settings.DownloadPath}\\%(title)s.%(ext)s\" -f {(settings.DownloadType == DownloadType.AudioVideo ? "bestvideo+bestaudio" : "bestaudio")} -- \"{youTubeVideo.Id}\"",
+                     $"-o \"{settings.DownloadPath}\\{Regex.Replace(youTubeVideo.Title, @"[^\u0000-\u007F]+", string.Empty)}.%(ext)s\" -f {(settings.DownloadType == DownloadType.AudioVideo ? "bestvideo+bestaudio" : "bestaudio")} -- \"{youTubeVideo.Id}\"",
                      ParameterMonitorings)
         {
             _downloadProgress = downloadProgress;

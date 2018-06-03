@@ -64,8 +64,8 @@
                 Match sizeMatch = Regex.Match(size, @"(?<Size>\d+)(?<Units>.+)");
                 Match bitrateMatch = Regex.Match(bitrate, @"(?<Size>\d+(?:\.\d+)?)(?<Units>.+)its\/s");
 
-                _convertProgress.Bitrate = DigitalStorageManager.GetBytes(double.Parse(sizeMatch.Groups["Size"].Value), sizeMatch.Groups["Units"].Value);
-                _convertProgress.ConvertedBytes = DigitalStorageManager.GetBytes(double.Parse(bitrateMatch.Groups["Size"].Value), bitrateMatch.Groups["Units"].Value);
+                _convertProgress.ConvertedBytes = DigitalStorageManager.GetBytes(double.Parse(sizeMatch.Groups["Size"].Value), sizeMatch.Groups["Units"].Value);
+                _convertProgress.Bitrate = DigitalStorageManager.GetBytes(double.Parse(bitrateMatch.Groups["Size"].Value), bitrateMatch.Groups["Units"].Value);
             }
         }
 

@@ -4,6 +4,8 @@
 
     internal interface IProcessDispatcherService
     {
+        void Dispatch(IProcessViewModel[] processViewModels);
+
         void Dispatch(IProcessViewModel processViewModel);
     }
 }

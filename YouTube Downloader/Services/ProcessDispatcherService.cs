@@ -28,6 +28,14 @@
             _settings = settingsService.Settings;
         }
 
+        public void Dispatch(IProcessViewModel[] processViewModels)
+        {
+            foreach (IProcessViewModel processViewModel in processViewModels)
+            {
+                Dispatch(processViewModel);
+            }
+        }
+
         public void Dispatch(IProcessViewModel processViewModel)
         {
             ProcessTransferType nextTransfer;

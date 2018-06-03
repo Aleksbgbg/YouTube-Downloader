@@ -1,6 +1,7 @@
 ﻿namespace YouTube.Downloader.Services
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
 
     using Caliburn.Micro;
@@ -11,6 +12,7 @@
     using YouTube.Downloader.Factories.Interfaces;
     using YouTube.Downloader.Models;
     using YouTube.Downloader.Services.Interfaces;
+    using YouTube.Downloader.ViewModels.Interfaces;
     using YouTube.Downloader.ViewModels.Interfaces.Process;
 
     internal class ProcessDispatcherService : IProcessDispatcherService
@@ -28,31 +30,36 @@
             _settings = settingsService.Settings;
         }
 
-        public void Dispatch(IProcessViewModel[] processViewModels)
+        public void Dispatch(IEnumerable<IViewModelBase> viewModels)
         {
-            foreach (IProcessViewModel processViewModel in processViewModels)
+            foreach (IViewModelBase viewModel in viewModels)
             {
-                Dispatch(processViewModel);
+                Dispatch(viewModel);
             }
         }
 
-        public void Dispatch(IProcessViewModel processViewModel)
+        public void Dispatch(IViewModelBase viewModel)
         {
             ProcessTransferType nextTransfer;
             IProcessViewModel dispatch;
 
-            switch (processViewModel)
+            switch (viewModel)
             {
-                case IDownloadProcessViewModel _:
+                case IVideoViewModel videoViewModel:
+                    nextTransfer = ProcessTransferType.Download;
+                    dispatch = _processFactory.MakeDownloadProcessViewModel(videoViewModel);
+                    break;
+
+                case IDownloadProcessViewModel downloadProcessViewModel:
                     {
-                        FileInfo fileInfo = new FileInfo((string)processViewModel.Process.ProcessMonitor.ParameterMonitorings["Destination"].Value);
+                        FileInfo fileInfo = new FileInfo((string)downloadProcessViewModel.Process.ProcessMonitor.ParameterMonitorings["Destination"].Value);
 
                         if (_settings.OutputFormat == OutputFormat.Auto ||
                             _settings.OutputFormat == OutputFormat.Mp4 && fileInfo.Extension == ".mp4" ||
                             _settings.OutputFormat == OutputFormat.Mp3 && fileInfo.Extension == ".mp3")
                         {
                             nextTransfer = ProcessTransferType.Complete;
-                            dispatch = _processFactory.MakeCompleteProcessViewModel(processViewModel.VideoViewModel);
+                            dispatch = _processFactory.MakeCompleteProcessViewModel(downloadProcessViewModel.VideoViewModel);
                         }
                         else
                         {
@@ -61,14 +68,14 @@
                             ConvertProgress convertProgress = new ConvertProgress(fileInfo.Length);
                             ConvertProcess convertProcess = new ConvertProcess(fileInfo.FullName, fileInfo.Extension, convertProgress);
 
-                            dispatch = _processFactory.MakeConvertProcessViewModel(processViewModel.VideoViewModel, convertProcess, convertProgress);
+                            dispatch = _processFactory.MakeConvertProcessViewModel(downloadProcessViewModel.VideoViewModel, convertProcess, convertProgress);
                         }
                     }
                     break;
 
-                case IConvertProcessViewModel _:
+                case IConvertProcessViewModel convertProcessViewModel:
                     nextTransfer = ProcessTransferType.Complete;
-                    dispatch = _processFactory.MakeCompleteProcessViewModel(processViewModel.VideoViewModel);
+                    dispatch = _processFactory.MakeCompleteProcessViewModel(convertProcessViewModel.VideoViewModel);
                     break;
 
                 default:

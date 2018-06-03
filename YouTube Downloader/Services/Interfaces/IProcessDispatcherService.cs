@@ -1,11 +1,13 @@
 ﻿namespace YouTube.Downloader.Services.Interfaces
 {
-    using YouTube.Downloader.ViewModels.Interfaces.Process;
+    using System.Collections.Generic;
+
+    using YouTube.Downloader.ViewModels.Interfaces;
 
     internal interface IProcessDispatcherService
     {
-        void Dispatch(IProcessViewModel[] processViewModels);
+        void Dispatch(IEnumerable<IViewModelBase> viewModels);
 
-        void Dispatch(IProcessViewModel processViewModel);
+        void Dispatch(IViewModelBase viewModel);
     }
 }

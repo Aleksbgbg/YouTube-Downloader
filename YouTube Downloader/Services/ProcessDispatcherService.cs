@@ -45,6 +45,18 @@
             ProcessTransferType nextTransfer;
             IProcessViewModel dispatch;
 
+            void DispatchToDownload(IVideoViewModel videoViewModel)
+            {
+                nextTransfer = ProcessTransferType.Download;
+                dispatch = _processFactory.MakeDownloadProcessViewModel(videoViewModel);
+            }
+
+            void DispatchToComplete(IVideoViewModel videoViewModel)
+            {
+                nextTransfer = ProcessTransferType.Complete;
+                dispatch = _processFactory.MakeCompleteProcessViewModel(videoViewModel);
+            }
+
             switch (viewModel)
             {
                 case IVideoViewModel videoViewModel:
@@ -53,27 +65,30 @@
 
                         if (Directory.GetFiles(_settings.DownloadPath).Select(Path.GetFileNameWithoutExtension).Any(filename => filename == videoTitle))
                         {
-                            nextTransfer = ProcessTransferType.Complete;
-                            dispatch = _processFactory.MakeCompleteProcessViewModel(videoViewModel);
+                            DispatchToComplete(videoViewModel);
                         }
                         else
                         {
-                            nextTransfer = ProcessTransferType.Download;
-                            dispatch = _processFactory.MakeDownloadProcessViewModel(videoViewModel);
+                            DispatchToDownload(videoViewModel);
                         }
                     }
                     break;
 
                 case IDownloadProcessViewModel downloadProcessViewModel:
                     {
+                        if (!((DownloadProcess)downloadProcessViewModel.Process).DidComplete)
+                        {
+                            DispatchToComplete(downloadProcessViewModel.VideoViewModel);
+                            break;
+                        }
+
                         FileInfo fileInfo = new FileInfo((string)downloadProcessViewModel.Process.ProcessMonitor.ParameterMonitorings["Destination"].Value);
 
                         if (_settings.OutputFormat == OutputFormat.Auto ||
                             _settings.OutputFormat == OutputFormat.Mp4 && fileInfo.Extension == ".mp4" ||
                             _settings.OutputFormat == OutputFormat.Mp3 && fileInfo.Extension == ".mp3")
                         {
-                            nextTransfer = ProcessTransferType.Complete;
-                            dispatch = _processFactory.MakeCompleteProcessViewModel(downloadProcessViewModel.VideoViewModel);
+                            DispatchToComplete(downloadProcessViewModel.VideoViewModel);
                         }
                         else
                         {
@@ -88,8 +103,7 @@
                     break;
 
                 case IConvertProcessViewModel convertProcessViewModel:
-                    nextTransfer = ProcessTransferType.Complete;
-                    dispatch = _processFactory.MakeCompleteProcessViewModel(convertProcessViewModel.VideoViewModel);
+                    DispatchToComplete(convertProcessViewModel.VideoViewModel);
                     break;
 
                 default:

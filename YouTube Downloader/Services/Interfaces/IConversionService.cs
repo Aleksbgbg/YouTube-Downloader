@@ -4,8 +4,8 @@
 
     using YouTube.Downloader.Core.Downloading;
 
-    internal interface IDownloadService
+    internal interface IConversionService
     {
-        void QueueDownloads(IEnumerable<DownloadProcess> downloads);
+        void QueueConversion(IEnumerable<ConvertProcess> conversions);
     }
 }

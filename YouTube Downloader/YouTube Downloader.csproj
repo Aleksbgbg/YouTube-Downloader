@@ -133,35 +133,50 @@
     <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
     <Compile Include="Converters\CountToBooleanConverter.cs" />
     <Compile Include="Converters\IdToThumbnailConverter.cs" />
+    <Compile Include="Converters\ResourceConverter.cs" />
     <Compile Include="Converters\PercentageMatchColourConverter.cs" />
     <Compile Include="Converters\StageTextConverter.cs" />
     <Compile Include="Core\DelayedCallbackHelper.cs" />
-    <Compile Include="Core\Downloading\DownloadProcess.cs" />
+    <Compile Include="Core\DigitalStorageManager.cs" />
+    <Compile Include="Core\Downloading\ConvertProcess.cs" />
+    <Compile Include="Core\Downloading\MonitoredProcess.cs" />
+    <Compile Include="Core\Downloading\ParameterMonitoring.cs" />
+    <Compile Include="Core\Downloading\Progress.cs" />
+    <Compile Include="Core\ProcessTransferType.cs" />
     <Compile Include="Core\ThrowHelper.cs" />
-    <Compile Include="EventArgs\DownloadFinishedEventArgs.cs" />
-    <Compile Include="EventArgs\ProgressUpdatedEventArgs.cs" />
+    <Compile Include="EventArgs\ParameterUpdatedEventArgs.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
+    <Compile Include="Factories\ActionButtonFactory.cs" />
+    <Compile Include="Factories\Interfaces\IActionButtonFactory.cs" />
+    <Compile Include="Factories\ProcessFactory.cs" />
+    <Compile Include="Factories\Interfaces\IProcessFactory.cs" />
+    <Compile Include="Core\Downloading\DownloadProcess.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
-    <Compile Include="Factories\DownloadFactory.cs" />
-    <Compile Include="Factories\Interfaces\IDownloadFactory.cs" />
-    <Compile Include="Core\Downloading\Download.cs" />
     <Compile Include="Core\EnumDescriptionConverter.cs" />
-    <Compile Include="Core\Downloading\ProgressMonitor.cs" />
+    <Compile Include="Core\Downloading\ProcessMonitor.cs" />
     <Compile Include="Factories\Interfaces\IRequeryFactory.cs" />
     <Compile Include="Factories\RequeryFactory.cs" />
     <Compile Include="Helpers\ImageContentHelper.cs" />
     <Compile Include="Helpers\SelectedItemsHelper.cs" />
+    <Compile Include="Models\ConvertProgress.cs" />
     <Compile Include="Models\Download\DownloadProgress.cs" />
     <Compile Include="Models\Download\DownloadStatus.cs" />
     <Compile Include="Models\Download\DownloadType.cs" />
     <Compile Include="Models\QueryResult.cs" />
+    <Compile Include="Models\OutputFormat.cs" />
+    <Compile Include="Core\ProcessTransferMessage.cs" />
+    <Compile Include="Models\ActionButton.cs" />
     <Compile Include="Services\AppDataService.cs" />
+    <Compile Include="Services\ConversionService.cs" />
     <Compile Include="Services\DataService.cs" />
     <Compile Include="Services\DialogService.cs" />
     <Compile Include="Services\Interfaces\IAppDataService.cs" />
+    <Compile Include="Services\Interfaces\IConversionService.cs" />
     <Compile Include="Services\Interfaces\IDataService.cs" />
+    <Compile Include="Services\Interfaces\IProcessDispatcherService.cs" />
     <Compile Include="Services\Interfaces\IDialogService.cs" />
     <Compile Include="Services\Interfaces\ISettingsService.cs" />
+    <Compile Include="Services\ProcessDispatcherService.cs" />
     <Compile Include="Services\SettingsService.cs" />
     <Compile Include="Models\Download\DownloadState.cs" />
     <Compile Include="Models\Settings.cs" />
@@ -169,27 +184,46 @@
     <Compile Include="Services\Interfaces\IDownloadService.cs" />
     <Compile Include="Utilities\FileSystemUtility.cs" />
     <Compile Include="Utilities\Interfaces\IFileSystemUtility.cs" />
-    <Compile Include="ViewModels\CurrentDownloadsViewModel.cs" />
-    <Compile Include="ViewModels\DownloadViewModel.cs" />
-    <Compile Include="ViewModels\Interfaces\ICurrentDownloadsViewModel.cs" />
-    <Compile Include="ViewModels\Interfaces\IDownloadViewModel.cs" />
+    <Compile Include="ViewModels\ActionButtonViewModel.cs" />
+    <Compile Include="ViewModels\Interfaces\IActionButtonViewModel.cs" />
     <Compile Include="ViewModels\Interfaces\IMatchedVideoViewModel.cs" />
+    <Compile Include="ViewModels\Interfaces\Process\ICompletedTabViewModel.cs" />
+    <Compile Include="ViewModels\Interfaces\Process\ICompleteProcessViewModel.cs" />
+    <Compile Include="ViewModels\Interfaces\Process\IConversionsTabViewModel.cs" />
+    <Compile Include="ViewModels\Interfaces\Process\IConvertProcessViewModel.cs" />
+    <Compile Include="ViewModels\Interfaces\Process\IDownloadProcessViewModel.cs" />
+    <Compile Include="ViewModels\Interfaces\Process\IDownloadsTabViewModel.cs" />
+    <Compile Include="ViewModels\Interfaces\Process\IProcessTabsViewModel.cs" />
     <Compile Include="ViewModels\Interfaces\IRequeryViewModel.cs" />
     <Compile Include="ViewModels\Interfaces\ISettingsViewModel.cs" />
+    <Compile Include="ViewModels\Interfaces\Process\IProcessTabViewModel.cs" />
+    <Compile Include="ViewModels\Interfaces\Process\IProcessViewModel.cs" />
     <Compile Include="ViewModels\MatchedVideoViewModel.cs" />
+    <Compile Include="ViewModels\Process\CompletedTabViewModel.cs" />
+    <Compile Include="ViewModels\Process\CompleteProcessViewModel.cs" />
+    <Compile Include="ViewModels\Process\ConversionsTabViewModel.cs" />
+    <Compile Include="ViewModels\Process\ConvertProcessViewModel.cs" />
+    <Compile Include="ViewModels\Process\DownloadProcessViewModel.cs" />
+    <Compile Include="ViewModels\Process\DownloadsTabViewModel.cs" />
+    <Compile Include="ViewModels\Process\ProcessTabsViewModel.cs" />
+    <Compile Include="ViewModels\Process\ProcessTabViewModel.cs" />
+    <Compile Include="ViewModels\Process\ProcessViewModel.cs" />
     <Compile Include="ViewModels\RequeryViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
-    <Compile Include="Views\CurrentDownloadsView.xaml.cs">
-      <DependentUpon>CurrentDownloadsView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Controls\DownloadPathControl.xaml.cs">
       <DependentUpon>DownloadPathControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\DownloadView.xaml.cs">
-      <DependentUpon>DownloadView.xaml</DependentUpon>
+    <Compile Include="Views\ActionButtonView.xaml.cs">
+      <DependentUpon>ActionButtonView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Process\ProcessView.xaml.cs">
+      <DependentUpon>ProcessView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MatchedVideoView.xaml.cs">
       <DependentUpon>MatchedVideoView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Process\ProcessTabsView.xaml.cs">
+      <DependentUpon>ProcessTabsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\RequeryView.xaml.cs">
       <DependentUpon>RequeryView.xaml</DependentUpon>
@@ -203,15 +237,15 @@
     <Compile Include="Views\VideoView.xaml.cs">
       <DependentUpon>VideoView.xaml</DependentUpon>
     </Compile>
-    <Page Include="Views\CurrentDownloadsView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Controls\DownloadPathControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\DownloadView.xaml">
+    <Page Include="Views\ActionButtonView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Process\ProcessView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -220,6 +254,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\MatchedVideoView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Process\ProcessTabsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -387,6 +425,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Play Button.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Conversions.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Downloads.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Fody.3.0.3\build\Fody.targets" Condition="Exists('..\packages\Fody.3.0.3\build\Fody.targets')" />

@@ -1,0 +1,16 @@
+﻿<UserControl x:Class="YouTube.Downloader.Views.ActionButtonView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:Caliburn="http://www.caliburnproject.org"
+             xmlns:Converters="clr-namespace:YouTube.Downloader.Converters"
+             xmlns:Helpers="clr-namespace:YouTube.Downloader.Helpers"
+			 xmlns:ViewModels="clr-namespace:YouTube.Downloader.ViewModels"
+			 mc:Ignorable="d"
+			 d:DataContext="{d:DesignInstance ViewModels:ActionButtonViewModel}">
+    <Button Width="75" Margin="5, 0"
+            Helpers:ImageContentHelper.Content="{Binding ActionButton.Text, Mode=OneTime}"
+            Helpers:ImageContentHelper.Image="{Binding ActionButton.ImageName, Mode=OneTime, Converter={x:Static Converters:ResourceConverter.Default}}"
+            Caliburn:Message.Attach="Clicked"/>
+</UserControl>

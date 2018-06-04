@@ -7,7 +7,6 @@
 
     using Caliburn.Micro;
 
-    using YouTube.Downloader.Core.Downloading;
     using YouTube.Downloader.Factories;
     using YouTube.Downloader.Factories.Interfaces;
     using YouTube.Downloader.Models;
@@ -17,6 +16,8 @@
     using YouTube.Downloader.Utilities.Interfaces;
     using YouTube.Downloader.ViewModels;
     using YouTube.Downloader.ViewModels.Interfaces;
+    using YouTube.Downloader.ViewModels.Interfaces.Process;
+    using YouTube.Downloader.ViewModels.Process;
 
     internal class AppBootstrapper : BootstrapperBase
     {
@@ -25,6 +26,21 @@
         internal AppBootstrapper()
         {
             Initialize();
+
+            Func<Type, DependencyObject, object, Type> originalLocator = ViewLocator.LocateTypeForModelType;
+
+            ViewLocator.LocateTypeForModelType = (modelType, displayLocation, context) =>
+            {
+                if (modelType.Name.EndsWith("ProcessViewModel"))
+                {
+                    return AssemblySource.FindTypeByNames(new string[]
+                    {
+                            $"{modelType.Namespace.Replace("Model", string.Empty)}.ProcessView"
+                    });
+                }
+
+                return originalLocator(modelType, displayLocation, context);
+            };
         }
 
         protected override void BuildUp(object instance)
@@ -39,16 +55,19 @@
             _container.Singleton<IEventAggregator, EventAggregator>();
 
             _container.Singleton<IAppDataService, AppDataService>();
+            _container.Singleton<IConversionService, ConversionService>();
             _container.Singleton<IDataService, DataService>();
             _container.Singleton<IDialogService, DialogService>();
             _container.Singleton<IDownloadService, DownloadService>();
+            _container.Singleton<IProcessDispatcherService, ProcessDispatcherService>();
             _container.Singleton<ISettingsService, SettingsService>();
             _container.Singleton<IYouTubeApiService, YouTubeApiService>();
 
             _container.Singleton<IFileSystemUtility, FileSystemUtility>();
 
             // Register Factories
-            _container.Singleton<IDownloadFactory, DownloadFactory>();
+            _container.Singleton<IActionButtonFactory, ActionButtonFactory>();
+            _container.Singleton<IProcessFactory, ProcessFactory>();
             _container.Singleton<IRequeryFactory, RequeryFactory>();
             _container.Singleton<IVideoFactory, VideoFactory>();
 
@@ -56,13 +75,21 @@
             _container.Singleton<IShellViewModel, ShellViewModel>();
             _container.Singleton<IMainViewModel, MainViewModel>();
 
+            _container.PerRequest<IActionButtonViewModel, ActionButtonViewModel>();
+
             _container.Singleton<IQueryViewModel, QueryViewModel>();
             _container.Singleton<IRequeryViewModel, RequeryViewModel>();
             _container.Singleton<IMatchedVideosViewModel, MatchedVideosViewModel>();
             _container.PerRequest<IMatchedVideoViewModel, MatchedVideoViewModel>();
 
-            _container.Singleton<ICurrentDownloadsViewModel, CurrentDownloadsViewModel>();
-            _container.PerRequest<IDownloadViewModel, DownloadViewModel>();
+            _container.Singleton<IProcessTabsViewModel, ProcessTabsViewModel>();
+            _container.Singleton<IDownloadsTabViewModel, DownloadsTabViewModel>();
+            _container.Singleton<IConversionsTabViewModel, ConversionsTabViewModel>();
+            _container.Singleton<ICompletedTabViewModel, CompletedTabViewModel>();
+
+            _container.PerRequest<IDownloadProcessViewModel, DownloadProcessViewModel>();
+            _container.PerRequest<IConvertProcessViewModel, ConvertProcessViewModel>();
+            _container.PerRequest<ICompleteProcessViewModel, CompleteProcessViewModel>();
 
             _container.PerRequest<IVideoViewModel, VideoViewModel>();
 
@@ -85,7 +112,6 @@
 
             IoC.Get<IQueryViewModel>().Query = dataService.LoadAndWipe<string>("Query") ?? string.Empty;
             IoC.Get<IMatchedVideosViewModel>().Load(dataService.LoadAndWipe<IEnumerable<QueryResult>>("Matched Videos", "[]"));
-            IoC.Get<ICurrentDownloadsViewModel>().AddDownloads(dataService.LoadAndWipe<IEnumerable<YouTubeVideo>>("Downloads", "[]").Select(IoC.Get<IVideoFactory>().MakeVideoViewModel));
 
             DisplayRootViewFor<IShellViewModel>();
         }
@@ -95,11 +121,7 @@
             IDataService dataService = IoC.Get<IDataService>();
 
             dataService.Save("Query", IoC.Get<IQueryViewModel>().Query);
-            dataService.Save("Matched Videos", IoC.Get<IMatchedVideosViewModel>().Videos.Select(matchedVideoViewModel => matchedVideoViewModel.QueryResult));
-
-            Download[] downloads = IoC.Get<IDownloadService>().Downloads.ToArray();
-            dataService.Save("Downloads", downloads.Select(download => download.YouTubeVideo));
-            downloads.Apply(download => download.Kill());
+            dataService.Save("Matched Videos", IoC.Get<IMatchedVideosViewModel>().Videos.Select(matchedVideoViewModel => matchedVideoViewModel.VideoViewModel.Video));
         }
     }
 }

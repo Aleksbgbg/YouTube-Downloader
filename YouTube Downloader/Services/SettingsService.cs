@@ -20,7 +20,8 @@
             Settings = dataService.Load<Settings>("Settings", JsonConvert.SerializeObject(new Settings
             {
                 DownloadPath = Path.Combine(fileSystemUtility.DownloadsFolderPath, "YouTube Downloader"),
-                DownloadType = DownloadType.AudioVideo
+                DownloadType = DownloadType.AudioVideo,
+                OutputFormat = OutputFormat.Auto
             }));
         }
 

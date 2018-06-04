@@ -1,8 +1,8 @@
 ﻿namespace YouTube.Downloader.Views
 {
-	public partial class CurrentDownloadsView
+	public partial class ActionButtonView
     {
-        public CurrentDownloadsView()
+        public ActionButtonView()
 		{
 			InitializeComponent();
 		}

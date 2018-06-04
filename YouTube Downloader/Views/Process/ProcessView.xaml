@@ -1,13 +1,13 @@
-﻿<UserControl x:Class="YouTube.Downloader.Views.DownloadView"
+﻿<UserControl x:Class="YouTube.Downloader.Views.Process.ProcessView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:Caliburn="http://www.caliburnproject.org"
              xmlns:Converters="clr-namespace:YouTube.Downloader.Converters"
-			 xmlns:ViewModels="clr-namespace:YouTube.Downloader.ViewModels"
+			 xmlns:ViewModels="clr-namespace:YouTube.Downloader.ViewModels.Process"
 			 mc:Ignorable="d"
-			 d:DataContext="{d:DesignInstance ViewModels:DownloadViewModel}">
+			 d:DataContext="{d:DesignInstance ViewModels:ProcessViewModel}">
     <StackPanel Margin="5">
         <ContentControl Caliburn:View.Model="{Binding VideoViewModel, Mode=OneTime}" Width="400"/>
 
@@ -16,11 +16,11 @@
                 <Image.Style>
                     <Style TargetType="Image" BasedOn="{StaticResource {x:Type Image}}">
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding DownloadStatus.DownloadState}" Value="Queued">
+                            <DataTrigger Binding="{Binding DownloadState}" Value="Queued">
                                 <Setter Property="Source" Value="{StaticResource Waiting}"/>
                             </DataTrigger>
 
-                            <DataTrigger Binding="{Binding DownloadStatus.DownloadState}" Value="Downloading">
+                            <DataTrigger Binding="{Binding DownloadState}" Value="Downloading">
                                 <DataTrigger.EnterActions>
                                     <BeginStoryboard x:Name="SpinnerStoryboard">
                                         <Storyboard RepeatBehavior="Forever">
@@ -52,15 +52,15 @@
                                 </DataTrigger.ExitActions>
                             </DataTrigger>
 
-                            <DataTrigger Binding="{Binding DownloadStatus.DownloadState}" Value="Paused">
-                                <Setter Property="Source" Value="{StaticResource Pause}"/>
+                            <DataTrigger Binding="{Binding DownloadState}" Value="Converting">
+                                <Setter Property="Source" Value="{StaticResource Conversions}"/>
                             </DataTrigger>
 
-                            <DataTrigger Binding="{Binding DownloadStatus.DownloadState}" Value="Completed">
+                            <DataTrigger Binding="{Binding DownloadState}" Value="Completed">
                                 <Setter Property="Source" Value="{StaticResource Completed}"/>
                             </DataTrigger>
 
-                            <DataTrigger Binding="{Binding DownloadStatus.DownloadState}" Value="Exited">
+                            <DataTrigger Binding="{Binding DownloadState}" Value="Exited">
                                 <Setter Property="Source" Value="{StaticResource Delete}"/>
                             </DataTrigger>
                         </Style.Triggers>
@@ -71,53 +71,65 @@
             <ContentControl>
                 <ContentControl.Style>
                     <Style TargetType="ContentControl" BasedOn="{StaticResource {x:Type ContentControl}}">
-                        <Style.Resources>
-                            <DataTemplate x:Key="DownloadStatus.DownloadProgress">
-                                <StackPanel>
-                                    <TextBlock Foreground="DarkGray" HorizontalAlignment="Center">
-                                        <Run Text="{Binding DownloadStatus.DownloadProgress.SizeDownloaded, Mode=OneWay, Converter={x:Static Converters:AppropriateDataSizeConverter.Default}}"/>
-                                        of
-                                        <Run Text="{Binding DownloadStatus.DownloadProgress.TotalDownloadSize, Mode=OneWay, Converter={x:Static Converters:AppropriateDataSizeConverter.Default}}"/>
-                                        (<Run Text="{Binding DownloadStatus.DownloadProgress.ProgressPercentage, Mode=OneWay, StringFormat=N2}"/>%)
-                                    </TextBlock>
-
-                                    <ProgressBar Value="{Binding DownloadStatus.DownloadProgress.ProgressPercentage}" Maximum="100"
-                                                 Height="5" Width="250" Foreground="DodgerBlue"/>
-                                </StackPanel>
-                            </DataTemplate>
-                        </Style.Resources>
-
                         <Setter Property="Content">
                             <Setter.Value>
-                                <TextBlock Text="{Binding DownloadStatus.DownloadState}"/>
+                                <TextBlock Text="{Binding DownloadState}"/>
                             </Setter.Value>
                         </Setter>
 
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding DownloadStatus.DownloadState}" Value="Downloading">
+                            <DataTrigger Binding="{Binding DownloadState}" Value="Downloading">
                                 <Setter Property="Content">
                                     <Setter.Value>
                                         <StackPanel HorizontalAlignment="Center" Margin="5">
-                                            <ContentControl Content="{Binding Mode=OneTime}"
-                                                            ContentTemplate="{StaticResource DownloadStatus.DownloadProgress}"/>
+                                            <StackPanel>
+                                                <TextBlock Foreground="DarkGray" HorizontalAlignment="Center">
+                                                    <Run Text="{Binding DownloadProgress.SizeDownloaded, Mode=OneWay,
+                                                        Converter={x:Static Converters:AppropriateDataSizeConverter.Default}}"/>
+                                                    of
+                                                    <Run Text="{Binding DownloadProgress.TotalDownloadSize, Mode=OneWay,
+                                                        Converter={x:Static Converters:AppropriateDataSizeConverter.Default}}"/>
+                                                    (<Run Text="{Binding DownloadProgress.ProgressPercentage, Mode=OneWay, StringFormat=N2}"/>%)
+                                                </TextBlock>
+
+                                                <ProgressBar Value="{Binding DownloadProgress.ProgressPercentage}"
+                                                             Maximum="100" Height="5" Width="250" Foreground="DodgerBlue"/>
+                                            </StackPanel>
 
                                             <TextBlock HorizontalAlignment="Center">
-                                                Downloading at <Run Text="{Binding DownloadStatus.DownloadProgress.DownloadSpeed, Mode=OneWay, Converter={x:Static Converters:AppropriateDataSizeConverter.Default}}"/>/s
+                                                Downloading at <Run Text="{Binding DownloadProgress.DownloadSpeed, Mode=OneWay,
+                                                    Converter={x:Static Converters:AppropriateDataSizeConverter.Default}}"/>/s
                                             </TextBlock>
 
-                                            <TextBlock Text="{Binding DownloadStatus.DownloadProgress.Stage, Converter={x:Static Converters:StageTextConverter.Default}}"
+                                            <TextBlock Text="{Binding DownloadProgress.Stage, Converter={x:Static Converters:StageTextConverter.Default}}"
                                                        HorizontalAlignment="Center"/>
                                         </StackPanel>
                                     </Setter.Value>
                                 </Setter>
                             </DataTrigger>
-                            
-                            <DataTrigger Binding="{Binding DownloadStatus.DownloadState}" Value="Paused">
+
+                            <DataTrigger Binding="{Binding DownloadState}" Value="Converting">
                                 <Setter Property="Content">
                                     <Setter.Value>
                                         <StackPanel HorizontalAlignment="Center" Margin="5">
-                                            <ContentControl Content="{Binding Mode=OneTime}" ContentTemplate="{StaticResource DownloadStatus.DownloadProgress}"/>
-                                            <TextBlock Text="Paused" HorizontalAlignment="Center"/>
+                                            <StackPanel>
+                                                <TextBlock Foreground="DarkGray" HorizontalAlignment="Center">
+                                                    <Run Text="{Binding ConvertProgress.ConvertedBytes, Mode=OneWay,
+                                                        Converter={x:Static Converters:AppropriateDataSizeConverter.Default}}"/>
+                                                    of
+                                                    <Run Text="{Binding ConvertProgress.TotalSize, Mode=OneWay,
+                                                        Converter={x:Static Converters:AppropriateDataSizeConverter.Default}}"/>
+                                                    (<Run Text="{Binding ConvertProgress.Progress, Mode=OneWay, StringFormat=P2}"/>)
+                                                </TextBlock>
+
+                                                <ProgressBar Value="{Binding ConvertProgress.Progress, Mode=OneWay}"
+                                                             Maximum="1" Height="5" Width="250" Foreground="DodgerBlue"/>
+                                            </StackPanel>
+
+                                            <TextBlock HorizontalAlignment="Center">
+                                                Converting at <Run Text="{Binding ConvertProgress.Bitrate, Mode=OneWay,
+                                                    Converter={x:Static Converters:AppropriateDataSizeConverter.Default}}"/>/s
+                                            </TextBlock>
                                         </StackPanel>
                                     </Setter.Value>
                                 </Setter>

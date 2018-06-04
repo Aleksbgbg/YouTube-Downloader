@@ -1,7 +1,9 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 	<BitmapImage x:Key="Completed" UriSource="/Images/Completed.png"/>
+	<BitmapImage x:Key="Conversions" UriSource="/Images/Conversions.png"/>
 	<BitmapImage x:Key="Delete" UriSource="/Images/Delete.png"/>
+	<BitmapImage x:Key="Downloads" UriSource="/Images/Downloads.png"/>
 	<BitmapImage x:Key="DropDownArrow" UriSource="/Images/Drop Down Arrow.png"/>
 	<BitmapImage x:Key="Exchange" UriSource="/Images/Exchange.png"/>
 	<BitmapImage x:Key="NoEntry" UriSource="/Images/No Entry.png"/>

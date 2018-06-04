@@ -40,8 +40,13 @@
 
                     return new Progress(totalDownloadSize, progressPercentage, GetDownloadSpeed(), stage);
                 }),
-                new ParameterMonitoring("Destination", new Regex(@"^\[download] Destination: (.*)$|^\[download] (.*) has already been downloaded$"), (_, match) =>
+                new ParameterMonitoring("Destination", new Regex(@"^\[download] Destination: (.*)$|^\[download] (.*) has already been downloaded$|^\[ffmpeg] Merging formats into ""(.*)""$"), (_, match) =>
                 {
+                    if (match.Groups[3].Value != string.Empty)
+                    {
+                        return match.Groups[3].Value;
+                    }
+
                     string firstMatch = match.Groups[1].Value;
 
                     return firstMatch == string.Empty ? match.Groups[2].Value : firstMatch;

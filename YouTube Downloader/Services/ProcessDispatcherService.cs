@@ -84,12 +84,6 @@
 
                         string destinationFilename = (string)downloadProcessViewModel.Process.ProcessMonitor.ParameterMonitorings["Destination"].Value;
 
-                        if (destinationFilename == null)
-                        {
-                            DispatchToComplete(downloadProcessViewModel.VideoViewModel);
-                            break;
-                        }
-
                         FileInfo fileInfo = new FileInfo(destinationFilename);
 
                         if (_settings.OutputFormat == OutputFormat.Auto ||

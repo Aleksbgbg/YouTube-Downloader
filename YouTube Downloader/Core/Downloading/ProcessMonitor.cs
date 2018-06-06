@@ -20,6 +20,22 @@
 
         internal Dictionary<string, ParameterMonitoring> ParameterMonitorings { get; } = new Dictionary<string, ParameterMonitoring>();
 
+        private bool _hasFinished;
+        internal bool HasFinished
+        {
+            get => _hasFinished;
+
+            private set
+            {
+                _hasFinished = value;
+
+                if (_hasFinished)
+                {
+                    Finished?.Invoke(this, EventArgs.Empty);
+                }
+            }
+        }
+
         internal void AddParameterMonitoring(ParameterMonitoring parameterMonitoring)
         {
             lock (ParameterMonitorings)
@@ -38,40 +54,45 @@
         {
             Task.Run(() =>
             {
-                using (StreamReader progressReader = reader)
+                try
                 {
-                    try
+                    while (!reader.EndOfStream)
                     {
-                        while (!progressReader.EndOfStream)
-                        {
-                            string line = progressReader.ReadLine();
+                        string line = reader.ReadLine();
 
-                            if (line == null) continue;
+                        if (line == null) continue;
 
 #if DEBUG
-                            Console.WriteLine(line);
+                        Console.WriteLine(line);
 #endif
 
-                            lock (ParameterMonitorings)
+                        lock (ParameterMonitorings)
+                        {
+                            foreach (ParameterMonitoring parameterMonitoring in ParameterMonitorings.Values)
                             {
-                                foreach (ParameterMonitoring parameterMonitoring in ParameterMonitorings.Values)
-                                {
-                                    Match regexMatch = parameterMonitoring.Regex.Match(line);
+                                Match regexMatch = parameterMonitoring.Regex.Match(line);
 
-                                    if (regexMatch.Success)
-                                    {
-                                        parameterMonitoring.Update(regexMatch);
-                                    }
+                                if (regexMatch.Success)
+                                {
+                                    parameterMonitoring.Update(regexMatch);
                                 }
                             }
                         }
                     }
-                    finally
-                    {
-                        Finished?.Invoke(this, EventArgs.Empty);
-                    }
+                }
+                finally
+                {
+                    CheckFinished();
                 }
             });
+        }
+
+        private void CheckFinished()
+        {
+            if (_process.StandardOutput.EndOfStream && _process.StandardError.EndOfStream)
+            {
+                HasFinished = true;
+            }
         }
     }
 }

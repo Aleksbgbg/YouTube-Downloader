@@ -48,6 +48,10 @@
 
                             if (line == null) continue;
 
+#if DEBUG
+                            Console.WriteLine(line);
+#endif
+
                             lock (ParameterMonitorings)
                             {
                                 foreach (ParameterMonitoring parameterMonitoring in ParameterMonitorings.Values)

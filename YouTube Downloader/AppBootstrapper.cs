@@ -121,7 +121,7 @@
             IDataService dataService = IoC.Get<IDataService>();
 
             dataService.Save("Query", IoC.Get<IQueryViewModel>().Query);
-            dataService.Save("Matched Videos", IoC.Get<IMatchedVideosViewModel>().Videos.Select(matchedVideoViewModel => matchedVideoViewModel.VideoViewModel.Video));
+            dataService.Save("Matched Videos", IoC.Get<IMatchedVideosViewModel>().Videos.Select(matchedVideoViewModel => matchedVideoViewModel.QueryResult));
         }
     }
 }

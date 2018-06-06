@@ -32,17 +32,21 @@
 
             ProcessMonitor = new ProcessMonitor(_process);
 
-            Exited += (sender, e) => OnExited(Killed);
+            _process.Exited += delegate
+            {
+                if (ProcessMonitor.HasFinished)
+                {
+                    OnExited();
+                    return;
+                }
+
+                ProcessMonitor.Finished += (sender, e) => OnExited();
+            };
         }
 
         internal event EventHandler Started;
 
-        internal event EventHandler Exited
-        {
-            add => _process.Exited += value;
-
-            remove => _process.Exited -= value;
-        }
+        internal event EventHandler Exited;
 
         internal bool Killed { get; private set; }
 
@@ -76,6 +80,12 @@
 
         private protected virtual void OnExited(bool killed)
         {
+        }
+
+        private void OnExited()
+        {
+            OnExited(Killed);
+            Exited?.Invoke(this, EventArgs.Empty);
         }
     }
 }

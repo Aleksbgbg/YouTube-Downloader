@@ -9,8 +9,6 @@
 
         private readonly Process _process;
 
-        private bool _calledKill;
-
         private protected MonitoredProcess(string process, string arguments)
                 : this(process, arguments, new ParameterMonitoring[] { })
         {
@@ -34,13 +32,7 @@
 
             ProcessMonitor = new ProcessMonitor(_process);
 
-            Exited += (sender, e) =>
-            {
-                if (!_calledKill)
-                {
-                    OnExited(false);
-                }
-            };
+            Exited += (sender, e) => OnExited(Killed);
         }
 
         internal event EventHandler Started;
@@ -51,6 +43,8 @@
 
             remove => _process.Exited -= value;
         }
+
+        internal bool Killed { get; private set; }
 
         internal ProcessMonitor ProcessMonitor { get; }
 
@@ -71,11 +65,9 @@
 
         internal void Kill()
         {
-            _calledKill = true;
+            Killed = true;
 
             _process.Kill();
-
-            OnExited(true);
         }
 
         private protected virtual void OnStart()

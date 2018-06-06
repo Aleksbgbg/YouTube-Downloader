@@ -36,12 +36,9 @@
             }
         }
 
-        internal void AddParameterMonitoring(ParameterMonitoring parameterMonitoring)
+        internal void AddParameterMonitoring(ParameterMonitoring parameterMonitoring) // May be subject to race condition if used simultaneously with monitoring thread
         {
-            lock (ParameterMonitorings)
-            {
-                ParameterMonitorings[parameterMonitoring.Name] = parameterMonitoring;
-            }
+            ParameterMonitorings[parameterMonitoring.Name] = parameterMonitoring;
         }
 
         internal void Run()
@@ -66,16 +63,14 @@
                         Console.WriteLine(line);
 #endif
 
-                        lock (ParameterMonitorings)
+                        // May be subject to race condition if used simultaneously with adding parameter monitoring
+                        foreach (ParameterMonitoring parameterMonitoring in ParameterMonitorings.Values)
                         {
-                            foreach (ParameterMonitoring parameterMonitoring in ParameterMonitorings.Values)
-                            {
-                                Match regexMatch = parameterMonitoring.Regex.Match(line);
+                            Match regexMatch = parameterMonitoring.Regex.Match(line);
 
-                                if (regexMatch.Success)
-                                {
-                                    parameterMonitoring.Update(regexMatch);
-                                }
+                            if (regexMatch.Success)
+                            {
+                                parameterMonitoring.Update(regexMatch);
                             }
                         }
                     }

@@ -139,6 +139,7 @@
     <Compile Include="Core\DelayedCallbackHelper.cs" />
     <Compile Include="Core\DigitalStorageManager.cs" />
     <Compile Include="Core\Downloading\ConvertProcess.cs" />
+    <Compile Include="Core\Downloading\DownloadArgumentBuilder.cs" />
     <Compile Include="Core\Downloading\MonitoredProcess.cs" />
     <Compile Include="Core\Downloading\ParameterMonitoring.cs" />
     <Compile Include="Core\Downloading\Progress.cs" />

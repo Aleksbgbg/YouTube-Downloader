@@ -1,7 +1,7 @@
 ﻿namespace YouTube.Downloader.Core.Downloading
 {
     using System;
-    using System.Collections.Generic;
+    using System.Collections.Concurrent;
     using System.Diagnostics;
     using System.IO;
     using System.Text.RegularExpressions;
@@ -18,7 +18,7 @@
 
         internal event EventHandler Finished;
 
-        internal Dictionary<string, ParameterMonitoring> ParameterMonitorings { get; } = new Dictionary<string, ParameterMonitoring>();
+        internal ConcurrentDictionary<string, ParameterMonitoring> ParameterMonitorings { get; } = new ConcurrentDictionary<string, ParameterMonitoring>();
 
         private bool _hasFinished;
         internal bool HasFinished
@@ -36,7 +36,7 @@
             }
         }
 
-        internal void AddParameterMonitoring(ParameterMonitoring parameterMonitoring) // May be subject to race condition if used simultaneously with monitoring thread
+        internal void AddParameterMonitoring(ParameterMonitoring parameterMonitoring)
         {
             ParameterMonitorings[parameterMonitoring.Name] = parameterMonitoring;
         }
@@ -63,7 +63,6 @@
                         Console.WriteLine(line);
 #endif
 
-                        // May be subject to race condition if used simultaneously with adding parameter monitoring
                         foreach (ParameterMonitoring parameterMonitoring in ParameterMonitorings.Values)
                         {
                             Match regexMatch = parameterMonitoring.Regex.Match(line);

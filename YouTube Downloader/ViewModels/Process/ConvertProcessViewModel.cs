@@ -5,7 +5,7 @@
     using YouTube.Downloader.ViewModels.Interfaces;
     using YouTube.Downloader.ViewModels.Interfaces.Process;
 
-    internal class ConvertProcessViewModel : ProcessViewModel, IConvertProcessViewModel
+    internal class ConvertProcessViewModel : ActiveProcessViewModel, IConvertProcessViewModel
     {
         public ConvertProgress ConvertProgress { get; private set; }
 

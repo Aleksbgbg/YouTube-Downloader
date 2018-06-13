@@ -3,7 +3,7 @@
     using YouTube.Downloader.Core.Downloading;
     using YouTube.Downloader.Models.Download;
 
-    internal interface IDownloadProcessViewModel : IProcessViewModel
+    internal interface IDownloadProcessViewModel : IActiveProcessViewModel
     {
         DownloadProgress DownloadProgress { get; }
 

@@ -3,7 +3,7 @@
     using YouTube.Downloader.Core.Downloading;
     using YouTube.Downloader.Models;
 
-    internal interface IConvertProcessViewModel : IProcessViewModel
+    internal interface IConvertProcessViewModel : IActiveProcessViewModel
     {
         ConvertProgress ConvertProgress { get; }
 

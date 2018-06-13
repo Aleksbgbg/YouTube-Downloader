@@ -6,9 +6,9 @@
 
     internal class CompleteProcessViewModel : ProcessViewModel, ICompleteProcessViewModel
     {
-        public void Initialise(IVideoViewModel videoViewModel)
+        public new void Initialise(IVideoViewModel videoViewModel)
         {
-            Initialise(videoViewModel, null);
+            base.Initialise(videoViewModel);
             DownloadState = DownloadState.Completed;
         }
     }

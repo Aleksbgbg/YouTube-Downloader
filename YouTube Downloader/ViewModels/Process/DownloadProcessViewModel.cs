@@ -5,7 +5,7 @@
     using YouTube.Downloader.ViewModels.Interfaces;
     using YouTube.Downloader.ViewModels.Interfaces.Process;
 
-    internal class DownloadProcessViewModel : ProcessViewModel, IDownloadProcessViewModel
+    internal class DownloadProcessViewModel : ActiveProcessViewModel, IDownloadProcessViewModel
     {
         public DownloadProgress DownloadProgress { get; private set; }
 

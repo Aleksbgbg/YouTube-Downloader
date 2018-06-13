@@ -9,8 +9,6 @@
     {
         public IVideoViewModel VideoViewModel { get; private set; }
 
-        public MonitoredProcess Process { get; private set; }
-
         private DownloadState _downloadState;
         public DownloadState DownloadState
         {
@@ -25,10 +23,9 @@
             }
         }
 
-        private protected void Initialise(IVideoViewModel videoViewModel, MonitoredProcess process)
+        private protected void Initialise(IVideoViewModel videoViewModel)
         {
             VideoViewModel = videoViewModel;
-            Process = process;
         }
     }
 }

@@ -199,6 +199,7 @@
     <Compile Include="ViewModels\Interfaces\ISettingsViewModel.cs" />
     <Compile Include="ViewModels\Interfaces\Process\IProcessTabViewModel.cs" />
     <Compile Include="ViewModels\Interfaces\Process\IProcessViewModel.cs" />
+    <Compile Include="ViewModels\Interfaces\Process\IActiveProcessViewModel.cs" />
     <Compile Include="ViewModels\MatchedVideoViewModel.cs" />
     <Compile Include="ViewModels\Process\CompletedTabViewModel.cs" />
     <Compile Include="ViewModels\Process\CompleteProcessViewModel.cs" />
@@ -209,6 +210,7 @@
     <Compile Include="ViewModels\Process\ProcessTabsViewModel.cs" />
     <Compile Include="ViewModels\Process\ProcessTabViewModel.cs" />
     <Compile Include="ViewModels\Process\ProcessViewModel.cs" />
+    <Compile Include="ViewModels\Process\ActiveProcessViewModel.cs" />
     <Compile Include="ViewModels\RequeryViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="Controls\DownloadPathControl.xaml.cs">

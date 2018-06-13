@@ -112,30 +112,30 @@
                     throw new InvalidOperationException("Cannot dispatch non-download or non-convert process.");
             }
 
-            void ProcessStarted(object sender, EventArgs e)
+            if (dispatch is IActiveProcessViewModel activeProcessViewModel)
             {
-                switch (dispatch)
+                void ProcessStarted(object sender, EventArgs e)
                 {
-                    case IDownloadProcessViewModel _:
-                        dispatch.DownloadState = DownloadState.Downloading;
-                        break;
+                    switch (dispatch)
+                    {
+                        case IDownloadProcessViewModel _:
+                            dispatch.DownloadState = DownloadState.Downloading;
+                            break;
 
-                    case IConvertProcessViewModel _:
-                        dispatch.DownloadState = DownloadState.Converting;
-                        break;
+                        case IConvertProcessViewModel _:
+                            dispatch.DownloadState = DownloadState.Converting;
+                            break;
+                    }
                 }
-            }
 
-            void ProcessExited(object sender, EventArgs e)
-            {
-                dispatch.Process.Started -= ProcessStarted;
-                dispatch.Process.Exited -= ProcessExited;
-            }
+                void ProcessExited(object sender, EventArgs e)
+                {
+                    activeProcessViewModel.Process.Started -= ProcessStarted;
+                    activeProcessViewModel.Process.Exited -= ProcessExited;
+                }
 
-            if (dispatch.Process != null)
-            {
-                dispatch.Process.Started += ProcessStarted;
-                dispatch.Process.Exited += ProcessExited;
+                activeProcessViewModel.Process.Started += ProcessStarted;
+                activeProcessViewModel.Process.Exited += ProcessExited;
             }
 
             _eventAggregator.BeginPublishOnUIThread(new ProcessTransferMessage(nextTransfer, dispatch.ToEnumerable()));

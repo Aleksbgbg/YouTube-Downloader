@@ -7,7 +7,7 @@
     using YouTube.Downloader.ViewModels.Interfaces;
     using YouTube.Downloader.ViewModels.Interfaces.Process;
 
-    internal class CompletedTabViewModel : ProcessTabViewModel, ICompletedTabViewModel
+    internal class CompletedTabViewModel : ProcessTabViewModel<ICompleteProcessViewModel>, ICompletedTabViewModel
     {
         public CompletedTabViewModel(IEventAggregator eventAggregator, IActionButtonFactory actionButtonFactory)
                 : base(eventAggregator, null, processTransferType => processTransferType == ProcessTransferType.Complete)

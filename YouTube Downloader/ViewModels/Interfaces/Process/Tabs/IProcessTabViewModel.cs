@@ -1,8 +1,10 @@
-﻿namespace YouTube.Downloader.ViewModels.Interfaces.Process
+﻿namespace YouTube.Downloader.ViewModels.Interfaces.Process.Tabs
 {
     using System.Collections.Generic;
 
     using Caliburn.Micro;
+
+    using YouTube.Downloader.ViewModels.Interfaces.Process.Entities;
 
     internal interface IProcessTabViewModel<T> : IViewModelBase
             where T : class, IProcessViewModel

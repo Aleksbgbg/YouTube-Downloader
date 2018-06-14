@@ -17,7 +17,11 @@
     using YouTube.Downloader.ViewModels;
     using YouTube.Downloader.ViewModels.Interfaces;
     using YouTube.Downloader.ViewModels.Interfaces.Process;
+    using YouTube.Downloader.ViewModels.Interfaces.Process.Entities;
+    using YouTube.Downloader.ViewModels.Interfaces.Process.Tabs;
     using YouTube.Downloader.ViewModels.Process;
+    using YouTube.Downloader.ViewModels.Process.Entities;
+    using YouTube.Downloader.ViewModels.Process.Tabs;
 
     internal class AppBootstrapper : BootstrapperBase
     {

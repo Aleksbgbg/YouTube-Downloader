@@ -1,9 +1,9 @@
-﻿namespace YouTube.Downloader.ViewModels.Process
+﻿namespace YouTube.Downloader.ViewModels.Process.Entities
 {
     using YouTube.Downloader.Core.Downloading;
     using YouTube.Downloader.Models.Download;
     using YouTube.Downloader.ViewModels.Interfaces;
-    using YouTube.Downloader.ViewModels.Interfaces.Process;
+    using YouTube.Downloader.ViewModels.Interfaces.Process.Entities;
 
     internal class DownloadProcessViewModel : ActiveProcessViewModel, IDownloadProcessViewModel
     {

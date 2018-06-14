@@ -1,11 +1,12 @@
-﻿namespace YouTube.Downloader.ViewModels.Process
+﻿namespace YouTube.Downloader.ViewModels.Process.Tabs
 {
     using Caliburn.Micro;
 
     using YouTube.Downloader.Core;
     using YouTube.Downloader.Factories.Interfaces;
     using YouTube.Downloader.ViewModels.Interfaces;
-    using YouTube.Downloader.ViewModels.Interfaces.Process;
+    using YouTube.Downloader.ViewModels.Interfaces.Process.Entities;
+    using YouTube.Downloader.ViewModels.Interfaces.Process.Tabs;
 
     internal class CompletedTabViewModel : ProcessTabViewModel<ICompleteProcessViewModel>, ICompletedTabViewModel
     {

@@ -6,8 +6,9 @@
              xmlns:Caliburn="http://www.caliburnproject.org"
              xmlns:Converters="clr-namespace:YouTube.Downloader.Converters"
 			 xmlns:ViewModels="clr-namespace:YouTube.Downloader.ViewModels.Process"
+			 xmlns:Entities="clr-namespace:YouTube.Downloader.ViewModels.Process.Entities"
 			 mc:Ignorable="d"
-			 d:DataContext="{d:DesignInstance ViewModels:ProcessViewModel}">
+			 d:DataContext="{d:DesignInstance Entities:ProcessViewModel}">
     <StackPanel Margin="5">
         <ContentControl Caliburn:View.Model="{Binding VideoViewModel, Mode=OneTime}" Width="400"/>
 

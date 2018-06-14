@@ -1,4 +1,4 @@
-﻿namespace YouTube.Downloader.ViewModels.Process
+﻿namespace YouTube.Downloader.ViewModels.Process.Tabs
 {
     using System.Collections.Generic;
     using System.Linq;
@@ -10,16 +10,17 @@
     using YouTube.Downloader.Factories.Interfaces;
     using YouTube.Downloader.Services.Interfaces;
     using YouTube.Downloader.ViewModels.Interfaces;
-    using YouTube.Downloader.ViewModels.Interfaces.Process;
+    using YouTube.Downloader.ViewModels.Interfaces.Process.Entities;
+    using YouTube.Downloader.ViewModels.Interfaces.Process.Tabs;
 
-    internal class ConversionsTabViewModel : ActiveProcessTabViewModel, IConversionsTabViewModel
+    internal class DownloadsTabViewModel : ActiveProcessTabViewModel, IDownloadsTabViewModel
     {
-        private readonly IConversionService _conversionService;
+        private readonly IDownloadService _downloadService;
 
-        public ConversionsTabViewModel(IEventAggregator eventAggregator, IActionButtonFactory actionButtonFactory, IConversionService conversionService, IProcessDispatcherService processDispatcherService)
+        public DownloadsTabViewModel(IEventAggregator eventAggregator, IActionButtonFactory actionButtonFactory, IDownloadService downloadService, IProcessDispatcherService processDispatcherService)
                 : base(eventAggregator, processDispatcherService)
         {
-            _conversionService = conversionService;
+            _downloadService = downloadService;
 
             Buttons = new IActionButtonViewModel[]
             {
@@ -47,12 +48,12 @@
         private protected override void OnProcessesAdded(IActiveProcessViewModel[] processViewModels)
         {
             base.OnProcessesAdded(processViewModels);
-            _conversionService.QueueConversion(processViewModels.Select(processViewModel => processViewModel.Process).Cast<ConvertProcess>());
+            _downloadService.QueueDownloads(processViewModels.Select(processViewModel => processViewModel.Process).Cast<DownloadProcess>());
         }
 
         private protected override bool CanAccept(ProcessTransferType processTransferType)
         {
-            return processTransferType == ProcessTransferType.Convert;
+            return processTransferType == ProcessTransferType.Download;
         }
     }
 }

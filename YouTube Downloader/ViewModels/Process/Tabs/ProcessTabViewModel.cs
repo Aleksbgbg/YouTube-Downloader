@@ -1,4 +1,4 @@
-﻿namespace YouTube.Downloader.ViewModels.Process
+﻿namespace YouTube.Downloader.ViewModels.Process.Tabs
 {
     using System.Collections.Generic;
     using System.Linq;
@@ -8,7 +8,8 @@
 
     using YouTube.Downloader.Core;
     using YouTube.Downloader.ViewModels.Interfaces;
-    using YouTube.Downloader.ViewModels.Interfaces.Process;
+    using YouTube.Downloader.ViewModels.Interfaces.Process.Entities;
+    using YouTube.Downloader.ViewModels.Interfaces.Process.Tabs;
 
     internal abstract class ProcessTabViewModel<T> : ViewModelBase, IProcessTabViewModel<T>, IHandle<ProcessTransferMessage>
             where T : class, IProcessViewModel

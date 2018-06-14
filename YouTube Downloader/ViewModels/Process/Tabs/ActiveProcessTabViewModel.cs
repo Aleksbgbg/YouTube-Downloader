@@ -1,4 +1,4 @@
-﻿namespace YouTube.Downloader.ViewModels.Process
+﻿namespace YouTube.Downloader.ViewModels.Process.Tabs
 {
     using System;
     using System.ComponentModel;
@@ -7,7 +7,8 @@
 
     using YouTube.Downloader.Models.Download;
     using YouTube.Downloader.Services.Interfaces;
-    using YouTube.Downloader.ViewModels.Interfaces.Process;
+    using YouTube.Downloader.ViewModels.Interfaces.Process.Entities;
+    using YouTube.Downloader.ViewModels.Interfaces.Process.Tabs;
 
     internal abstract class ActiveProcessTabViewModel : ProcessTabViewModel<IActiveProcessViewModel>, IActiveProcessTabViewModel
     {

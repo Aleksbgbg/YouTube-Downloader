@@ -4,6 +4,7 @@
 
     using YouTube.Downloader.ViewModels.Interfaces;
     using YouTube.Downloader.ViewModels.Interfaces.Process;
+    using YouTube.Downloader.ViewModels.Interfaces.Process.Tabs;
 
     internal class ProcessTabsViewModel : Conductor<IViewModelBase>.Collection.OneActive, IProcessTabsViewModel
     {

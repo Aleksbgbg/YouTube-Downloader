@@ -1,4 +1,4 @@
-﻿namespace YouTube.Downloader.ViewModels.Interfaces.Process
+﻿namespace YouTube.Downloader.ViewModels.Interfaces.Process.Entities
 {
     internal interface ICompleteProcessViewModel : IProcessViewModel
     {

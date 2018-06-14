@@ -188,6 +188,7 @@
     <Compile Include="ViewModels\ActionButtonViewModel.cs" />
     <Compile Include="ViewModels\Interfaces\IActionButtonViewModel.cs" />
     <Compile Include="ViewModels\Interfaces\IMatchedVideoViewModel.cs" />
+    <Compile Include="ViewModels\Interfaces\Process\IActiveProcessTabViewModel.cs" />
     <Compile Include="ViewModels\Interfaces\Process\ICompletedTabViewModel.cs" />
     <Compile Include="ViewModels\Interfaces\Process\ICompleteProcessViewModel.cs" />
     <Compile Include="ViewModels\Interfaces\Process\IConversionsTabViewModel.cs" />
@@ -201,6 +202,7 @@
     <Compile Include="ViewModels\Interfaces\Process\IProcessViewModel.cs" />
     <Compile Include="ViewModels\Interfaces\Process\IActiveProcessViewModel.cs" />
     <Compile Include="ViewModels\MatchedVideoViewModel.cs" />
+    <Compile Include="ViewModels\Process\ActiveProcessTabViewModel.cs" />
     <Compile Include="ViewModels\Process\CompletedTabViewModel.cs" />
     <Compile Include="ViewModels\Process\CompleteProcessViewModel.cs" />
     <Compile Include="ViewModels\Process\ConversionsTabViewModel.cs" />

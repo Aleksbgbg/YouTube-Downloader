@@ -31,20 +31,7 @@
         {
             Initialize();
 
-            Func<Type, DependencyObject, object, Type> originalLocator = ViewLocator.LocateTypeForModelType;
-
-            ViewLocator.LocateTypeForModelType = (modelType, displayLocation, context) =>
-            {
-                if (modelType.Name.EndsWith("ProcessViewModel"))
-                {
-                    return AssemblySource.FindTypeByNames(new string[]
-                    {
-                            $"{modelType.Namespace.Replace("Model", string.Empty)}.ProcessView"
-                    });
-                }
-
-                return originalLocator(modelType, displayLocation, context);
-            };
+            ViewLocator.NameTransformer.AddRule(@"^YouTube.Downloader.ViewModels.Process(?:\.\w*)+(\.\w*ProcessViewModel)", "YouTube.Downloader.Views.Process.ProcessView");
         }
 
         protected override void BuildUp(object instance)

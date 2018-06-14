@@ -9,7 +9,7 @@
 
     internal class CompletedTabViewModel : ProcessTabViewModel<ICompleteProcessViewModel>, ICompletedTabViewModel
     {
-        public CompletedTabViewModel(IEventAggregator eventAggregator, IActionButtonFactory actionButtonFactory) : base(eventAggregator, null)
+        public CompletedTabViewModel(IEventAggregator eventAggregator, IActionButtonFactory actionButtonFactory) : base(eventAggregator)
         {
             Buttons = new IActionButtonViewModel[]
             {

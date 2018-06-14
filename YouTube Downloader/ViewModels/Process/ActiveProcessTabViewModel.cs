@@ -11,8 +11,11 @@
 
     internal abstract class ActiveProcessTabViewModel : ProcessTabViewModel<IActiveProcessViewModel>, IActiveProcessTabViewModel
     {
-        private protected ActiveProcessTabViewModel(IEventAggregator eventAggregator, IProcessDispatcherService processDispatcherService) : base(eventAggregator, processDispatcherService)
+        private readonly IProcessDispatcherService _processDispatcherService;
+
+        private protected ActiveProcessTabViewModel(IEventAggregator eventAggregator, IProcessDispatcherService processDispatcherService) : base(eventAggregator)
         {
+            _processDispatcherService = processDispatcherService;
         }
 
         private protected override void OnProcessesAdded(IActiveProcessViewModel[] processViewModels)
@@ -41,6 +44,11 @@
                 activeProcessViewModel.Process.Exited += ProcessExited;
                 activeProcessViewModel.PropertyChanged += DownloadStatusPropertyChanged;
             }
+        }
+
+        private protected virtual void OnProcessExited(IActiveProcessViewModel processViewModel)
+        {
+            _processDispatcherService.Dispatch(processViewModel);
         }
     }
 }

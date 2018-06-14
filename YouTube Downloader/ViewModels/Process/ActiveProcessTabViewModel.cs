@@ -5,15 +5,13 @@
 
     using Caliburn.Micro;
 
-    using YouTube.Downloader.Core;
     using YouTube.Downloader.Models.Download;
     using YouTube.Downloader.Services.Interfaces;
     using YouTube.Downloader.ViewModels.Interfaces.Process;
 
     internal abstract class ActiveProcessTabViewModel : ProcessTabViewModel<IActiveProcessViewModel>, IActiveProcessTabViewModel
     {
-        private protected ActiveProcessTabViewModel(IEventAggregator eventAggregator, IProcessDispatcherService processDispatcherService, Predicate<ProcessTransferType> processTransferFilter)
-                : base(eventAggregator, processDispatcherService, processTransferFilter)
+        private protected ActiveProcessTabViewModel(IEventAggregator eventAggregator, IProcessDispatcherService processDispatcherService) : base(eventAggregator, processDispatcherService)
         {
         }
 

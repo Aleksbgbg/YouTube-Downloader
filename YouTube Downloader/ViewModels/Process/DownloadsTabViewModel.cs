@@ -17,7 +17,7 @@
         private readonly IDownloadService _downloadService;
 
         public DownloadsTabViewModel(IEventAggregator eventAggregator, IActionButtonFactory actionButtonFactory, IDownloadService downloadService, IProcessDispatcherService processDispatcherService)
-                : base(eventAggregator, processDispatcherService, processTransferType => processTransferType == ProcessTransferType.Download)
+                : base(eventAggregator, processDispatcherService)
         {
             _downloadService = downloadService;
 
@@ -48,6 +48,11 @@
         {
             base.OnProcessesAdded(processViewModels);
             _downloadService.QueueDownloads(processViewModels.Select(processViewModel => processViewModel.Process).Cast<DownloadProcess>());
+        }
+
+        private protected override bool CanAccept(ProcessTransferType processTransferType)
+        {
+            return processTransferType == ProcessTransferType.Download;
         }
     }
 }

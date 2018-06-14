@@ -17,7 +17,7 @@
         private readonly IConversionService _conversionService;
 
         public ConversionsTabViewModel(IEventAggregator eventAggregator, IActionButtonFactory actionButtonFactory, IConversionService conversionService, IProcessDispatcherService processDispatcherService)
-                : base(eventAggregator, processDispatcherService, processTransferType => processTransferType == ProcessTransferType.Convert)
+                : base(eventAggregator, processDispatcherService)
         {
             _conversionService = conversionService;
 
@@ -48,6 +48,11 @@
         {
             base.OnProcessesAdded(processViewModels);
             _conversionService.QueueConversion(processViewModels.Select(processViewModel => processViewModel.Process).Cast<ConvertProcess>());
+        }
+
+        private protected override bool CanAccept(ProcessTransferType processTransferType)
+        {
+            return processTransferType == ProcessTransferType.Convert;
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿namespace YouTube.Downloader.ViewModels.Process
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Windows.Data;
@@ -17,16 +16,13 @@
     {
         private readonly IProcessDispatcherService _processDispatcherService;
 
-        private readonly Predicate<ProcessTransferType> _processTransferFilter;
-
-        private protected ProcessTabViewModel(IEventAggregator eventAggregator, IProcessDispatcherService processDispatcherService, Predicate<ProcessTransferType> processTransferFilter)
+        private protected ProcessTabViewModel(IEventAggregator eventAggregator, IProcessDispatcherService processDispatcherService)
         {
             DisplayName = GetType().Name.Replace("TabViewModel", string.Empty);
 
             eventAggregator.Subscribe(this);
 
             _processDispatcherService = processDispatcherService;
-            _processTransferFilter = processTransferFilter;
 
             ((ListCollectionView)CollectionViewSource.GetDefaultView(Processes)).CustomSort = Comparer<T>.Create((first, second) => -first.DownloadState.CompareTo(second.DownloadState));
         }
@@ -46,7 +42,7 @@
 
         public void Handle(ProcessTransferMessage message)
         {
-            if (_processTransferFilter(message.ProcessTransferType))
+            if (CanAccept(message.ProcessTransferType))
             {
                 AddProcesses(message.Processes.Cast<T>());
             }
@@ -68,5 +64,7 @@
         {
             _processDispatcherService.Dispatch(processViewModel);
         }
+
+        private protected abstract bool CanAccept(ProcessTransferType processTransferType);
     }
 }

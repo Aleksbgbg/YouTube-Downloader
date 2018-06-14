@@ -9,8 +9,7 @@
 
     internal class CompletedTabViewModel : ProcessTabViewModel<ICompleteProcessViewModel>, ICompletedTabViewModel
     {
-        public CompletedTabViewModel(IEventAggregator eventAggregator, IActionButtonFactory actionButtonFactory)
-                : base(eventAggregator, null, processTransferType => processTransferType == ProcessTransferType.Complete)
+        public CompletedTabViewModel(IEventAggregator eventAggregator, IActionButtonFactory actionButtonFactory) : base(eventAggregator, null)
         {
             Buttons = new IActionButtonViewModel[]
             {
@@ -25,6 +24,11 @@
                         Processes.RemoveRange(SelectedProcesses);
                     })
             };
+        }
+
+        private protected override bool CanAccept(ProcessTransferType processTransferType)
+        {
+            return processTransferType == ProcessTransferType.Complete;
         }
     }
 }

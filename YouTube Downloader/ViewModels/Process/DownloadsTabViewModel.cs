@@ -12,7 +12,7 @@
     using YouTube.Downloader.ViewModels.Interfaces;
     using YouTube.Downloader.ViewModels.Interfaces.Process;
 
-    internal class DownloadsTabViewModel : ProcessTabViewModel, IDownloadsTabViewModel
+    internal class DownloadsTabViewModel : ActiveProcessTabViewModel, IDownloadsTabViewModel
     {
         private readonly IDownloadService _downloadService;
 
@@ -25,7 +25,7 @@
             {
                     actionButtonFactory.MakeActionButtonViewModel("Delete", "Kill", () =>
                     {
-                        void KillProcesses(IEnumerable<IProcessViewModel> processes)
+                        void KillProcesses(IEnumerable<IActiveProcessViewModel> processes)
                         {
                             foreach (MonitoredProcess conversionProcess in processes.Select(process => process.Process))
                             {
@@ -44,8 +44,9 @@
             };
         }
 
-        private protected override void OnProcessesAdded(IProcessViewModel[] processViewModels)
+        private protected override void OnProcessesAdded(IActiveProcessViewModel[] processViewModels)
         {
+            base.OnProcessesAdded(processViewModels);
             _downloadService.QueueDownloads(processViewModels.Select(processViewModel => processViewModel.Process).Cast<DownloadProcess>());
         }
     }

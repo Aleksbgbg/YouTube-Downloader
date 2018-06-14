@@ -2,9 +2,10 @@
 {
     using Caliburn.Micro;
 
+    using YouTube.Downloader.ViewModels.Interfaces;
     using YouTube.Downloader.ViewModels.Interfaces.Process;
 
-    internal class ProcessTabsViewModel : Conductor<IProcessTabViewModel>.Collection.OneActive, IProcessTabsViewModel
+    internal class ProcessTabsViewModel : Conductor<IViewModelBase>.Collection.OneActive, IProcessTabsViewModel
     {
         public ProcessTabsViewModel(
                 IDownloadsTabViewModel downloadsTabViewModel,

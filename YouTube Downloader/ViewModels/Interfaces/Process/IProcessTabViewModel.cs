@@ -4,12 +4,13 @@
 
     using Caliburn.Micro;
 
-    internal interface IProcessTabViewModel : IViewModelBase
+    internal interface IProcessTabViewModel<T> : IViewModelBase
+            where T : class, IProcessViewModel
     {
-        IObservableCollection<IProcessViewModel> Processes { get; }
+        IObservableCollection<T> Processes { get; }
 
-        IObservableCollection<IProcessViewModel> SelectedProcesses { get; }
+        IObservableCollection<T> SelectedProcesses { get; }
 
-        void AddProcesses(IEnumerable<IProcessViewModel> processes);
+        void AddProcesses(IEnumerable<T> processes);
     }
 }

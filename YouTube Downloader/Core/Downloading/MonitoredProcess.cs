@@ -52,6 +52,8 @@
 
         internal bool Killed { get; private set; }
 
+        internal bool HasExited { get; private set; }
+
         internal ProcessMonitor ProcessMonitor { get; }
 
         internal void Start()
@@ -96,6 +98,7 @@
 
         private void OnExited()
         {
+            HasExited = true;
             OnExited(Killed);
             Exited?.Invoke(this, EventArgs.Empty);
         }

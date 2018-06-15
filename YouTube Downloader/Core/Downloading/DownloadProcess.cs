@@ -69,18 +69,7 @@
                      ParameterMonitorings)
         {
             _downloadProgress = downloadProgress;
-            YouTubeVideo = youTubeVideo;
         }
-
-        internal YouTubeVideo YouTubeVideo { get; }
-
-        internal bool CanKill => !HasExited;
-
-        internal bool HasStarted { get; private set; }
-
-        internal bool HasExited { get; private set; }
-
-        internal bool DidComplete { get; private set; }
 
         private protected override void OnStart()
         {
@@ -109,18 +98,6 @@
                 _downloadProgress.ProgressPercentage = progress.DownloadPercentage;
                 _downloadProgress.TotalDownloadSize = progress.TotalDownloadSize;
             }
-
-            HasStarted = true;
-        }
-
-        private protected override void OnExited(bool killed)
-        {
-            if (!killed)
-            {
-                DidComplete = true;
-            }
-
-            HasExited = true;
         }
     }
 }

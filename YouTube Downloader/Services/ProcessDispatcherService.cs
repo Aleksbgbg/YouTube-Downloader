@@ -77,7 +77,7 @@
 
                 case IDownloadProcessViewModel downloadProcessViewModel:
                     {
-                        if (!((DownloadProcess)downloadProcessViewModel.Process).DidComplete)
+                        if (downloadProcessViewModel.Process.Killed)
                         {
                             DispatchToComplete(downloadProcessViewModel.VideoViewModel, DownloadState.Exited);
                             break;

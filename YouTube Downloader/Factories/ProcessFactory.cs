@@ -39,10 +39,10 @@
             return convertProcessViewModel;
         }
 
-        public ICompleteProcessViewModel MakeCompleteProcessViewModel(IVideoViewModel videoViewModel)
+        public ICompleteProcessViewModel MakeCompleteProcessViewModel(IVideoViewModel videoViewModel, DownloadState downloadState)
         {
             ICompleteProcessViewModel completeProcessViewModel = IoC.Get<ICompleteProcessViewModel>();
-            completeProcessViewModel.Initialise(videoViewModel);
+            completeProcessViewModel.Initialise(videoViewModel, downloadState);
 
             return completeProcessViewModel;
         }

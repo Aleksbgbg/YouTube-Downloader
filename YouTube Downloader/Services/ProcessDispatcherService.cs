@@ -52,10 +52,10 @@
                 dispatch = _processFactory.MakeDownloadProcessViewModel(videoViewModel);
             }
 
-            void DispatchToComplete(IVideoViewModel videoViewModel)
+            void DispatchToComplete(IVideoViewModel videoViewModel, DownloadState downloadState)
             {
                 nextTransfer = ProcessTransferType.Complete;
-                dispatch = _processFactory.MakeCompleteProcessViewModel(videoViewModel);
+                dispatch = _processFactory.MakeCompleteProcessViewModel(videoViewModel, downloadState);
             }
 
             switch (viewModel)
@@ -66,7 +66,7 @@
 
                         if (Directory.GetFiles(_settings.DownloadPath).Select(Path.GetFileNameWithoutExtension).Any(filename => filename == videoTitle))
                         {
-                            DispatchToComplete(videoViewModel);
+                            DispatchToComplete(videoViewModel, DownloadState.Exited);
                         }
                         else
                         {
@@ -79,7 +79,7 @@
                     {
                         if (!((DownloadProcess)downloadProcessViewModel.Process).DidComplete)
                         {
-                            DispatchToComplete(downloadProcessViewModel.VideoViewModel);
+                            DispatchToComplete(downloadProcessViewModel.VideoViewModel, DownloadState.Exited);
                             break;
                         }
 
@@ -91,7 +91,7 @@
                             _settings.OutputFormat == OutputFormat.Mp4 && fileInfo.Extension == ".mp4" ||
                             _settings.OutputFormat == OutputFormat.Mp3 && fileInfo.Extension == ".mp3")
                         {
-                            DispatchToComplete(downloadProcessViewModel.VideoViewModel);
+                            DispatchToComplete(downloadProcessViewModel.VideoViewModel, DownloadState.Completed);
                         }
                         else
                         {
@@ -106,7 +106,7 @@
                     break;
 
                 case IConvertProcessViewModel convertProcessViewModel:
-                    DispatchToComplete(convertProcessViewModel.VideoViewModel);
+                    DispatchToComplete(convertProcessViewModel.VideoViewModel, convertProcessViewModel.Process.Killed ? DownloadState.Exited : DownloadState.Completed);
                     break;
 
                 default:

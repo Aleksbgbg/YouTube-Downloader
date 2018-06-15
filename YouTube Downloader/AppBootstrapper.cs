@@ -32,6 +32,7 @@
             Initialize();
 
             ViewLocator.NameTransformer.AddRule(@"^YouTube.Downloader.ViewModels.Process(?:\.\w*)+(\.\w*ProcessViewModel)", "YouTube.Downloader.Views.Process.ProcessView");
+            ViewLocator.NameTransformer.AddRule(@"^YouTube.Downloader.ViewModels.Process(?:\.\w*)+(\.\w*TabViewModel)", "YouTube.Downloader.Views.Process.ProcessTabView");
         }
 
         protected override void BuildUp(object instance)

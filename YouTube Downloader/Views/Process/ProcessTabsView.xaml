@@ -27,73 +27,7 @@
 
         <TabControl.ContentTemplate>
             <DataTemplate>
-                <DockPanel>
-                    <StackPanel DockPanel.Dock="Top" HorizontalAlignment="Center" Orientation="Horizontal">
-                        <Image Source="{Binding DisplayName, Mode=OneTime, Converter={x:Static Converters:ResourceConverter.Default}}"
-                               Height="20"/>
-                        <TextBlock Text="{Binding DisplayName, Mode=OneTime}"
-                                   FontSize="16" FontWeight="DemiBold" Margin="5"/>
-                    </StackPanel>
-                    
-
-                    <StackPanel DockPanel.Dock="Bottom" HorizontalAlignment="Center" Orientation="Horizontal">
-                        <ItemsControl ItemsSource="{Binding Buttons, Mode=OneTime}">
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <ContentControl Caliburn:View.Model="{Binding Mode=OneTime}"/>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-                    </StackPanel>
-
-                    <ListBox ItemsSource="{Binding Processes}"
-                             BorderThickness="0" SelectionMode="Extended"
-                             Helpers:SelectedItemsHelper.SelectedItems="{Binding SelectedProcesses, Mode=OneTime}">
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <ContentControl Caliburn:View.Model="{Binding Mode=OneTime}"/>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-
-                        <ListBox.ItemContainerStyle>
-                            <Style TargetType="ListBoxItem" BasedOn="{StaticResource {x:Type ListBoxItem}}">
-                                <Setter Property="SnapsToDevicePixels" Value="True"/>
-                                <Setter Property="OverridesDefaultStyle" Value="True"/>
-
-                                <Setter Property="Template">
-                                    <Setter.Value>
-                                        <ControlTemplate TargetType="ListBoxItem">
-                                            <Border x:Name="Bd" BorderBrush="{TemplateBinding BorderBrush}"
-                                                    BorderThickness="{TemplateBinding BorderThickness}"
-                                                    Background="{TemplateBinding Background}"
-                                                    Padding="{TemplateBinding Padding}"
-                                        SnapsToDevicePixels="True">
-                                                <ContentPresenter ContentTemplate="{TemplateBinding ContentTemplate}"
-                                                      Content="{TemplateBinding Content}"
-                                                      ContentStringFormat="{TemplateBinding ContentStringFormat}"
-                                                      HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                                      SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                                      VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
-                                            </Border>
-                                            <ControlTemplate.Triggers>
-                                                <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}"
-                                                 Value="True">
-                                                    <Setter Property="Background" Value="#EBF5FB"/>
-                                                    <Setter Property="BorderBrush" Value="#AED6F1"/>
-                                                </DataTrigger>
-
-                                                <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource Self}}" Value="True">
-                                                    <Setter Property="Background" Value="#D6EAF8"/>
-                                                    <Setter Property="BorderBrush" Value="#85C1E9"/>
-                                                </DataTrigger>
-                                            </ControlTemplate.Triggers>
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                            </Style>
-                        </ListBox.ItemContainerStyle>
-                    </ListBox>
-                </DockPanel>
+                <ContentControl Caliburn:View.Model="{Binding Mode=OneTime}"/>
             </DataTemplate>
         </TabControl.ContentTemplate>
     </TabControl>

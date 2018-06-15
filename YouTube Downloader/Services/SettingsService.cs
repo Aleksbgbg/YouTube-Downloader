@@ -17,11 +17,11 @@
         {
             _dataService = dataService;
 
-            Settings = dataService.Load<Settings>("Settings", JsonConvert.SerializeObject(new Settings
+            Settings = dataService.Load<Settings>("Settings", () => JsonConvert.SerializeObject(new Settings
             {
-                DownloadPath = Path.Combine(fileSystemUtility.DownloadsFolderPath, "YouTube Downloader"),
-                DownloadType = DownloadType.AudioVideo,
-                OutputFormat = OutputFormat.Auto
+                    DownloadPath = Path.Combine(fileSystemUtility.DownloadsFolderPath, "YouTube Downloader"),
+                    DownloadType = DownloadType.AudioVideo,
+                    OutputFormat = OutputFormat.Auto
             }));
         }
 

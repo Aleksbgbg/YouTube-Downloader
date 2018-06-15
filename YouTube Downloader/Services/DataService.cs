@@ -1,5 +1,6 @@
 ﻿namespace YouTube.Downloader.Services
 {
+    using System;
     using System.IO;
 
     using Newtonsoft.Json;
@@ -16,6 +17,11 @@
         }
 
         public T Load<T>(string dataName, string emptyData = "")
+        {
+            return Load<T>(dataName, () => emptyData);
+        }
+
+        public T Load<T>(string dataName, Func<string> emptyData)
         {
             return JsonConvert.DeserializeObject<T>(File.ReadAllText(_appDataService.GetFile($"Data/{dataName}.json", emptyData)));
         }

@@ -33,6 +33,11 @@
 
         public string GetFile(string name, string defaultContents = "")
         {
+            return GetFile(name, () => defaultContents);
+        }
+
+        public string GetFile(string name, Func<string> defaultContents)
+        {
             string filePath = Path.Combine(ApplicationPath, name);
 
             if (!File.Exists(filePath))
@@ -44,7 +49,7 @@
                     Directory.CreateDirectory(directory);
                 }
 
-                File.WriteAllText(filePath, defaultContents);
+                File.WriteAllText(filePath, defaultContents());
             }
 
             return filePath;

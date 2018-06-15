@@ -230,6 +230,9 @@
     <Compile Include="Views\Process\ProcessTabsView.xaml.cs">
       <DependentUpon>ProcessTabsView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Process\ProcessTabView.xaml.cs">
+      <DependentUpon>ProcessTabView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\RequeryView.xaml.cs">
       <DependentUpon>RequeryView.xaml</DependentUpon>
     </Compile>
@@ -263,6 +266,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Process\ProcessTabsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Process\ProcessTabView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

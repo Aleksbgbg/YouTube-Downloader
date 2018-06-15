@@ -9,6 +9,8 @@
 
         private readonly Process _process;
 
+        private bool _hasStarted;
+
         private protected MonitoredProcess(string process, string arguments)
                 : this(process, arguments, new ParameterMonitoring[] { })
         {
@@ -60,6 +62,9 @@
             }
 
             _process.Start();
+
+            _hasStarted = true;
+
             ProcessMonitor.Run();
 
             Started?.Invoke(this, EventArgs.Empty);
@@ -71,7 +76,14 @@
         {
             Killed = true;
 
-            _process.Kill();
+            if (_hasStarted)
+            {
+                _process.Kill();
+            }
+            else
+            {
+                OnExited();
+            }
         }
 
         private protected virtual void OnStart()

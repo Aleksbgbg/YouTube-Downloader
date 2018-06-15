@@ -28,7 +28,7 @@
                     {
                         void KillProcesses(IEnumerable<IActiveProcessViewModel> processes)
                         {
-                            foreach (MonitoredProcess conversionProcess in processes.Select(process => process.Process))
+                            foreach (MonitoredProcess conversionProcess in processes.ToArray().Select(process => process.Process))
                             {
                                 conversionProcess.Kill();
                             }

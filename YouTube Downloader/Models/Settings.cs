@@ -2,6 +2,7 @@
 {
     using System;
     using System.ComponentModel;
+    using System.IO;
 
     using Caliburn.Micro;
 
@@ -28,6 +29,11 @@
 
                 _downloadPath = value;
                 NotifyOfPropertyChange(() => DownloadPath);
+
+                if (!Directory.Exists(_downloadPath))
+                {
+                    Directory.CreateDirectory(_downloadPath);
+                }
             }
         }
 

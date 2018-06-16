@@ -1,8 +1,7 @@
-﻿namespace YouTube.Downloader.Core
+﻿namespace YouTube.Downloader.Utilities
 {
     using System.Collections.Generic;
 
-    using YouTube.Downloader.ViewModels.Interfaces.Process;
     using YouTube.Downloader.ViewModels.Interfaces.Process.Entities;
 
     internal class ProcessTransferMessage

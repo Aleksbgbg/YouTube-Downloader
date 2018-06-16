@@ -1,4 +1,4 @@
-﻿namespace YouTube.Downloader.Core.Downloading
+﻿namespace YouTube.Downloader.Utilities.Downloading
 {
     using System.Text;
 

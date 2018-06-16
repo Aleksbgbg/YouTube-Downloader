@@ -1,4 +1,4 @@
-﻿namespace YouTube.Downloader.Core
+﻿namespace YouTube.Downloader.Utilities
 {
     internal enum ProcessTransferType
     {

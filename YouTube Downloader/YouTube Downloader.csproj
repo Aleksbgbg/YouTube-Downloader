@@ -137,24 +137,24 @@
     <Compile Include="Converters\PercentageMatchColourConverter.cs" />
     <Compile Include="Converters\StageTextConverter.cs" />
     <Compile Include="Core\DelayedCallbackHelper.cs" />
-    <Compile Include="Core\DigitalStorageManager.cs" />
-    <Compile Include="Core\Downloading\ConvertProcess.cs" />
-    <Compile Include="Core\Downloading\DownloadArgumentBuilder.cs" />
-    <Compile Include="Core\Downloading\MonitoredProcess.cs" />
-    <Compile Include="Core\Downloading\ParameterMonitoring.cs" />
-    <Compile Include="Core\Downloading\Progress.cs" />
-    <Compile Include="Core\ProcessTransferType.cs" />
-    <Compile Include="Core\ThrowHelper.cs" />
+    <Compile Include="Utilities\DigitalStorageManager.cs" />
+    <Compile Include="Utilities\Downloading\ConvertProcess.cs" />
+    <Compile Include="Utilities\Downloading\DownloadArgumentBuilder.cs" />
+    <Compile Include="Utilities\Downloading\MonitoredProcess.cs" />
+    <Compile Include="Utilities\Downloading\ParameterMonitoring.cs" />
+    <Compile Include="Utilities\Downloading\Progress.cs" />
+    <Compile Include="Utilities\ProcessTransferType.cs" />
+    <Compile Include="Utilities\ThrowHelper.cs" />
     <Compile Include="EventArgs\ParameterUpdatedEventArgs.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="Factories\ActionButtonFactory.cs" />
     <Compile Include="Factories\Interfaces\IActionButtonFactory.cs" />
     <Compile Include="Factories\ProcessFactory.cs" />
     <Compile Include="Factories\Interfaces\IProcessFactory.cs" />
-    <Compile Include="Core\Downloading\DownloadProcess.cs" />
+    <Compile Include="Utilities\Downloading\DownloadProcess.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
-    <Compile Include="Core\EnumDescriptionConverter.cs" />
-    <Compile Include="Core\Downloading\ProcessMonitor.cs" />
+    <Compile Include="Utilities\EnumDescriptionConverter.cs" />
+    <Compile Include="Utilities\Downloading\ProcessMonitor.cs" />
     <Compile Include="Factories\Interfaces\IRequeryFactory.cs" />
     <Compile Include="Factories\RequeryFactory.cs" />
     <Compile Include="Helpers\ImageContentHelper.cs" />
@@ -165,7 +165,7 @@
     <Compile Include="Models\Download\DownloadType.cs" />
     <Compile Include="Models\QueryResult.cs" />
     <Compile Include="Models\OutputFormat.cs" />
-    <Compile Include="Core\ProcessTransferMessage.cs" />
+    <Compile Include="Utilities\ProcessTransferMessage.cs" />
     <Compile Include="Models\ActionButton.cs" />
     <Compile Include="Services\AppDataService.cs" />
     <Compile Include="Services\ConversionService.cs" />
@@ -444,9 +444,7 @@
   <ItemGroup>
     <Resource Include="Images\Downloads.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Utilities\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Fody.3.0.3\build\Fody.targets" Condition="Exists('..\packages\Fody.3.0.3\build\Fody.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

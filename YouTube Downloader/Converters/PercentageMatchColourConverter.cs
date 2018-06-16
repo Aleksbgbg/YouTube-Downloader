@@ -6,7 +6,7 @@
     using System.Windows.Data;
     using System.Windows.Media;
 
-    using YouTube.Downloader.Core;
+    using YouTube.Downloader.Utilities;
 
     [ValueConversion(typeof(double), typeof(SolidColorBrush))]
     internal class PercentageMatchColourConverter : IValueConverter

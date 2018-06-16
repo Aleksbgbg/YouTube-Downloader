@@ -3,9 +3,9 @@
     using System;
     using System.Collections.Generic;
 
-    using YouTube.Downloader.Core.Downloading;
     using YouTube.Downloader.Models.Download;
     using YouTube.Downloader.Services.Interfaces;
+    using YouTube.Downloader.Utilities.Downloading;
 
     internal class DownloadService : IDownloadService
     {

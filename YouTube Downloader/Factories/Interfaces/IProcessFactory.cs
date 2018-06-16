@@ -1,8 +1,8 @@
 ﻿namespace YouTube.Downloader.Factories.Interfaces
 {
-    using YouTube.Downloader.Core.Downloading;
     using YouTube.Downloader.Models;
     using YouTube.Downloader.Models.Download;
+    using YouTube.Downloader.Utilities.Downloading;
     using YouTube.Downloader.ViewModels.Interfaces;
     using YouTube.Downloader.ViewModels.Interfaces.Process;
     using YouTube.Downloader.ViewModels.Interfaces.Process.Entities;

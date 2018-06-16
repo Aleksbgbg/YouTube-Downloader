@@ -4,7 +4,7 @@
     using System.Globalization;
     using System.Windows.Data;
 
-    using YouTube.Downloader.Core;
+    using YouTube.Downloader.Utilities;
 
     [ValueConversion(typeof(int), typeof(bool))]
     internal class CountToBooleanConverter : IValueConverter

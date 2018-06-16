@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
 
-    using YouTube.Downloader.Core.Downloading;
+    using YouTube.Downloader.Utilities.Downloading;
 
     internal interface IDownloadService
     {

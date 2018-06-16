@@ -5,7 +5,7 @@
     using System.Windows;
     using System.Windows.Data;
 
-    using YouTube.Downloader.Core;
+    using YouTube.Downloader.Utilities;
 
     [ValueConversion(typeof(string), typeof(object))]
     internal class ResourceConverter : IValueConverter

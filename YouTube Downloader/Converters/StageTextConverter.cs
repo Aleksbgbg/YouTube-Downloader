@@ -6,10 +6,10 @@
 
     using Caliburn.Micro;
 
-    using YouTube.Downloader.Core;
     using YouTube.Downloader.Models;
     using YouTube.Downloader.Models.Download;
     using YouTube.Downloader.Services.Interfaces;
+    using YouTube.Downloader.Utilities;
 
     [ValueConversion(typeof(int), typeof(string))]
     internal class StageTextConverter : IValueConverter

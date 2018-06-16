@@ -2,8 +2,8 @@
 {
     using Caliburn.Micro;
 
-    using YouTube.Downloader.Core;
     using YouTube.Downloader.Factories.Interfaces;
+    using YouTube.Downloader.Utilities;
     using YouTube.Downloader.ViewModels.Interfaces;
     using YouTube.Downloader.ViewModels.Interfaces.Process.Entities;
     using YouTube.Downloader.ViewModels.Interfaces.Process.Tabs;

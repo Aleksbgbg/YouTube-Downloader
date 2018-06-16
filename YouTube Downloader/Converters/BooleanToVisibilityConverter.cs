@@ -5,7 +5,7 @@
     using System.Windows;
     using System.Windows.Data;
 
-    using YouTube.Downloader.Core;
+    using YouTube.Downloader.Utilities;
 
     [ValueConversion(typeof(bool), typeof(Visibility))]
     internal class BooleanToVisibilityConverter : IValueConverter

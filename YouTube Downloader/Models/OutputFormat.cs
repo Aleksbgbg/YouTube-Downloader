@@ -2,7 +2,7 @@
 {
     using System.ComponentModel;
 
-    using YouTube.Downloader.Core;
+    using YouTube.Downloader.Utilities;
 
     [TypeConverter(typeof(EnumDescriptionConverter))]
     internal enum OutputFormat

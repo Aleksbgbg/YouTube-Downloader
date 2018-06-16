@@ -1,11 +1,11 @@
-﻿namespace YouTube.Downloader.Utilities
+﻿namespace YouTube.Downloader.Services
 {
     using System;
     using System.Runtime.InteropServices;
 
-    using YouTube.Downloader.Utilities.Interfaces;
+    using YouTube.Downloader.Services.Interfaces;
 
-    internal class FileSystemUtility : IFileSystemUtility
+    internal class FileSystemService : IFileSystemService
     {
         private static readonly Guid DownloadsFolder = new Guid("374DE290-123F-4565-9164-39C4925E467B");
 

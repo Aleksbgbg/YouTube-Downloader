@@ -183,8 +183,8 @@
     <Compile Include="Models\Settings.cs" />
     <Compile Include="Services\DownloadService.cs" />
     <Compile Include="Services\Interfaces\IDownloadService.cs" />
-    <Compile Include="Utilities\FileSystemUtility.cs" />
-    <Compile Include="Utilities\Interfaces\IFileSystemUtility.cs" />
+    <Compile Include="Services\FileSystemService.cs" />
+    <Compile Include="Services\Interfaces\IFileSystemService.cs" />
     <Compile Include="ViewModels\ActionButtonViewModel.cs" />
     <Compile Include="ViewModels\Interfaces\IActionButtonViewModel.cs" />
     <Compile Include="ViewModels\Interfaces\IMatchedVideoViewModel.cs" />
@@ -443,6 +443,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Downloads.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Utilities\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Fody.3.0.3\build\Fody.targets" Condition="Exists('..\packages\Fody.3.0.3\build\Fody.targets')" />

@@ -7,19 +7,18 @@
     using YouTube.Downloader.Models;
     using YouTube.Downloader.Models.Download;
     using YouTube.Downloader.Services.Interfaces;
-    using YouTube.Downloader.Utilities.Interfaces;
 
     internal class SettingsService : ISettingsService
     {
         private readonly IDataService _dataService;
 
-        public SettingsService(IDataService dataService, IFileSystemUtility fileSystemUtility)
+        public SettingsService(IDataService dataService, IFileSystemService fileSystemService)
         {
             _dataService = dataService;
 
             Settings = dataService.Load<Settings>("Settings", () => JsonConvert.SerializeObject(new Settings
             {
-                    DownloadPath = Path.Combine(fileSystemUtility.DownloadsFolderPath, "YouTube Downloader"),
+                    DownloadPath = Path.Combine(fileSystemService.DownloadsFolderPath, "YouTube Downloader"),
                     DownloadType = DownloadType.AudioVideo,
                     OutputFormat = OutputFormat.Auto
             }));

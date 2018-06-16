@@ -12,8 +12,6 @@
     using YouTube.Downloader.Models;
     using YouTube.Downloader.Services;
     using YouTube.Downloader.Services.Interfaces;
-    using YouTube.Downloader.Utilities;
-    using YouTube.Downloader.Utilities.Interfaces;
     using YouTube.Downloader.ViewModels;
     using YouTube.Downloader.ViewModels.Interfaces;
     using YouTube.Downloader.ViewModels.Interfaces.Process;
@@ -51,11 +49,10 @@
             _container.Singleton<IDataService, DataService>();
             _container.Singleton<IDialogService, DialogService>();
             _container.Singleton<IDownloadService, DownloadService>();
+            _container.Singleton<IFileSystemService, FileSystemService>();
             _container.Singleton<IProcessDispatcherService, ProcessDispatcherService>();
             _container.Singleton<ISettingsService, SettingsService>();
             _container.Singleton<IYouTubeApiService, YouTubeApiService>();
-
-            _container.Singleton<IFileSystemUtility, FileSystemUtility>();
 
             // Register Factories
             _container.Singleton<IActionButtonFactory, ActionButtonFactory>();

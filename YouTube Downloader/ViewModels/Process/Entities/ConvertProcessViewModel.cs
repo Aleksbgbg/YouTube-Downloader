@@ -1,7 +1,7 @@
 ﻿namespace YouTube.Downloader.ViewModels.Process.Entities
 {
     using YouTube.Downloader.Models;
-    using YouTube.Downloader.Utilities.Downloading;
+    using YouTube.Downloader.Utilities.Processing;
     using YouTube.Downloader.ViewModels.Interfaces;
     using YouTube.Downloader.ViewModels.Interfaces.Process.Entities;
 

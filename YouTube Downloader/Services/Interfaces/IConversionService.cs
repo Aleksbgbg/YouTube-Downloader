@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
 
-    using YouTube.Downloader.Utilities.Downloading;
+    using YouTube.Downloader.Utilities.Processing;
 
     internal interface IConversionService
     {

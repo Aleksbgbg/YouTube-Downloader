@@ -5,7 +5,7 @@
 
     using YouTube.Downloader.Models.Download;
     using YouTube.Downloader.Services.Interfaces;
-    using YouTube.Downloader.Utilities.Downloading;
+    using YouTube.Downloader.Utilities.Processing;
 
     internal class DownloadService : IDownloadService
     {

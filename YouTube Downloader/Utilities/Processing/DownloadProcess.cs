@@ -1,4 +1,4 @@
-﻿namespace YouTube.Downloader.Utilities.Downloading
+﻿namespace YouTube.Downloader.Utilities.Processing
 {
     using System;
     using System.Text.RegularExpressions;

@@ -5,7 +5,7 @@
     using YouTube.Downloader.Models;
     using YouTube.Downloader.Models.Download;
 
-    internal class DownloadArgumentBuilder
+    internal class DownloadStartInfo
     {
         internal string DownloadFolder { get; set; }
 

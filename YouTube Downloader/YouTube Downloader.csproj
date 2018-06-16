@@ -138,7 +138,7 @@
     <Compile Include="Converters\StageTextConverter.cs" />
     <Compile Include="Utilities\DigitalStorageManager.cs" />
     <Compile Include="Utilities\Processing\ConvertProcess.cs" />
-    <Compile Include="Utilities\Processing\DownloadArgumentBuilder.cs" />
+    <Compile Include="Utilities\Processing\DownloadStartInfo.cs" />
     <Compile Include="Utilities\Processing\MonitoredProcess.cs" />
     <Compile Include="Utilities\Processing\ParameterMonitoring.cs" />
     <Compile Include="Utilities\Processing\Progress.cs" />

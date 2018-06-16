@@ -58,7 +58,7 @@
         internal DownloadProcess(DownloadProgress downloadProgress, YouTubeVideo youTubeVideo, Settings settings)
                 :
                 base("youtube-dl",
-                     new DownloadArgumentBuilder
+                     new DownloadStartInfo
                      {
                          DownloadFolder = settings.DownloadPath,
                          DownloadType = settings.DownloadType,

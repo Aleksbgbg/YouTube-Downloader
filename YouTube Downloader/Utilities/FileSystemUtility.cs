@@ -7,13 +7,13 @@
 
     internal class FileSystemUtility : IFileSystemUtility
     {
+        private static readonly Guid DownloadsFolder = new Guid("374DE290-123F-4565-9164-39C4925E467B");
+
         public string DownloadsFolderPath
         {
             get
             {
-                Guid downloadsFolderGuid = new Guid("374DE290-123F-4565-9164-39C4925E467B");
-
-                SHGetKnownFolderPath(downloadsFolderGuid, 0, IntPtr.Zero, out string downloadsFolderPath);
+                SHGetKnownFolderPath(DownloadsFolder, 0, IntPtr.Zero, out string downloadsFolderPath);
 
                 return downloadsFolderPath;
             }

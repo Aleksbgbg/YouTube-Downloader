@@ -28,8 +28,11 @@
                     activeProcessViewModel.Process.Exited -= ProcessExited;
                     activeProcessViewModel.PropertyChanged -= DownloadStatusPropertyChanged;
 
-                    SelectedProcesses.Remove(activeProcessViewModel);
-                    Processes.Remove(activeProcessViewModel);
+                    OnUIThread(() =>
+                    {
+                        SelectedProcesses.Remove(activeProcessViewModel);
+                        Processes.Remove(activeProcessViewModel);
+                    });
 
                     OnProcessExited(activeProcessViewModel);
                 }

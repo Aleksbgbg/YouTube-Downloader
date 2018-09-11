@@ -97,20 +97,20 @@
 
         protected override void OnStartup(object sender, StartupEventArgs e)
         {
-            IDataService dataService = IoC.Get<IDataService>();
+            IDataService dataService = _container.GetInstance<IDataService>();
 
-            IoC.Get<IQueryViewModel>().Query = dataService.LoadAndWipe<string>("Query") ?? string.Empty;
-            IoC.Get<IMatchedVideosViewModel>().Load(dataService.LoadAndWipe<IEnumerable<QueryResult>>("Matched Videos", "[]"));
+            _container.GetInstance<IQueryViewModel>().Query = dataService.LoadAndWipe<string>("Query") ?? string.Empty;
+            _container.GetInstance<IMatchedVideosViewModel>().Load(dataService.LoadAndWipe<IEnumerable<QueryResult>>("Matched Videos", "[]"));
 
             DisplayRootViewFor<IShellViewModel>();
         }
 
         protected override void OnExit(object sender, System.EventArgs e)
         {
-            IDataService dataService = IoC.Get<IDataService>();
+            IDataService dataService = _container.GetInstance<IDataService>();
 
-            dataService.Save("Query", IoC.Get<IQueryViewModel>().Query);
-            dataService.Save("Matched Videos", IoC.Get<IMatchedVideosViewModel>().Videos.Select(matchedVideoViewModel => matchedVideoViewModel.QueryResult));
+            dataService.Save("Query", _container.GetInstance<IQueryViewModel>().Query);
+            dataService.Save("Matched Videos", _container.GetInstance<IMatchedVideosViewModel>().Videos.Select(matchedVideoViewModel => matchedVideoViewModel.QueryResult));
         }
     }
 }

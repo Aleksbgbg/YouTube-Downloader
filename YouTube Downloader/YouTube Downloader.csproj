@@ -136,6 +136,7 @@
     <Compile Include="Converters\ResourceConverter.cs" />
     <Compile Include="Converters\PercentageMatchColourConverter.cs" />
     <Compile Include="Converters\StageTextConverter.cs" />
+    <Compile Include="Extensions\ProcessExtensions.cs" />
     <Compile Include="Utilities\DigitalStorageManager.cs" />
     <Compile Include="Utilities\Processing\ConvertProcess.cs" />
     <Compile Include="Utilities\Processing\DownloadStartInfo.cs" />

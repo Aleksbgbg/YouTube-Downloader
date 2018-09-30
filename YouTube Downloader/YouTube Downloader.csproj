@@ -185,6 +185,7 @@
     <Compile Include="Services\Interfaces\IDownloadService.cs" />
     <Compile Include="Services\FileSystemService.cs" />
     <Compile Include="Services\Interfaces\IFileSystemService.cs" />
+    <Compile Include="Utilities\YouTubeDl.cs" />
     <Compile Include="ViewModels\ActionButtonViewModel.cs" />
     <Compile Include="ViewModels\Interfaces\IActionButtonViewModel.cs" />
     <Compile Include="ViewModels\Interfaces\IMatchedVideoViewModel.cs" />

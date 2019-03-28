@@ -136,6 +136,7 @@
     <Compile Include="Converters\ResourceConverter.cs" />
     <Compile Include="Converters\PercentageMatchColourConverter.cs" />
     <Compile Include="Converters\StageTextConverter.cs" />
+    <Compile Include="Extensions\ProcessExtensions.cs" />
     <Compile Include="Utilities\DigitalStorageManager.cs" />
     <Compile Include="Utilities\Processing\ConvertProcess.cs" />
     <Compile Include="Utilities\Processing\DownloadStartInfo.cs" />
@@ -184,6 +185,7 @@
     <Compile Include="Services\Interfaces\IDownloadService.cs" />
     <Compile Include="Services\FileSystemService.cs" />
     <Compile Include="Services\Interfaces\IFileSystemService.cs" />
+    <Compile Include="Utilities\YouTubeDl.cs" />
     <Compile Include="ViewModels\ActionButtonViewModel.cs" />
     <Compile Include="ViewModels\Interfaces\IActionButtonViewModel.cs" />
     <Compile Include="ViewModels\Interfaces\IMatchedVideoViewModel.cs" />

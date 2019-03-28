@@ -154,7 +154,7 @@
 
             Video video = videoResponse.Items.First();
 
-            string statistics = await _httpClient.GetStringAsync($"https://www.googleapis.com/youtube/v3/videos?id={video.Id}&key=AIzaSyAIj7OmVIu1pQYstco3V8EUh1Bo_PCqIPE&part=statistics");
+            string statistics = await _httpClient.GetStringAsync($"https://www.googleapis.com/youtube/v3/videos?id={video.Id}&key=AIzaSyA6F0Qqlul32ly5jSbnK9FYPL2Ge8Q7nQM&part=statistics");
 
             return new YouTubeVideo(video, JsonConvert.DeserializeObject<VideoListResponse>(statistics)
                                                       .Items

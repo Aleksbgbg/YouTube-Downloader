@@ -1,5 +1,11 @@
 # YouTube Downloader
+A user interface for [youtube-dl](https://github.com/ytdl-org/youtube-dl).
+
 YouTube Downloader is an easy-to-use, YouTube video downloader, without pesky ads or malware.
+
+This repository is archived, and thus will not receive further maintenance or edits.
+The intent of this project was to create an interface to a command-line program for learning purposes.
+This has been achieved.
 
 ## Core Functionality
 
@@ -32,7 +38,7 @@ YouTube Downloader is an easy-to-use, YouTube video downloader, without pesky ad
 - Choose audio-only downloads, or an audio-video combination
 - Choose between default, MP4, or MP3 download formats (more to come soon!)
 
-### Transfer State
+### Data Storage
 - Restore the user session on launch, including the last query entered into the query box; the last set of videos matched; and all of the downloads that were queued or in progress in the last session
 
 ## Current Preview
